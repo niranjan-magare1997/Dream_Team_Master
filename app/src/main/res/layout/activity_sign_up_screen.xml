@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:paddingLeft="26dp"
+    android:paddingTop="26dp"
+    android:paddingRight="26dp"
+    android:paddingBottom="26dp"
+    tools:context=".SignUpScreen">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="34sp"
+            android:textColor="@color/colorMaroon"
+            android:text="Sign Up"/>
+    </LinearLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:padding="15dp"
+        android:background="@drawable/custom_border"
+        android:orientation="vertical">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:padding="22dp"
+        android:layout_height="wrap_content">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/userNameSignUp"
+        app:boxBackgroundMode="outline"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:boxStrokeColor="@color/colorMaroon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintTextAppearance="@color/colorMaroonLight"
+        android:textColorHint="@color/colorMaroonLight"
+        android:hint="Please Enter Your Mobile Number">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/mobileSignup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="12dp"
+            android:textSize="14dp"
+            android:inputType="number"
+            android:maxLength="10"
+            android:drawableStart="@drawable/ic_person_outline_black_24dp"
+            android:drawableLeft="@drawable/ic_person_outline_black_24dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/createPassword"
+            app:boxBackgroundMode="outline"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            app:boxStrokeColor="@color/colorMaroon"
+            android:layout_width="match_parent"
+            app:hintTextAppearance="@color/colorMaroonLight"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorMaroonLight"
+            android:hint="Create Password"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="12dp"
+                android:textSize="16dp"
+                android:maxLines="1"
+                android:inputType="textPassword"
+                android:drawableStart="@drawable/password"
+                android:drawableLeft="@drawable/password" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            app:boxBackgroundMode="outline"
+            android:id="@+id/userAddress"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            app:boxStrokeColor="@color/colorMaroon"
+            android:layout_width="match_parent"
+            app:hintTextAppearance="@color/colorMaroonLight"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorMaroonLight"
+            android:hint="Enter Address"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="12dp"
+                android:textSize="16dp"
+                android:maxLines="2"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <Spinner
+            style="@style/Widget.AppCompat.Spinner.DropDown"
+            android:id="@+id/spinnerChoice"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dropDownWidth="wrap_content"
+            android:prompt="@string/choose"
+            android:entries="@array/dropdownChoice"/>
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp"
+            android:visibility="invisible">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/userAdharNumber"
+                app:boxBackgroundMode="outline"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                app:boxStrokeColor="@color/colorMaroon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:hintTextAppearance="@color/colorMaroonLight"
+                android:textColorHint="@color/colorMaroonLight"
+                android:hint="Please Enter Your Adhar Number">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/adharNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="12dp"
+                    android:textSize="14dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/userGST"
+                app:boxBackgroundMode="outline"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                app:boxStrokeColor="@color/colorMaroon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:hintTextAppearance="@color/colorMaroonLight"
+                android:textColorHint="@color/colorMaroonLight"
+                android:hint="Please Enter GST Number">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/gstNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="12dp"
+                    android:textSize="14dp"
+                    android:maxLength="15"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/userHotelName"
+                app:boxBackgroundMode="outline"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                app:boxStrokeColor="@color/colorMaroon"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@color/colorMaroonLight"
+                android:textColorHint="@color/colorMaroonLight"
+                android:hint=" Enter Your Hotel Name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/hotelName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="12dp"
+                    android:textSize="14dp"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/signup"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:gravity="center_horizontal"
+            android:text="SIGN UP"
+            android:onClick="signUp"
+            android:background="@drawable/custom_border"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:textColor="@color/colorMaroon"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+    </LinearLayout></androidx.core.widget.NestedScrollView>
+</RelativeLayout>

@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">DREAM_TEAM</string>
+    <string name="choose">Choose the type</string>
+
+    <string-array name="dropdownChoice">
+        <item>Choose the type</item>
+        <item>Owner</item>
+        <item>Waiter</item>
+        <item>Cheff</item>
+    </string-array>
+
+
 </resources>
