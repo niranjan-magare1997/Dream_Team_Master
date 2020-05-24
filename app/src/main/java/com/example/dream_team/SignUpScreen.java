@@ -25,11 +25,12 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void initialization() {
-        userMobileNumber = findViewById(R.id.userNameSignUp);
+        userMobileNumber = findViewById(R.id.userNumberSignUp);
         userPassword = findViewById(R.id.createPassword);
         userAddress = findViewById(R.id.userAddress);
         userAdhar = findViewById(R.id.userAddress);
         userGST = findViewById(R.id.userGST);
+
         userHotelName = findViewById(R.id.userHotelName);
 
         mobileNumberEditText = findViewById(R.id.mobileSignup);
