@@ -7,42 +7,43 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_gravity="center"
+            android:layout_marginTop="5dp"
             android:text="Enter the received code"
             android:textColor="@color/colorMaroonLight"
             android:textSize="16sp" />
 
         <com.alimuzaffar.lib.pin.PinEntryEditText
             android:id="@+id/pin_entry"
-            android:layout_marginTop="15dp"
-            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
             android:cursorVisible="false"
             android:digits="1234567890"
             android:inputType="number"
-            android:textColor="@color/colorMaroonLight"
             android:maxLength="6"
+            android:textColor="@color/colorMaroonLight"
             android:textIsSelectable="false"
             android:textSize="20sp" />
+
         <Button
             android:id="@+id/verify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:layout_marginTop="50dp"
             android:layout_gravity="center"
-            android:text="Verify"
+            android:layout_marginTop="50dp"
+            android:background="#14CF14"
             android:elevation="7dp"
-            android:textSize="16sp"
-            android:background="#14CF14"/>
+            android:text="Verify"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
     </LinearLayout>
 
 </LinearLayout>
