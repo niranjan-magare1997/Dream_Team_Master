@@ -14,8 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     ImageView imageView;
-    Animation middle,bottom,up;
-    TextView dreamTeam,welcome;
+    Animation middle, bottom, up;
+    TextView dreamTeam, welcome;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
                 startActivity(intent);
+                finish();
             }
         }, 5000);
     }

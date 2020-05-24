@@ -14,127 +14,129 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:padding="15dp"
             android:background="@drawable/custom_border"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="15dp">
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:padding="22dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_height="wrap_content">
+                android:orientation="vertical"
+                android:padding="22dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/userName"
-                    app:boxBackgroundMode="outline"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    app:boxStrokeColor="@color/colorMaroon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintTextAppearance="@color/colorMaroonLight"
+                    android:hint="Mobile Number"
                     android:textColorHint="@color/colorMaroonLight"
-                    android:hint="Mobile Number">
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/colorMaroon"
+                    app:hintTextAppearance="@color/colorMaroonLight">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_person_outline_black_24dp"
+                        android:drawableLeft="@drawable/ic_person_outline_black_24dp"
                         android:drawablePadding="12dp"
-                        android:textSize="14dp"
                         android:inputType="number"
                         android:maxLength="10"
-                        android:drawableStart="@drawable/ic_person_outline_black_24dp"
-                        android:drawableLeft="@drawable/ic_person_outline_black_24dp" />
+                        android:textSize="14dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/forgotPassword"
+                    android:id="@+id/forgotPasswordLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
                     android:layout_marginLeft="175dp"
-                    android:textColor="#03B5DA"
+                    android:layout_marginTop="25dp"
                     android:text="Forgot Password?"
-                    android:textSize="14sp"
-                    android:onClick="forgotPassword"
-                    />
+                    android:textColor="#03B5DA"
+                    android:textSize="14sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/userPassword"
-                    app:boxBackgroundMode="outline"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    app:boxStrokeColor="@color/colorMaroon"
                     android:layout_width="match_parent"
-                    app:hintTextAppearance="@color/colorMaroonLight"
                     android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorMaroonLight"
+                    android:layout_marginTop="5dp"
                     android:hint="Password"
-                    android:layout_marginTop="5dp">
+                    android:textColorHint="@color/colorMaroonLight"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/colorMaroon"
+                    app:hintTextAppearance="@color/colorMaroonLight">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="12dp"
-                        android:textSize="16dp"
-                        android:maxLines="1"
-                        android:inputType="textPassword"
                         android:drawableStart="@drawable/password"
-                        android:drawableLeft="@drawable/password" />
+                        android:drawableLeft="@drawable/password"
+                        android:drawablePadding="12dp"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:textSize="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:padding="5dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_height="wrap_content">
+                    android:padding="5dp">
+
                     <CheckBox
-                        android:id="@+id/rememberMe"
+                        android:id="@+id/rememberMeCheckbox"
                         android:layout_width="wrap_content"
-                        android:text="Remember Me!"
-                        android:textColor="#03B5DA"
-                        android:buttonTint="#03B5DA"
                         android:layout_height="wrap_content"
-                        />
+                        android:buttonTint="#03B5DA"
+                        android:text="Remember Me!"
+                        android:textColor="#03B5DA" />
                 </LinearLayout>
+
                 <Button
-                    android:id="@+id/login"
+                    android:id="@+id/login_Button"
                     android:layout_width="250dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="25dp"
+                    android:background="@drawable/custom_border"
                     android:gravity="center_horizontal"
                     android:text="LOGIN"
-                    android:background="@drawable/custom_border"
-                    android:textSize="24sp"
-                    android:onClick="login"
                     android:textAlignment="center"
                     android:textColor="@color/colorMaroon"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:paddingTop="20dp"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:text="Don't have an account ?"
-                        android:layout_marginTop="100dp"
-                        android:textColor="#9E9D9D"/>
+                    android:orientation="horizontal"
+                    android:paddingTop="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="100dp"
-                        android:onClick="createAccount"
+                        android:gravity="center"
+                        android:text="Don't have an account ?"
+                        android:textColor="#9E9D9D"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/createAccountLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="100dp"
                         android:text="Create an account"
                         android:textColor="#03B5DA"
                         android:textStyle="bold" />
