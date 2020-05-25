@@ -1,9 +1,9 @@
 package com.example.dream_team;
 
 /**
- * 1 = (Task Failed) False Result
  * 0 = (Task Successful) True Result
- * 2 = ERROR
+ * 1 = (Task Failed) False Result
+ * 2 = ERROR Caught in catch block
  */
 
 public interface CALLBACK {
