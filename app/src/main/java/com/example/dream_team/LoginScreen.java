@@ -1,9 +1,12 @@
 package com.example.dream_team;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,11 +33,9 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     public static final String ALPHANUMERIC_KEY = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor myEdit;
-    private String DOCUMENT_NAME = "";
-    private String TOKEN = "";
     private String mobile = "";
     private String password = "";
-    private boolean rememberMeCheckedOrNot;
+    public static boolean rememberMeCheckedOrNot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,20 +86,25 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.login_Button:
-                login();
-                break;
-            case R.id.forgotPasswordLabel:
-                forgotPassword();
-                break;
-            case R.id.createAccountLabel:
-                createAccount();
-                break;
-            case R.id.rememberMeCheckbox:
-                Log.d(TAG, "onClick | Status => " + rememberMeCheckbox.isChecked());
-                rememberMeCheckedOrNot = rememberMeCheckbox.isChecked();
-                break;
+        ConnectivityManager cm = (ConnectivityManager) getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if(!isConnected){
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+        }else{
+            Log.d(TAG, "onClick | Checkbox Status => " + rememberMeCheckbox.isChecked());
+            rememberMeCheckedOrNot = rememberMeCheckbox.isChecked();
+            switch (v.getId()) {
+                case R.id.login_Button:
+                    login();
+                    break;
+                case R.id.forgotPasswordLabel:
+                    forgotPassword();
+                    break;
+                case R.id.createAccountLabel:
+                    createAccount();
+                    break;
+            }
         }
     }
 
@@ -191,6 +197,10 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
             userPassword.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             userPassword.setErrorEnabled(true);
             return false;
-        } else return true;
+        } else{
+            userMobileNumber.setErrorEnabled(false);
+            userPassword.setErrorEnabled(false);
+            return true;
+        }
     }
 }

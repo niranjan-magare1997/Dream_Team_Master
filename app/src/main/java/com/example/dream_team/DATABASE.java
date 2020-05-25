@@ -32,33 +32,47 @@ public class DATABASE {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                Log.d(TAG, "onComplete | Valid User ");
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    final String docName = document.getString("DOCUMENT_NAME");
-                                    final String token = document.getString("TOKEN");
-                                    Log.d(TAG, "checkUserExist | onComplete | Data =>  " + docName + "_" + token);
-                                    if (token.length() == 0) {
-                                        final String myToken = LoginScreen.generateToken();
-                                        insertToken(document.getId(), myToken, new CALLBACK() {
-                                            @Override
-                                            public void callBackMethod(int result) {
-                                                if (result == 0) {
-                                                    LoginScreen.setSharedData("DOC_NAME",docName);
-                                                    LoginScreen.setSharedData("TOKEN",myToken);
-                                                    callback.callBackMethod(0);
-                                                } else if (result == 1) {
-                                                    callback.callBackMethod(1);
-                                                } else if (result == 2) {
-                                                    callback.callBackMethod(2);
+                                if (task.getResult().isEmpty()) {
+                                    Log.e(TAG, "onComplete | No user found with this credentials ");
+                                    callback.callBackMethod(1);
+                                } else {
+                                    Log.d(TAG, "checkUserExist | onComplete | Valid User ");
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        final String docName = document.getString("DOCUMENT_NAME");
+                                        final String token = document.getString("TOKEN");
+                                        Log.d(TAG, "checkUserExist | onComplete | Data =>  " + docName + "_" + token);
+                                        if (token.length() == 0) {
+                                            final String myToken = LoginScreen.generateToken();
+                                            insertToken(document.getId(), myToken, new CALLBACK() {
+                                                @Override
+                                                public void callBackMethod(int result) {
+                                                    if (result == 0) {
+                                                        LoginScreen.setSharedData("DOC_NAME", docName);
+                                                        if (LoginScreen.rememberMeCheckedOrNot) {
+                                                            LoginScreen.setSharedData("TOKEN", myToken);
+                                                            Log.d(TAG, "checkUserExist | callBackMethod | Token inserting in shared preference ");
+                                                        }
+                                                        callback.callBackMethod(0);
+                                                    } else if (result == 1) {
+                                                        callback.callBackMethod(1);
+                                                    } else if (result == 2) {
+                                                        callback.callBackMethod(2);
+                                                    }
                                                 }
-                                            }
 
-                                            @Override
-                                            public void getData(String docName, String token) {
+                                                @Override
+                                                public void getData(String docName, String token) {
+                                                }
+                                            });
+                                        } else {
+                                            LoginScreen.setSharedData("DOC_NAME", docName);
+                                            if (LoginScreen.rememberMeCheckedOrNot) {
+                                                LoginScreen.setSharedData("TOKEN", token);
+                                                Log.d(TAG, "checkUserExist | Token inserting in shared preference ");
                                             }
-                                        });
-                                    } else {
-                                        Log.d(TAG, "checkUserExist | onComplete | User token already exist ");
+                                            Log.d(TAG, "checkUserExist | onComplete | User token already exist ");
+                                            callback.callBackMethod(0);
+                                        }
                                     }
                                 }
                             } else {
