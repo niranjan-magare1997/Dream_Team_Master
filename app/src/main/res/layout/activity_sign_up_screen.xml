@@ -2,22 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:paddingLeft="26dp"
-    android:paddingTop="5dp"
-    android:paddingRight="26dp"
-    android:paddingBottom="5dp"
+    android:padding="10dp"
     tools:context=".SignUpScreen">
 
     <LinearLayout
+        android:id="@+id/signUpLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/signUpLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             android:text="Sign Up"
             android:textColor="@color/colorMaroon"
             android:textSize="34sp"
@@ -26,20 +27,19 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/signUpLayout"
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
             android:background="@drawable/custom_border"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -48,6 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint=" Your Full Name"
+                    android:padding="5dp"
                     android:textColorHint="@color/colorMaroonLight"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@color/colorMaroon"
@@ -57,7 +58,7 @@
                         android:id="@+id/userNameEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="12dp"
+                        android:padding="10dp"
                         android:textSize="14dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,8 +67,8 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:hint="Mobile Number"
+                    android:padding="5dp"
                     android:textColorHint="@color/colorMaroonLight"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@color/colorMaroon"
@@ -77,11 +78,10 @@
                         android:id="@+id/mobileEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_person_outline_black_24dp"
                         android:drawableLeft="@drawable/ic_person_outline_black_24dp"
-                        android:drawablePadding="12dp"
                         android:inputType="number"
                         android:maxLength="10"
+                        android:padding="10dp"
                         android:textSize="14dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,8 +90,8 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:hint="Password"
+                    android:padding="5dp"
                     android:textColorHint="@color/colorMaroonLight"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@color/colorMaroon"
@@ -101,11 +101,10 @@
                         android:id="@+id/passwordEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/password"
                         android:drawableLeft="@drawable/password"
-                        android:drawablePadding="12dp"
                         android:inputType="textPassword"
                         android:maxLines="1"
+                        android:padding="10dp"
                         android:textSize="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,8 +113,8 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:hint="Confirm Password"
+                    android:padding="5dp"
                     android:textColorHint="@color/colorMaroonLight"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@color/colorMaroon"
@@ -125,11 +124,10 @@
                         android:id="@+id/retypePassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/password"
                         android:drawableLeft="@drawable/password"
-                        android:drawablePadding="12dp"
                         android:inputType="textPassword"
                         android:maxLines="1"
+                        android:padding="10dp"
                         android:textSize="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -138,8 +136,8 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:hint="Address"
+                    android:padding="5dp"
                     android:textColorHint="@color/colorMaroonLight"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@color/colorMaroon"
@@ -149,8 +147,8 @@
                         android:id="@+id/addressEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="12dp"
                         android:maxLines="2"
+                        android:padding="10dp"
                         android:textSize="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -159,16 +157,16 @@
                     style="@style/Widget.AppCompat.Spinner.DropDown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
                     android:dropDownWidth="wrap_content"
                     android:entries="@array/dropdownChoice"
+                    android:padding="10dp"
                     android:prompt="@string/choose" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
+                    android:layout_margin="10dp"
                     android:orientation="vertical"
                     android:visibility="invisible">
 
@@ -177,8 +175,8 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:hint="Adhar Number"
+                        android:padding="5dp"
                         android:textColorHint="@color/colorMaroonLight"
                         app:boxBackgroundMode="outline"
                         app:boxStrokeColor="@color/colorMaroon"
@@ -188,7 +186,7 @@
                             android:id="@+id/adharNumberEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="12dp"
+                            android:padding="10dp"
                             android:textSize="14dp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -197,8 +195,8 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:hint=" GST Number"
+                        android:padding="5dp"
                         android:textColorHint="@color/colorMaroonLight"
                         app:boxBackgroundMode="outline"
                         app:boxStrokeColor="@color/colorMaroon"
@@ -208,9 +206,9 @@
                             android:id="@+id/GSTEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="12dp"
                             android:inputType="number"
                             android:maxLength="15"
+                            android:padding="10dp"
                             android:textSize="14dp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -219,8 +217,8 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:hint="Your Hotel Name"
+                        android:padding="5dp"
                         android:textColorHint="@color/colorMaroonLight"
                         app:boxBackgroundMode="outline"
                         app:boxStrokeColor="@color/colorMaroon"
@@ -230,7 +228,7 @@
                             android:id="@+id/hotelNameEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="12dp"
+                            android:padding="10dp"
                             android:textSize="14dp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -240,13 +238,12 @@
                     android:id="@+id/signup"
                     android:layout_width="250dp"
                     android:layout_height="50dp"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="25dp"
                     android:background="@drawable/custom_border"
-                    android:gravity="center_horizontal"
+                    android:gravity="center"
                     android:onClick="signUp"
                     android:text="SIGN UP"
-                    android:textAlignment="center"
                     android:textColor="@color/colorMaroon"
                     android:textSize="20sp"
                     android:textStyle="bold" />
