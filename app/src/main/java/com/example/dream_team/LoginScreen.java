@@ -172,9 +172,6 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
                         Log.e(TAG, "callBackMethod | Exception while checking user ");
                     }
                 }
-
-                @Override
-                public void getData(String docName, String token) {}
             });
         }
     }
