@@ -8,5 +8,4 @@ package com.example.dream_team;
 
 public interface CALLBACK {
     void callBackMethod(int result);
-    void getData(String docName, String token);
 }
