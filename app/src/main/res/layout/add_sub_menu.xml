@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    tools:context=".cheff.AddMenuDialog">
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="250dp"
+        android:gravity="center"
+        android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:text="Enter Sub category"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:textSize="16sp"
+            android:text="Select  main Category"/>
+        <Spinner
+            android:id="@+id/menuSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="15dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_weight="0"
+            android:text="Add new Dish"/>
+        <EditText
+            android:id="@+id/subMenuEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_marginLeft="25dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:textSize="16sp"
+            android:text="Rate"/>
+        <EditText
+            android:id="@+id/rateEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:layout_marginLeft="55dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_weight="0.4"
+            android:text="per dish"/>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/addSubButton"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:text="Add"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_ui"
+        />
+    </LinearLayout>
+
+</LinearLayout>
