@@ -1,4 +1,4 @@
-package com.example.dream_team;
+package com.example.dream_team.common_activities;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
+import com.example.dream_team.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

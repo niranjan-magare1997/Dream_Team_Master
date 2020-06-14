@@ -1,4 +1,4 @@
-package com.example.dream_team;
+package com.example.dream_team.modal_class;
 
 public class CONSTANTS {
     /**
@@ -78,4 +78,5 @@ public class CONSTANTS {
     public String HOTEL_NAME() {
         return HOTEL_NAME;
     }
+
 }

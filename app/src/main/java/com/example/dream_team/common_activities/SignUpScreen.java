@@ -1,4 +1,4 @@
-package com.example.dream_team;
+package com.example.dream_team.common_activities;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -10,13 +10,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.dream_team.R;
+import com.example.dream_team.interfaces.CALLBACK;
+import com.example.dream_team.modal_class.CONSTANTS;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SignUpScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private String TAG = "Dream_Team | SignUpScreen ";
@@ -70,8 +73,10 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
             signUpType = "Owner";
         } else if (adapterView.getSelectedItem().toString().equals("Waiter")) {
             signUpType = "Waiter";
+            findViewById(R.id.linearLayout).setVisibility(View.INVISIBLE);
         } else if (adapterView.getSelectedItem().toString().equals("Cheff")) {
             signUpType = "Chef";
+            findViewById(R.id.linearLayout).setVisibility(View.INVISIBLE);
         } else {
             signUpType = "";
             findViewById(R.id.linearLayout).setVisibility(View.INVISIBLE);

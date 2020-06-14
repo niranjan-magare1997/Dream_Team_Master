@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:padding="10dp"
-    tools:context=".SignUpScreen">
+    tools:context=".common_activities.SignUpScreen">
 
     <LinearLayout
         android:id="@+id/signUpLayout"

@@ -1,4 +1,4 @@
-package com.example.dream_team;
+package com.example.dream_team.interfaces;
 
 /**
  * 0 = (Task Successful) True Result

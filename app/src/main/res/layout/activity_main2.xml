@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".Main2Activity">
+    tools:context=".common_activities.Main2Activity">
 
     <TextView
         android:id="@+id/textView"

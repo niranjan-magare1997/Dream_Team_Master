@@ -1,9 +1,11 @@
-package com.example.dream_team;
+package com.example.dream_team.common_activities;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.dream_team.interfaces.CALLBACK;
+import com.example.dream_team.modal_class.CONSTANTS;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

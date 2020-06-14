@@ -1,8 +1,10 @@
-package com.example.dream_team;
+package com.example.dream_team.common_activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.dream_team.R;
 
 public class Main2Activity extends AppCompatActivity {
 

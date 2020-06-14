@@ -1,4 +1,4 @@
-package com.example.dream_team;
+package com.example.dream_team.common_activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +15,14 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dream_team.R;
+import com.example.dream_team.interfaces.CALLBACK;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.Random;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginScreen extends AppCompatActivity implements View.OnClickListener {
     public String TAG = "Dream_Team | LoginScreen";
@@ -50,7 +52,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         String userToken = LoginScreen.getSharedData("TOKEN");
         String docName = LoginScreen.getSharedData("DOC_NAME");
         Log.d(TAG, "checkAlreadyLogin | Token => " + userToken + " Doc Name: " + docName);
-        if(userToken.length() > 0){
+        if (userToken.length() > 0) {
             Log.d(TAG, "checkAlreadyLogin | Token exist. Move to next screen ");
             Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
             intent.putExtra("DOC_NAME", docName);
@@ -89,9 +91,9 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         ConnectivityManager cm = (ConnectivityManager) getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        if(!isConnected){
+        if (!isConnected) {
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             Log.d(TAG, "onClick | Checkbox Status => " + rememberMeCheckbox.isChecked());
             rememberMeCheckedOrNot = rememberMeCheckbox.isChecked();
             switch (v.getId()) {
@@ -194,7 +196,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
             userPassword.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             userPassword.setErrorEnabled(true);
             return false;
-        } else{
+        } else {
             userMobileNumber.setErrorEnabled(false);
             userPassword.setErrorEnabled(false);
             return true;

@@ -6,4 +6,11 @@
     <color name="colorMaroon">#B50202</color>
     <color name="colorMaroonLight">#C15858</color>
     <color name="colorGray">#8F8F8F</color>
+    <color name="colorWhite">#ffffff</color>
+
+    <color name="colorBlueDark">#2D99FA</color>
+    <color name="colorBlueAccent">#80F2FD</color>
+    <color name="colorBlueAccentDark">#06C6D8</color>
+    <color name="colorGreenAccent">#36B6A6</color>
+    <color name="colorDark">#222222</color>
 </resources>
