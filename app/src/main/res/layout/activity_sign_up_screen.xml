@@ -7,34 +7,72 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:padding="10dp"
+    android:background="@drawable/singupimage"
     tools:context=".common_activities.SignUpScreen">
 
     <LinearLayout
         android:id="@+id/signUpLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
+        android:orientation="vertical"
+        android:layout_height="235dp">
         <TextView
-            android:id="@+id/signUpLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="Sign Up"
-            android:textColor="@color/colorMaroon"
-            android:textSize="34sp"
+            android:text="@string/singup"
+            android:textAlignment="center"
+            android:fontFamily="@font/comicrelief"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
+            android:textStyle="normal" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:gravity="center"
+        android:layout_marginTop="14dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phoneNumber"
+            android:fontFamily="@font/comicrelief"
+            android:textColor="@color/colorWhite"
+            android:textSize="28sp"
             android:textStyle="bold" />
+       <Button
+           android:id="@+id/dialActionButton"
+           android:onClick="actionDialDirect"
+           android:layout_width="30dp"
+           android:layout_height="30dp"
+           android:clickable="true"
+           android:layout_marginLeft="45dp"
+           android:background="@drawable/phone" />
     </LinearLayout>
-
+        <Button
+            android:id="@+id/NextsignUpFormButton"
+            android:layout_width="55dp"
+            android:layout_marginTop="35dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:onClick="proceedNext"
+            android:background="@drawable/ic_outline_arrow_drop_down_circle_24"/>
+    </LinearLayout>
+<RelativeLayout
+    android:id="@+id/relativelayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="5dp"
+    android:padding="25dp"
+    android:visibility="invisible"
+    android:layout_below="@+id/signUpLayout">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/signUpLayout"
+        android:visibility="visible"
+        android:layout_marginTop="-15dp"
         android:padding="10dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/custom_border"
             android:orientation="vertical">
 
             <LinearLayout
@@ -49,16 +87,17 @@
                     android:layout_height="wrap_content"
                     android:hint=" Your Full Name"
                     android:padding="5dp"
-                    android:textColorHint="@color/colorMaroonLight"
-                    app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/colorMaroon"
-                    app:hintTextAppearance="@color/colorMaroonLight">
+                    android:textColorHint="@color/colorBlueDark"
+                    app:boxBackgroundMode="none"
+                    app:boxStrokeColor="@color/colorBlueDark"
+                    app:hintTextAppearance="@color/colorBlueDark">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/userNameEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
+                        android:fontFamily="@font/comicrelief"
                         android:textSize="14dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,16 +108,16 @@
                     android:layout_height="wrap_content"
                     android:hint="Mobile Number"
                     android:padding="5dp"
-                    android:textColorHint="@color/colorMaroonLight"
-                    app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/colorMaroon"
-                    app:hintTextAppearance="@color/colorMaroonLight">
+                    android:textColorHint="@color/colorBlueDark"
+                    app:boxBackgroundMode="none"
+                    app:boxStrokeColor="@color/colorBlueDark"
+                    app:hintTextAppearance="@color/colorBlueDark">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/mobileEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_person_outline_black_24dp"
+                        android:fontFamily="@font/comicrelief"
                         android:inputType="number"
                         android:maxLength="10"
                         android:padding="10dp"
@@ -92,16 +131,16 @@
                     android:layout_height="wrap_content"
                     android:hint="Password"
                     android:padding="5dp"
-                    android:textColorHint="@color/colorMaroonLight"
-                    app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/colorMaroon"
-                    app:hintTextAppearance="@color/colorMaroonLight">
+                    android:textColorHint="@color/colorBlueDark"
+                    app:boxBackgroundMode="none"
+                    app:boxStrokeColor="@color/colorBlueDark"
+                    app:hintTextAppearance="@color/colorBlueDark">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/passwordEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/password"
+                        android:fontFamily="@font/comicrelief"
                         android:inputType="textPassword"
                         android:maxLines="1"
                         android:padding="10dp"
@@ -115,16 +154,16 @@
                     android:layout_height="wrap_content"
                     android:hint="Confirm Password"
                     android:padding="5dp"
-                    android:textColorHint="@color/colorMaroonLight"
-                    app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/colorMaroon"
-                    app:hintTextAppearance="@color/colorMaroonLight">
+                    android:textColorHint="@color/colorBlueDark"
+                    app:boxBackgroundMode="none"
+                    app:boxStrokeColor="@color/colorBlueDark"
+                    app:hintTextAppearance="@color/colorBlueDark">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/retypePassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/password"
+                       android:fontFamily="@font/comicrelief"
                         android:inputType="textPassword"
                         android:maxLines="1"
                         android:padding="10dp"
@@ -138,16 +177,17 @@
                     android:layout_height="wrap_content"
                     android:hint="Address"
                     android:padding="5dp"
-                    android:textColorHint="@color/colorMaroonLight"
-                    app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/colorMaroon"
-                    app:hintTextAppearance="@color/colorMaroonLight">
+                    android:textColorHint="@color/colorBlueDark"
+                    app:boxBackgroundMode="none"
+                    app:boxStrokeColor="@color/colorBlueDark"
+                    app:hintTextAppearance="@color/colorBlueDark">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/addressEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
+                        android:fontFamily="@font/comicrelief"
                         android:padding="10dp"
                         android:textSize="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -166,9 +206,8 @@
                     android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
                     android:orientation="vertical"
-                    android:visibility="invisible">
+                    android:visibility="gone">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/adharNumberLayout"
@@ -176,16 +215,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Adhar Number"
-                        android:padding="5dp"
-                        android:textColorHint="@color/colorMaroonLight"
-                        app:boxBackgroundMode="outline"
-                        app:boxStrokeColor="@color/colorMaroon"
-                        app:hintTextAppearance="@color/colorMaroonLight">
+                        android:textColorHint="@color/colorBlueDark"
+                        app:boxBackgroundMode="none"
+                        app:boxStrokeColor="@color/colorBlueDark"
+                        app:hintTextAppearance="@color/colorBlueDark">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/adharNumberEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/comicrelief"
                             android:padding="10dp"
                             android:textSize="14dp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -196,16 +235,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint=" GST Number"
-                        android:padding="5dp"
-                        android:textColorHint="@color/colorMaroonLight"
-                        app:boxBackgroundMode="outline"
-                        app:boxStrokeColor="@color/colorMaroon"
-                        app:hintTextAppearance="@color/colorMaroonLight">
+                        android:textColorHint="@color/colorBlueDark"
+                        app:boxBackgroundMode="none"
+                        app:boxStrokeColor="@color/colorBlueDark"
+                        app:hintTextAppearance="@color/colorBlueDark">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/GSTEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/comicrelief"
                             android:inputType="number"
                             android:maxLength="15"
                             android:padding="10dp"
@@ -218,37 +257,39 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Your Hotel Name"
-                        android:padding="5dp"
-                        android:textColorHint="@color/colorMaroonLight"
-                        app:boxBackgroundMode="outline"
-                        app:boxStrokeColor="@color/colorMaroon"
-                        app:hintTextAppearance="@color/colorMaroonLight">
+                        android:textColorHint="@color/colorBlueDark"
+                        app:boxBackgroundMode="none"
+                        app:boxStrokeColor="@color/colorBlueDark"
+                        app:hintTextAppearance="@color/colorBlueDark">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/hotelNameEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="10dp"
+                            android:fontFamily="@font/comicrelief"
                             android:textSize="14dp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
-
                 <Button
                     android:id="@+id/signup"
-                    android:layout_width="250dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginTop="25dp"
-                    android:background="@drawable/custom_border"
-                    android:gravity="center"
+                    android:background="@drawable/bg_ui"
+                    android:fontFamily="@font/comicrelief"
+                    android:gravity="center_horizontal"
+                    android:letterSpacing="0.2"
                     android:onClick="signUp"
+                    android:padding="13dp"
                     android:text="SIGN UP"
-                    android:textColor="@color/colorMaroon"
-                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+</RelativeLayout>
 </RelativeLayout>

@@ -1,12 +1,16 @@
 package com.example.dream_team.common_activities;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -29,6 +33,8 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
     private CONSTANTS constants;
     private TextInputLayout usernameLayout, mobileLayout, passwordLayout, retypePasswordLayout, addressLayout, adharNumberLayout, GSTLayout, hotelNameLayout;
     private TextInputEditText userNameEditText, mobileEditText, passwordEditText, addressEditText, adharNumberEditText, GSTEditText, hotelNameEditText;
+    private Button nextFormButton, dialActionButton;
+    private RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,8 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
         adharNumberEditText = findViewById(R.id.adharNumberEditText);
         GSTEditText = findViewById(R.id.GSTEditText);
         hotelNameEditText = findViewById(R.id.hotelNameEditText);
+
+        relativeLayout = findViewById(R.id.relativelayout);
 
         database = new DATABASE();
         constants = new CONSTANTS();
@@ -174,5 +182,16 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
             addressLayout.setErrorEnabled(true);
             return false;
         } else return true;
+    }
+
+    public void proceedNext(View view) {
+        relativeLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void actionDialDirect(View view) {
+        String phoneNumber = "9999999999";
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
+        startActivity(intent);
+
     }
 }
