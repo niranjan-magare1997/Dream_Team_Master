@@ -9,5 +9,7 @@
         <item>Cheff</item>
     </string-array>
 
+    <string name="singup">To register your hotel please click  on following dial action button and then fill the below form!</string>
+    <string name="phoneNumber">+91-999999999</string>
 
 </resources>

@@ -121,7 +121,6 @@
                     android:fontFamily="@font/comicrelief"
                     android:gravity="center_horizontal"
                     android:letterSpacing="0.2"
-                    android:onClick="al"
                     android:padding="13dp"
                     android:text="LOGIN"
                     android:textColor="@color/colorWhite"
