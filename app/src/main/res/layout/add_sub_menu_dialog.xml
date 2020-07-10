@@ -3,89 +3,109 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
-    tools:context=".cheff.AddMenuDialog">
+    android:padding="15dp">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="250dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_width="350dp"
+        android:layout_height="295dp"
+        android:orientation="vertical"
+        android:padding="10dp">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
-        android:text="Enter Sub category"/>
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:fontFamily="@font/comicrelief"
+        android:textColor="@color/colorBlueDark"
+        android:text="Enter Sub category :"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:layout_height="wrap_content">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:textSize="16sp"
+            android:fontFamily="@font/comicrelief"
+            android:textColor="@color/colorGreenAccent"
             android:text="Select  main Category"/>
         <Spinner
             android:id="@+id/menuSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="15dp"/>
+            android:layout_marginLeft="3dp"
+            android:spinnerMode="dialog"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="15dp"
         android:layout_height="wrap_content">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:layout_weight="0"
+            android:fontFamily="@font/comicrelief"
+            android:textColor="@color/colorGreenAccent"
             android:text="Add new Dish"/>
         <EditText
             android:id="@+id/subMenuEditText"
-            android:layout_width="match_parent"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:layout_marginLeft="25dp"/>
+            android:textStyle="normal"
+            android:textSize="16sp"
+            android:fontFamily="@font/comicrelief"
+            android:layout_marginLeft="62dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="15dp"
         android:layout_height="wrap_content">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
             android:textSize="16sp"
+            android:fontFamily="@font/comicrelief"
+            android:textColor="@color/colorGreenAccent"
             android:text="Rate"/>
         <EditText
             android:id="@+id/rateEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:fontFamily="@font/comicrelief"
+            android:textSize="16sp"
             android:inputType="number"
-            android:layout_marginLeft="55dp"/>
+            android:layout_marginLeft="129dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorGreenAccent"
+            android:fontFamily="@font/comicrelief"
+            android:layout_marginLeft="10dp"
             android:textSize="16sp"
-            android:layout_weight="0.4"
+            android:layout_marginTop="5dp"
             android:text="per dish"/>
 
     </LinearLayout>
     <Button
         android:id="@+id/addSubButton"
-        android:layout_width="140dp"
+        android:layout_width="130dp"
         android:layout_height="50dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
         android:text="Add"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+       android:layout_gravity="center"
+        android:fontFamily="@font/comicrelief"
         android:background="@drawable/bg_ui"
+        android:layout_marginTop="25dp"
         />
     </LinearLayout>
-
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

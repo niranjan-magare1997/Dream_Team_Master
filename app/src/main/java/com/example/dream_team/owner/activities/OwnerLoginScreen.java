@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.dream_team.R;
+import com.example.dream_team.common_activities.LoginScreen;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -23,6 +24,7 @@ public class OwnerLoginScreen extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_owner_login_screen);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //setTitle("Owner DashBoard");
         Initialization();
     }
 
@@ -52,6 +54,9 @@ public class OwnerLoginScreen extends AppCompatActivity implements View.OnClickL
             case R.id.profile:
                 return true;
             case R.id.logout:
+                Intent intent = new Intent(this, LoginScreen.class);
+                startActivity(intent);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

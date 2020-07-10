@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorPrimaryDark">#004aad</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorMaroon">#B50202</color>
     <color name="colorMaroonLight">#C15858</color>
@@ -13,4 +13,9 @@
     <color name="colorBlueAccentDark">#06C6D8</color>
     <color name="colorGreenAccent">#36B6A6</color>
     <color name="colorDark">#222222</color>
+
+    <color name="pink">#DB7093</color>
+
+
+
 </resources>

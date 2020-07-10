@@ -12,6 +12,8 @@
         <activity android:name=".common_activities.SignUpScreen"></activity>
         <activity android:name=".common_activities.Main2Activity" />
         <activity android:name=".common_activities.LoginScreen" />
+        <activity android:name=".owner.activities.OwnerLoginScreen" />
+        <activity android:name=".owner.activities.AddMenuScreen"/>
         <activity android:name=".common_activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

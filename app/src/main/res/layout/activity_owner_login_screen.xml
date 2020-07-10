@@ -5,29 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/cardview_shadow_start_color"
+    android:background="@drawable/owner"
     android:weightSum="10">
-    <!--<androidx.recyclerview.widget.RecyclerView-->
-    <!--    android:id="@+id/recyclerView"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="match_parent"/>-->
 
     <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:background="@color/colorBlueDark"
         android:id="@+id/toolbar"
-        android:layout_height="?actionBarSize"/>
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        app:title="Owner DashBoard"
+        android:theme="@style/ToolbarTheme"
+        app:titleTextColor="@color/colorWhite"
+        android:background="@color/colorBlueDark" />
 
     <androidx.gridlayout.widget.GridLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
         android:layout_marginTop="100dp"
-        android:padding="14dp"
+        android:layout_weight="8"
+        android:padding="10dp"
+        android:paddingTop="20dp"
         app:alignmentMode="alignMargins"
         app:columnCount="2"
         app:columnOrderPreserved="false"
-        android:paddingTop="20dp"
         app:rowCount="2">
 
         <androidx.cardview.widget.CardView
@@ -44,26 +43,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:layout_gravity="center"
                 android:orientation="vertical"
-                >
+                android:padding="5dp">
+
                 <ImageView
-                    app:srcCompat="@drawable/ic_filter_1_black_24dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="23dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/place_order" />
 
                 <TextView
-                    android:textAlignment="center"
-                    android:textSize="15sp"
-                    android:textColor="@color/cardview_dark_background"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="13dp"
+                    android:fontFamily="@font/comicrelief"
                     android:text="Place Order"
-                    android:gravity="center_horizontal" />
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/addTable"
             android:layout_width="160dp"
@@ -72,100 +75,115 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp"
-            >
+            app:cardElevation="8dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:layout_gravity="center"
                 android:orientation="vertical"
-                app:layout_gravity="center_horizontal|center_vertical">
+                android:padding="5dp">
+
                 <ImageView
-                    app:srcCompat="@drawable/ic_filter_2_black_24dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginTop="5dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/add_table" />
+
                 <TextView
-                    android:textAlignment="center"
-                    android:textSize="15sp"
-                    android:textColor="@color/cardview_dark_background"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/comicrelief"
+                    android:gravity="center_horizontal"
                     android:text="Add Table"
-                    android:gravity="center_horizontal" />
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/addMenu"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginTop="35dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
-            <!--            app:layout_columnWeight="1"-->
-            <!--            app:layout_rowWeight="1">-->
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                app:layout_gravity="center_horizontal|center_vertical">
+                android:orientation="vertical">
+
                 <ImageView
-                    app:srcCompat="@drawable/ic_filter_3_black_24dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="10dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/add_menu" />
+
                 <TextView
-                    android:textAlignment="center"
-                    android:textSize="15sp"
-                    android:textColor="@color/cardview_dark_background"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="13dp"
+                    android:fontFamily="@font/comicrelief"
                     android:text="Add Menu"
-                    android:gravity="center_horizontal" />
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/addEmployee"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginTop="35dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
-            <!--            app:layout_columnWeight="1"-->
-            <!--            app:layout_rowWeight="1">-->
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:layout_gravity="center"
                 android:orientation="vertical"
+                android:padding="5dp"
                 app:layout_gravity="center_horizontal|center_vertical">
+
                 <ImageView
-                    app:srcCompat="@drawable/ic_filter_4_black_24dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="4dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/add_emp" />
+
                 <TextView
-                    android:textAlignment="center"
-                    android:textSize="15sp"
-                    android:textColor="@color/cardview_dark_background"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/comicrelief"
                     android:text="Add Employee"
-                    android:gravity="center_horizontal" />
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

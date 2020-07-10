@@ -186,6 +186,7 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
 
     public void proceedNext(View view) {
         relativeLayout.setVisibility(View.VISIBLE);
+
     }
 
     public void actionDialDirect(View view) {

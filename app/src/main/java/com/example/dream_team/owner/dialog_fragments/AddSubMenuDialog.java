@@ -31,7 +31,7 @@ public class AddSubMenuDialog extends DialogFragment implements View.OnClickList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = null;
         if (status == Constant.AddSubCategory) {
-            rootView = inflater.inflate(R.layout.add_sub_menu, container);
+            rootView = inflater.inflate(R.layout.add_sub_menu_dialog, container);
             subCategoryEditText = rootView.findViewById(R.id.subMenuEditText);
             rateEditText = rootView.findViewById(R.id.rateEditText);
             addSubButton = rootView.findViewById(R.id.addSubButton);

@@ -2,8 +2,6 @@ package com.example.dream_team.common_activities;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.example.dream_team.interfaces.CALLBACK;
 import com.example.dream_team.modal_class.CONSTANTS;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +15,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 public class DATABASE {
     private String TAG = "Dream_Team | DATABASE ";

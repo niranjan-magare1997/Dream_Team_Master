@@ -6,6 +6,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+
+    </style>
+
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:fontFamily">@font/comicrelief</item>
+        <item name="android:textColorSecondary">@color/colorWhite</item>
+        <item name="android:textColor">#ff000f</item>
     </style>
 
 </resources>

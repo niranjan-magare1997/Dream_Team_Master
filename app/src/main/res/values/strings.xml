@@ -3,10 +3,9 @@
     <string name="choose">Choose the type</string>
 
     <string-array name="dropdownChoice">
-        <item>Choose the type</item>
+        <item>Cheff</item>
         <item>Owner</item>
         <item>Waiter</item>
-        <item>Cheff</item>
     </string-array>
 
     <string name="singup">To register your hotel please click  on following dial action button and then fill the below form!</string>
