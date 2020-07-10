@@ -134,7 +134,9 @@
                     android:textColorHint="@color/colorBlueDark"
                     app:boxBackgroundMode="none"
                     app:boxStrokeColor="@color/colorBlueDark"
-                    app:hintTextAppearance="@color/colorBlueDark">
+                    app:hintTextAppearance="@color/colorBlueDark"
+                    app:passwordToggleEnabled="true"
+                    app:passwordToggleTint="@color/colorBlueDark">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/passwordEditText"
@@ -157,7 +159,9 @@
                     android:textColorHint="@color/colorBlueDark"
                     app:boxBackgroundMode="none"
                     app:boxStrokeColor="@color/colorBlueDark"
-                    app:hintTextAppearance="@color/colorBlueDark">
+                    app:hintTextAppearance="@color/colorBlueDark"
+                    app:passwordToggleEnabled="true"
+                    app:passwordToggleTint="@color/colorBlueDark">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/retypePassword"
@@ -200,6 +204,7 @@
                     android:dropDownWidth="wrap_content"
                     android:entries="@array/dropdownChoice"
                     android:padding="10dp"
+                   android:spinnerMode="dialog"
                     android:prompt="@string/choose" />
 
                 <LinearLayout

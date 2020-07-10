@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.dream_team.R;
 import com.example.dream_team.interfaces.CALLBACK;
+import com.example.dream_team.owner.activities.OwnerLoginScreen;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -160,14 +161,15 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
                 public void callBackMethod(int result) {
                     Log.d(TAG, "login | callBackMethod | Result => " + result);
                     if (result == 0) {
-                        Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
-                        intent.putExtra("DOC_NAME",getSharedData("DOC_NAME"));
+                        Intent intent = new Intent(getApplicationContext(), OwnerLoginScreen.class);
+                        intent.putExtra("DOC_NAME", getSharedData("DOC_NAME"));
                         intent.putExtra("TOKEN", getSharedData("TOKEN"));
                         mobileNumberEditText.setText("");
                         passwordEditText.setText("");
                         userMobileNumber.setErrorEnabled(false);
                         userPassword.setErrorEnabled(false);
                         startActivity(intent);
+                        finish();
                     } else if (result == 1) {
                         Log.d(TAG, "callBackMethod | User not exist ");
                     } else if (result == 2) {
