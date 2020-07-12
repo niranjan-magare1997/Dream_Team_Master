@@ -76,7 +76,6 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (adapterView.getSelectedItem().toString().equals("Owner")) {
-            Toast.makeText(this, "same", Toast.LENGTH_SHORT).show();
             findViewById(R.id.linearLayout).setVisibility(View.VISIBLE);
             signUpType = "Owner";
         } else if (adapterView.getSelectedItem().toString().equals("Waiter")) {
@@ -107,47 +106,29 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
         final Map<String, Object> insertData = new HashMap<>();
         String mobile = mobileEditText.getText().toString();
 
+        //if (validation()) {
         insertData.put(constants.MOBILE(), mobileEditText.getText().toString());
         insertData.put(constants.NAME(), userNameEditText.getText().toString());
         insertData.put(constants.PASSWORD(), passwordEditText.getText().toString());
         insertData.put(constants.ADDRESS(), addressEditText.getText().toString());
-        if (signUpType == "Owner") {
-            insertData.put(constants.AADHAR(), adharNumberEditText.getText().toString());
-            insertData.put(constants.GST_NO(), GSTEditText.getText().toString());
-            insertData.put(constants.HOTEL_NAME(), hotelNameEditText.getText().toString());
-        }
-
-        //if (validation()) {
         switch (signUpType) {
             case "Owner":
-            case "Waiter":
-            case "Chef":
-                database.checkNumberExist(mobile, signUpType, new CALLBACK() {
+                insertData.put(constants.AADHAR(), adharNumberEditText.getText().toString());
+                insertData.put(constants.GST_NO(), GSTEditText.getText().toString());
+                insertData.put(constants.HOTEL_NAME(), hotelNameEditText.getText().toString());
+                database.checkNumberWithType(mobile, signUpType, insertData, new CALLBACK() {
                     @Override
                     public void callBackMethod(int result) {
-                        if (result == 0) {
-                            Log.d(TAG, "signUp | callBackMethod | User exist ");
-                            database.insertOwnerInfo(insertData, new CALLBACK() {
-                                @Override
-                                public void callBackMethod(int result) {
-                                    if (result == 0) {
-                                        Log.d(TAG, "signUpType | callBackMethod | Data inserted. ");
-                                    } else if (result == 1) {
-                                        Log.d(TAG, "signUpType | callBackMethod | Failed to insert data. ");
-                                    } else if (result == 2) {
-                                        Log.d(TAG, "signUpType | callBackMethod | Exception while inserting data. ");
-                                    } else {
-                                        Log.d(TAG, "signUpType | callBackMethod | WRONG RESPONSE FROM CALLBACK ");
-                                    }
-                                }
-                            });
-                            //Validate all data and send back to login screen
-                        } else if (result == 1) {
-                            Log.d(TAG, "Dream_Team | callBackMethod | User NOT exist ");
-                            //Register the number
-                        } else if (result == 2) {
-                            Log.d(TAG, "Dream_Team | callBackMethod | ERROR while checking user details ");
-                        }
+                        Log.d(TAG, "signUp | callBackMethod: " + result);
+                    }
+                });
+                break;
+            case "Waiter":
+            case "Chef":
+                database.checkNumberWithType(mobile, signUpType, insertData, new CALLBACK() {
+                    @Override
+                    public void callBackMethod(int result) {
+                        Log.d(TAG, "signUp | callBackMethod: " + result);
                     }
                 });
                 break;
@@ -186,13 +167,11 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
 
     public void proceedNext(View view) {
         relativeLayout.setVisibility(View.VISIBLE);
-
     }
 
     public void actionDialDirect(View view) {
         String phoneNumber = "9999999999";
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
         startActivity(intent);
-
     }
 }

@@ -17,11 +17,8 @@ import android.widget.Toast;
 
 import com.example.dream_team.R;
 import com.example.dream_team.interfaces.CALLBACK;
-import com.example.dream_team.owner.activities.OwnerLoginScreen;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -52,13 +49,17 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     private void checkAlreadyLogin() {
         String userToken = LoginScreen.getSharedData("TOKEN");
         String docName = LoginScreen.getSharedData("DOC_NAME");
-        Log.d(TAG, "checkAlreadyLogin | Token => " + userToken + " Doc Name: " + docName);
-        if (userToken.length() > 0) {
-            Log.d(TAG, "checkAlreadyLogin | Token exist. Move to next screen ");
-            Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
-            intent.putExtra("DOC_NAME", docName);
-            intent.putExtra("TOKEN", userToken);
-            startActivity(intent);
+        String remember = LoginScreen.getSharedData("REMEMBER");
+        Log.d(TAG, "checkAlreadyLogin | Token: " + userToken + " Doc Name: " + docName + " Remember: " + remember);
+
+        if (remember.equals("true")) {
+            if (userToken.length() > 0) {
+                Log.d(TAG, "checkAlreadyLogin | Token exist. Move to next screen ");
+                Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
+                intent.putExtra("DOC_NAME", docName);
+                intent.putExtra("TOKEN", userToken);
+                startActivity(intent);
+            }
         }
     }
 
@@ -91,6 +92,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         ConnectivityManager cm = (ConnectivityManager) getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         if (!isConnected) {
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
@@ -120,31 +122,12 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         return sharedPreferences.getString(key, "");
     }
 
-    public static Integer generateRandomNumber() {
-        final int min = 0;
-        final int max = 61;
-        final int random = new Random().nextInt((max - min) + 1) + min;
-        //Log.d(TAG, "generateNewId | Random Number Generated => " + random);
-        return random;
-    }
-
-    public static String generateToken() {
-        String returnToken = "";
-        int tokenLength = 40;
-        for (int i = 0; i < tokenLength; i++) {
-            int randomNumber = generateRandomNumber();
-            returnToken += ALPHANUMERIC_KEY.charAt(randomNumber);
-        }
-        //Log.d(TAG, "generateToken | TOKEN ===> " + returnToken);
-        return returnToken;
-    }
-
     public void forgotPassword() {
-        Log.d(TAG, "onCreate | In function forgotPassword ");
+        Log.d(TAG, "forgotPassword | onCreate | In function forgotPassword ");
     }
 
     public void createAccount() {
-        Log.d(TAG, "onCreate | In function createAccount ");
+        Log.d(TAG, "createAccount | onCreate | In function createAccount ");
         Intent intent = new Intent(getApplicationContext(), SignUpScreen.class);
         startActivity(intent);
     }
@@ -161,7 +144,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
                 public void callBackMethod(int result) {
                     Log.d(TAG, "login | callBackMethod | Result => " + result);
                     if (result == 0) {
-                        Intent intent = new Intent(getApplicationContext(), OwnerLoginScreen.class);
+                        Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
                         intent.putExtra("DOC_NAME", getSharedData("DOC_NAME"));
                         intent.putExtra("TOKEN", getSharedData("TOKEN"));
                         mobileNumberEditText.setText("");
@@ -169,11 +152,10 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
                         userMobileNumber.setErrorEnabled(false);
                         userPassword.setErrorEnabled(false);
                         startActivity(intent);
-                        finish();
                     } else if (result == 1) {
-                        Log.d(TAG, "callBackMethod | User not exist ");
+                        Log.d(TAG, "login | callBackMethod | User not exist ");
                     } else if (result == 2) {
-                        Log.e(TAG, "callBackMethod | Exception while checking user ");
+                        Log.e(TAG, "login | callBackMethod | Exception while checking user ");
                     }
                 }
             });
