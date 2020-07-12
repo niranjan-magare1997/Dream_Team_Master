@@ -30,7 +30,7 @@ public class DATABASE {
 
     public void checkUserExist(String id, String password, final CALLBACK callback) {
         try {
-            Log.d(TAG, "checkUserExist | Checking user ");
+            Log.d(TAG, "checkUserExist | Checking user "+id+" "+password);
             db.collection(constants.HOTEL_CRED())
                     .whereEqualTo(constants.MOBILE(), id)
                     .whereEqualTo(constants.PASSWORD(), password)
@@ -39,6 +39,9 @@ public class DATABASE {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
+                                Log.d(TAG, "checkUserExist | onComplete | Task => "+task.getResult());
+                                Log.d(TAG, "checkUserExist | onComplete | Task => "+task.getResult().getDocuments());
+                                Log.d(TAG, "checkUserExist | onComplete | EXCEPTION => "+task.getException());
                                 if (task.getResult().isEmpty()) {
                                     Log.e(TAG, "onComplete | No user found with this credentials ");
                                     callback.callBackMethod(1);

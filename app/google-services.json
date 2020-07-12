@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "468752873636",
-    "firebase_url": "https://dream-team-master.firebaseio.com",
-    "project_id": "dream-team-master",
-    "storage_bucket": "dream-team-master.appspot.com"
+    "project_number": "621907314838",
+    "firebase_url": "https://dream-test-d1926.firebaseio.com",
+    "project_id": "dream-test-d1926",
+    "storage_bucket": "dream-test-d1926.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:468752873636:android:4e106e72f5c4466cef4e31",
+        "mobilesdk_app_id": "1:621907314838:android:5c7ab7c8242aa999639ab7",
         "android_client_info": {
           "package_name": "com.example.dream_team"
         }
       },
       "oauth_client": [
         {
-          "client_id": "468752873636-8r77o9mbkihd81a6uuu24ks7tlaburgl.apps.googleusercontent.com",
+          "client_id": "621907314838-a5ir4vgngtfreiufj11rvm5a7l4ai4ij.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBoy3rQsPRLFt6VLr6Fpf-ZjzIuNLYA_4A"
+          "current_key": "AIzaSyD4Dr9_kABJKB50tPKuqcBDQicCezD4Blo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "468752873636-8r77o9mbkihd81a6uuu24ks7tlaburgl.apps.googleusercontent.com",
+              "client_id": "621907314838-a5ir4vgngtfreiufj11rvm5a7l4ai4ij.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
