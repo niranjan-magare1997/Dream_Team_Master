@@ -2,21 +2,25 @@ package com.example.dream_team.common_activities;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.dream_team.interfaces.CALLBACK;
 import com.example.dream_team.modal_class.CONSTANTS;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
+import java.util.UUID;
 
 public class DATABASE {
     private String TAG = "Dream_Team | DATABASE ";
@@ -30,7 +34,7 @@ public class DATABASE {
 
     public void checkUserExist(String id, String password, final CALLBACK callback) {
         try {
-            Log.d(TAG, "checkUserExist | Checking user "+id+" "+password);
+            Log.d(TAG, "checkUserExist | Checking user ");
             db.collection(constants.HOTEL_CRED())
                     .whereEqualTo(constants.MOBILE(), id)
                     .whereEqualTo(constants.PASSWORD(), password)
@@ -39,11 +43,9 @@ public class DATABASE {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                Log.d(TAG, "checkUserExist | onComplete | Task => "+task.getResult());
-                                Log.d(TAG, "checkUserExist | onComplete | Task => "+task.getResult().getDocuments());
-                                Log.d(TAG, "checkUserExist | onComplete | EXCEPTION => "+task.getException());
+                                Log.d(TAG, "checkUserExist | onComplete: " + task.getResult());
                                 if (task.getResult().isEmpty()) {
-                                    Log.e(TAG, "onComplete | No user found with this credentials ");
+                                    Log.e(TAG, "checkUserExist | onComplete | No user found with this credentials ");
                                     callback.callBackMethod(1);
                                 } else {
                                     Log.d(TAG, "checkUserExist | onComplete | Valid User ");
@@ -51,32 +53,35 @@ public class DATABASE {
                                         final String docName = document.getString("DOCUMENT_NAME");
                                         final String token = document.getString(constants.TOKEN());
                                         Log.d(TAG, "checkUserExist | onComplete | Data =>  " + docName + "_" + token);
+
                                         if (token.length() == 0) {
-                                            final String myToken = LoginScreen.generateToken();
-                                            insertToken(document.getId(), myToken, new CALLBACK() {
-                                                @Override
-                                                public void callBackMethod(int result) {
-                                                    if (result == 0) {
-                                                        LoginScreen.setSharedData("DOC_NAME", docName);
-                                                        if (LoginScreen.rememberMeCheckedOrNot) {
-                                                            LoginScreen.setSharedData(constants.TOKEN(), myToken);
-                                                            Log.d(TAG, "checkUserExist | callBackMethod | Token inserting in shared preference ");
-                                                        }
-                                                        callback.callBackMethod(0);
-                                                    } else if (result == 1) {
-                                                        callback.callBackMethod(1);
-                                                    } else if (result == 2) {
-                                                        callback.callBackMethod(2);
-                                                    }
-                                                }
-                                            });
+                                            Log.d(TAG, "checkUserExist | onComplete | Token not present. First sign up please. ");
+                                            callback.callBackMethod(1);
                                         } else {
-                                            LoginScreen.setSharedData("DOC_NAME", docName);
-                                            if (LoginScreen.rememberMeCheckedOrNot) {
+                                            String dbToken = LoginScreen.getSharedData(constants.TOKEN()).trim();
+                                            Log.d(TAG, "checkUserExist | onComplete | dbToken => " + dbToken);
+                                            if (dbToken.length() > 0) {
+                                                if (!dbToken.equals(token)) {
+                                                    Log.d(TAG, "checkUserExist | onComplete | dbToken and firebase token are different ");
+                                                    LoginScreen.setSharedData(constants.TOKEN(), token);
+                                                    LoginScreen.setSharedData("DOC_NAME", docName);
+                                                } else {
+                                                    Log.d(TAG, "checkUserExist | onComplete | dbToken and firebase token are SAME ");
+                                                }
+                                            } else {
+                                                Log.d(TAG, "checkUserExist | onComplete | dbToken not present so inserting ");
                                                 LoginScreen.setSharedData(constants.TOKEN(), token);
-                                                Log.d(TAG, "checkUserExist | Token inserting in shared preference ");
+                                                LoginScreen.setSharedData("DOC_NAME", docName);
                                             }
-                                            Log.d(TAG, "checkUserExist | onComplete | User token already exist ");
+
+                                            if (LoginScreen.getSharedData("REMEMBER").equals("false") || LoginScreen.getSharedData("REMEMBER").equals("")) {
+                                                if (LoginScreen.rememberMeCheckedOrNot) {
+                                                    LoginScreen.setSharedData("REMEMBER", "true");
+                                                } else {
+                                                    LoginScreen.setSharedData("REMEMBER", "false");
+                                                }
+                                            }
+
                                             callback.callBackMethod(0);
                                         }
                                     }
@@ -93,89 +98,214 @@ public class DATABASE {
         }
     }
 
-    private void insertToken(String credDocName, String token, final CALLBACK callback) {
+    public void checkNumberWithType(String mobile, final String type, final Map<String, Object> data, final CALLBACK callback) {
         try {
-            Log.d(TAG, "insertToken | Inserting token ");
-            /*String token = LoginScreen.getSharedData("TOKEN");
-            String docName = LoginScreen.getSharedData("DOC_NAME");*/
-
-            Log.d(TAG, "insertToken | DocName: " + credDocName + " Token: " + token);
-            Map<String, Object> map = new HashMap<>();
-            map.put("TOKEN", token);
-
-            db.collection(constants.HOTEL_CRED()).document(credDocName)
-                    .update(map)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d(TAG, "insertToken | onComplete | Token inserted successfully ");
-                                callback.callBackMethod(0);
-                            } else {
-                                Log.d(TAG, "insertToken | onComplete | Token insertion failed ");
-                                callback.callBackMethod(1);
-                            }
-                        }
-                    });
-        } catch (Exception e) {
-            Log.e(TAG, "insertToken | Exception while inserting token " + e.getMessage());
-            callback.callBackMethod(2);
-        }
-    }
-
-    public void checkNumberExist(String mobile, String type, final CALLBACK callback) {
-        try {
-            Log.d(TAG, "checkNumberExist | In function checkNumberExist ");
+            Log.d(TAG, "checkNumberWithType | In function checkNumberWithType Mobile => " + mobile + " Type => " + type);
             db.collection(constants.HOTEL_CRED())
-                    .whereEqualTo(constants.MOBILE(), mobile)
+                    .whereEqualTo(constants.MOBILE(), mobile.trim())
                     .whereEqualTo(constants.TYPE(), type.toUpperCase())
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
+                                Log.d(TAG, "checkNumberWithType | onComplete | task.getResult().isEmpty() " + task.getResult().isEmpty());
                                 if (task.getResult().isEmpty()) {
-                                    Log.e(TAG, "checkNumberExist | onComplete | Empty Task ");
+                                    Log.e(TAG, "checkNumberWithType | onComplete | Empty Task ");
                                     callback.callBackMethod(1);
                                 } else {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Log.d(TAG, "checkNumberExist | onComplete | Found match ");
-                                        Log.d(TAG, "checkNumberExist | onComplete | Data =>  " + document.getData());
-                                        callback.callBackMethod(0);
+                                        Log.d(TAG, "checkNumberWithType | onComplete | Found match ");
+                                        //Log.d(TAG, "checkNumberWithType | onComplete | Data =>  " + document.getData());
+
+                                        if (document.contains(constants.TOKEN())) {
+                                            if (document.getString(constants.TOKEN()).trim().length() == 0) {
+                                                if (type == "Owner") {
+                                                    insertOwnerInfo(data, document.getId(), callback);
+                                                } else {
+                                                    insertEmployeeInfo(data, type, document.getId(), document.get(constants.DOCUMENT_NAME()).toString(), callback);
+                                                }
+                                            } else {
+                                                Log.d(TAG, "checkNumberWithType | onComplete | User Already Signed up ");
+                                            }
+                                        } else {
+                                            Log.d(TAG, "checkNumberWithType | onComplete | No token found ");
+                                            if (type == "Owner") {
+                                                insertOwnerInfo(data, document.getId(), callback);
+                                            } else {
+                                                insertEmployeeInfo(data, type, document.getId(), document.get(constants.DOCUMENT_NAME()).toString(), callback);
+                                            }
+                                        }
                                     }
                                 }
                             } else {
-                                Log.e(TAG, "checkNumberExist | onComplete | Task failed");
+                                Log.e(TAG, "checkNumberWithType | Exception occurred: ");
                                 callback.callBackMethod(1);
                             }
                         }
                     });
         } catch (Exception e) {
-            Log.e(TAG, "checkNumberExist | Exception occurred: " + e.getMessage());
+            Log.e(TAG, "checkNumberWithType | Exception occurred: " + e.getMessage());
             callback.callBackMethod(2);
         }
     }
 
-    public void insertOwnerInfo(Map<String, Object> data, final CALLBACK callback) {
+    private void insertEmployeeInfo(Map<String, Object> data, String type, final String credsDocName, String docName, final CALLBACK callback) {
         try {
-            Log.d(TAG, "insertOwnerInfo | In function. ");
-            Log.d(TAG, "insertOwnerInfo | DATA " + data);
+            Log.d(TAG, "insertEmployeeInfo | In function ");
 
-            db.collection(constants.WHOLE_DB()).document(data.get(constants.HOTEL_NAME()).toString()).collection(constants.EMP_CRED())
-                    .add(data)
+            Log.d(TAG, "insertEmployeeInfo | Data " + data);
+            Log.d(TAG, "insertEmployeeInfo | Type " + type);
+            Log.d(TAG, "insertEmployeeInfo | docName " + docName);
+            Long timestamp = System.currentTimeMillis();
+
+            final Map<String, Object> appCredData = new HashMap<>();
+            appCredData.put(constants.TOKEN(), UUID.randomUUID().toString() + "_-_" + timestamp.toString());
+            appCredData.put(constants.TYPE(), type.toUpperCase());
+            appCredData.put(constants.PASSWORD(), data.get(constants.PASSWORD()));
+
+            Log.d(TAG, "insertEmployeeInfo | Credentials Data " + appCredData);
+
+            Map<String, Object> empCredData = new HashMap<>();
+            empCredData.put(constants.NAME(), data.get(constants.NAME()));
+            empCredData.put(constants.PASSWORD(), data.get(constants.PASSWORD()));
+            empCredData.put(constants.ADDRESS(), data.get(constants.ADDRESS()));
+            empCredData.put(constants.MOBILE(), data.get(constants.MOBILE()));
+            empCredData.put(constants.TYPE(), type.toUpperCase());
+            empCredData.put(constants.IS_WORKING(), true);
+
+            Log.d(TAG, "insertEmployeeInfo | Employee Data " + empCredData);
+
+            Task credData = db.collection(constants.HOTEL_CRED()).document(credsDocName)
+                    .set(appCredData, SetOptions.merge())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "insertEmployeeInfo | onSuccess | Credentials updated ");
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "insertEmployeeInfo | onFailure | Data updated");
+                        }
+                    });
+
+            Task empData = db.collection(constants.WHOLE_DB()).document(docName).collection(constants.EMP_CRED())
+                    .add(empCredData)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "insertOwnerInfo | onSuccess | Data inserted. ");
+                            Log.d(TAG, "insertEmployeeInfo | onSuccess | Employee data updated " + documentReference);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "insertEmployeeInfo | onSuccess | Failed to update employee data ");
+                        }
+                    });
+
+            Task allTasks = Tasks.whenAllComplete(credData, empData)
+                    .addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+                        @Override
+                        public void onSuccess(List<Task<?>> tasks) {
+                            LoginScreen.setSharedData(constants.TOKEN(), appCredData.get(constants.TOKEN()).toString());
+                            LoginScreen.setSharedData("DOC_NAME", credsDocName);
+
+                            Log.d(TAG, "insertOwnerInfo | onSuccess | DOC_NAME => " + appCredData.get(constants.TOKEN()).toString());
+                            Log.d(TAG, "insertOwnerInfo | onSuccess | TOKEN => " + appCredData.get(constants.DOCUMENT_NAME()).toString());
+                            Log.d(TAG, "insertOwnerInfo | onSuccess | REMEMBER => " + LoginScreen.rememberMeCheckedOrNot);
+
+                            Log.d(TAG, "insertEmployeeInfo | onSuccess | Done with all updates ");
                             callback.callBackMethod(0);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.e(TAG, "insertOwnerInfo | onFailure | Failed to insert data " + e.getMessage());
-                    callback.callBackMethod(1);
-                }
-            });
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "insertEmployeeInfo | onSuccess | Failed to update all data ");
+                            callback.callBackMethod(1);
+                        }
+                    });
+        } catch (Exception e) {
+            Log.e(TAG, "insertEmployeeInfo | Exception while inserting data " + e.getMessage());
+            callback.callBackMethod(2);
+        }
+    }
+
+    public void insertOwnerInfo(Map<String, Object> data, String docId, final CALLBACK callback) {
+        try {
+            Log.d(TAG, "insertOwnerInfo | In function. ");
+            Log.d(TAG, "insertOwnerInfo | Document Id => " + docId + "\nDATA " + data);
+            Log.d(TAG, "insertOwnerInfo | PASSWORD => " + data.get(constants.PASSWORD()));
+            Long timestamp = System.currentTimeMillis();
+
+            final Map<String, Object> appCredData = new HashMap<>();
+            appCredData.put(constants.MOBILE(), data.get(constants.MOBILE()));
+            appCredData.put(constants.PASSWORD(), data.get(constants.PASSWORD()));
+            appCredData.put(constants.TYPE(), "OWNER");
+            appCredData.put(constants.DOCUMENT_NAME(), data.get(constants.HOTEL_NAME()) + "_-_" + timestamp.toString());
+            appCredData.put(constants.TOKEN(), UUID.randomUUID().toString() + "_-_" + timestamp.toString());
+
+            Log.d(TAG, "insertOwnerInfo | appCredData " + appCredData);
+
+            Map<String, Object> empCredData = new HashMap<>();
+            empCredData.put(constants.MOBILE(), data.get(constants.MOBILE()));
+            empCredData.put(constants.TYPE(), "OWNER");
+            empCredData.put(constants.AADHAR(), data.get(constants.AADHAR()));
+            empCredData.put(constants.GST_NO(), data.get(constants.GST_NO()));
+            empCredData.put(constants.NAME(), data.get(constants.NAME()));
+            empCredData.put(constants.PASSWORD(), data.get(constants.PASSWORD()));
+            empCredData.put(constants.ADDRESS(), data.get(constants.ADDRESS()));
+
+            Log.d(TAG, "insertOwnerInfo | empCredData " + empCredData);
+
+            Task updateCreds = db.collection(constants.HOTEL_CRED()).document(docId)
+                    .set(appCredData, SetOptions.merge())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "insertOwnerInfo | onSuccess | Hotel_App_Credentials data updated ");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "insertOwnerInfo | onSuccess | Failed to update in Hotel_App_Credentials");
+                        }
+                    });
+
+            Task updateDetails = db.collection(constants.WHOLE_DB()).document(appCredData.get(constants.DOCUMENT_NAME()).toString()).collection(constants.EMP_CRED())
+                    .add(empCredData)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "insertOwnerInfo | onSuccess | Successfully inserted data in hotel data ");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "insertOwnerInfo | onSuccess | Failed to insert data in hotel data ");
+                        }
+                    });
+
+            Task allTasks = Tasks.whenAllComplete(updateCreds, updateDetails)
+                    .addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+                        @Override
+                        public void onSuccess(List<Task<?>> tasks) {
+                            LoginScreen.setSharedData(constants.TOKEN(), appCredData.get(constants.TOKEN()).toString());
+                            LoginScreen.setSharedData("DOC_NAME", appCredData.get(constants.DOCUMENT_NAME()).toString());
+                            Log.d(TAG, "insertOwnerInfo | onSuccess | TOKEN => " + appCredData.get(constants.TOKEN()).toString());
+                            Log.d(TAG, "insertOwnerInfo | onSuccess | DOC_NAME => " + appCredData.get(constants.DOCUMENT_NAME()).toString());
+                            Log.d(TAG, "insertOwnerInfo | onSuccess | REMEMBER => " + LoginScreen.rememberMeCheckedOrNot);
+                            Log.d(TAG, "insertOwnerInfo | onSuccess| All tasks done successfully...");
+                            callback.callBackMethod(0);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "insertOwnerInfo | onSuccess| All tasks failed...");
+                            callback.callBackMethod(1);
+                        }
+                    });
         } catch (Exception e) {
             Log.e(TAG, "insertOwnerInfo | Exception in insertOwnerInfo " + e.getMessage());
             callback.callBackMethod(2);
