@@ -36,6 +36,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     private String mobile = "";
     private String password = "";
     public static boolean rememberMeCheckedOrNot;
+    private ProgressDialogFragment progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,8 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         createAccount = findViewById(R.id.createAccountLabel);
 
         login_Button = findViewById(R.id.login_Button);
+
+        progressBar = new ProgressDialogFragment();
 
         login_Button.setOnClickListener(LoginScreen.this);
         forgotPassword.setOnClickListener(LoginScreen.this);
@@ -139,6 +142,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
             mobile = mobileNumberEditText.getText().toString();
             password = passwordEditText.getText().toString();
 
+            progressBar.show(getSupportFragmentManager(), "Sign up");                    //Progress Bar Start
             database.checkUserExist(mobile, password, new CALLBACK() {
                 @Override
                 public void callBackMethod(int result) {
@@ -157,6 +161,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
                     } else if (result == 2) {
                         Log.e(TAG, "login | callBackMethod | Exception while checking user ");
                     }
+                    progressBar.dismiss();   //Progress Bar End
                 }
             });
         }

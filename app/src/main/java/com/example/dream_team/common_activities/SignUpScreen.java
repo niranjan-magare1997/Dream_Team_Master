@@ -22,6 +22,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,9 +34,9 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
     private DATABASE database;
     private CONSTANTS constants;
     private TextInputLayout usernameLayout, mobileLayout, passwordLayout, retypePasswordLayout, addressLayout, adharNumberLayout, GSTLayout, hotelNameLayout;
-    private TextInputEditText userNameEditText, mobileEditText, passwordEditText, addressEditText, adharNumberEditText, GSTEditText, hotelNameEditText;
-    private Button nextFormButton, dialActionButton;
+    private TextInputEditText userNameEditText, mobileEditText, passwordEditText, addressEditText, adharNumberEditText, GSTEditText, hotelNameEditText, retypePasswordEditTest;
     private RelativeLayout relativeLayout;
+    private ProgressDialogFragment progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
         userNameEditText = findViewById(R.id.userNameEditText);
         mobileEditText = findViewById(R.id.mobileEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        retypePasswordEditTest = findViewById(R.id.retypePassword);
         addressEditText = findViewById(R.id.addressEditText);
         adharNumberEditText = findViewById(R.id.adharNumberEditText);
         GSTEditText = findViewById(R.id.GSTEditText);
@@ -65,6 +68,7 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
 
         database = new DATABASE();
         constants = new CONSTANTS();
+        progressBar = new ProgressDialogFragment();
 
         spinner = findViewById(R.id.spinnerChoice);
         ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(this, R.array.dropdownChoice, R.layout.spinner_choose_color);
@@ -106,42 +110,79 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
         final Map<String, Object> insertData = new HashMap<>();
         String mobile = mobileEditText.getText().toString();
 
-        //if (validation()) {
-        insertData.put(constants.MOBILE(), mobileEditText.getText().toString());
-        insertData.put(constants.NAME(), userNameEditText.getText().toString());
-        insertData.put(constants.PASSWORD(), passwordEditText.getText().toString());
-        insertData.put(constants.ADDRESS(), addressEditText.getText().toString());
-        switch (signUpType) {
-            case "Owner":
-                insertData.put(constants.AADHAR(), adharNumberEditText.getText().toString());
-                insertData.put(constants.GST_NO(), GSTEditText.getText().toString());
-                insertData.put(constants.HOTEL_NAME(), hotelNameEditText.getText().toString());
-                database.checkNumberWithType(mobile, signUpType, insertData, new CALLBACK() {
-                    @Override
-                    public void callBackMethod(int result) {
-                        Log.d(TAG, "signUp | callBackMethod: " + result);
-                    }
-                });
-                break;
-            case "Waiter":
-            case "Chef":
-                database.checkNumberWithType(mobile, signUpType, insertData, new CALLBACK() {
-                    @Override
-                    public void callBackMethod(int result) {
-                        Log.d(TAG, "signUp | callBackMethod: " + result);
-                    }
-                });
-                break;
-            default:
-                Toast.makeText(this, "Please Choose the type", Toast.LENGTH_SHORT).show();
-                break;
+        if (validation()) {
+            insertData.put(constants.MOBILE(), mobileEditText.getText().toString());
+            insertData.put(constants.NAME(), userNameEditText.getText().toString());
+            insertData.put(constants.PASSWORD(), passwordEditText.getText().toString());
+            insertData.put(constants.ADDRESS(), addressEditText.getText().toString());
+            switch (signUpType) {
+                case "Owner":
+                    insertData.put(constants.AADHAR(), adharNumberEditText.getText().toString());
+                    insertData.put(constants.GST_NO(), GSTEditText.getText().toString());
+                    insertData.put(constants.HOTEL_NAME(), hotelNameEditText.getText().toString());
+
+                    progressBar.show(getSupportFragmentManager(), "Sign up");                    //Progress Bar Start
+                    database.checkNumberWithType(mobile, signUpType, insertData, new CALLBACK() {
+                        @Override
+                        public void callBackMethod(int result) {
+                            Log.d(TAG, "signUp | callBackMethod: " + result);
+                            progressBar.dismiss();   //Progress Bar End
+                        }
+                    });
+                    break;
+                case "Waiter":
+                case "Chef":
+                    database.checkNumberWithType(mobile, signUpType, insertData, new CALLBACK() {
+                        @Override
+                        public void callBackMethod(int result) {
+                            Log.d(TAG, "signUp | callBackMethod: " + result);
+                            progressBar.dismiss();   //Progress Bar End
+                        }
+                    });
+                    break;
+                default:
+                    Toast.makeText(this, "Please Choose the type", Toast.LENGTH_SHORT).show();
+                    progressBar.dismiss();   //Progress Bar End
+                    break;
+            }
         }
-        //}
     }
 
-    //validation for mob num and password
+    private boolean isValidGSTNumber() {
+        String gst = GSTEditText.getText().toString().trim();
+        Log.d(TAG, "isValidGSTNumber | Number " + gst + " Length => " + gst.length());
+        if (gst.equals("")) return true;
+        String regex = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(gst);
+        return m.matches();
+    }
+
+    private boolean isValidAadharNumber() {
+        String aadhar = adharNumberEditText.getText().toString().trim();
+        Log.d(TAG, "isValidAadharNumber | Number " + aadhar + " Length => " + aadhar.length());
+        if (aadhar.equals("")) return false;
+        String regex = "^[2-9]{1}[0-9]{11}$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(aadhar);
+        return m.matches();
+    }
+
+    //validation for all data
     public boolean validation() {
-        if (userNameEditText.getText().toString().equals("")) {
+        usernameLayout.setErrorEnabled(false);
+        mobileLayout.setErrorEnabled(false);
+        passwordLayout.setErrorEnabled(false);
+        retypePasswordLayout.setErrorEnabled(false);
+        addressLayout.setErrorEnabled(false);
+        Log.d(TAG, "validation | isValidAadharNumber() " + isValidAadharNumber());
+        if (signUpType == "Owner") {
+            adharNumberLayout.setErrorEnabled(false);
+            GSTLayout.setErrorEnabled(false);
+            hotelNameLayout.setErrorEnabled(false);
+        }
+
+        if (userNameEditText.getText().toString().trim().equals("")) {
             usernameLayout.setError("Required Field");
             usernameLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             usernameLayout.setErrorEnabled(true);
@@ -152,15 +193,43 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
             mobileLayout.setErrorEnabled(true);
             Toast.makeText(getApplicationContext(), mobileEditText.getText().length(), Toast.LENGTH_SHORT);
             return false;
-        } else if (passwordEditText.getText().toString().equals("")) {
+        } else if (passwordEditText.getText().toString().trim().equals("")) {
             passwordLayout.setError("Required Field");
             passwordLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             passwordLayout.setErrorEnabled(true);
             return false;
-        } else if (addressEditText.getText().toString().equals("")) {
+        } else if (retypePasswordEditTest.getText().toString().trim().equals("")) {
+            retypePasswordLayout.setError("Required Field");
+            retypePasswordLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+            retypePasswordLayout.setErrorEnabled(true);
+            return false;
+        } else if (!passwordEditText.getText().toString().trim().equals(retypePasswordEditTest.getText().toString().trim())) {
+            passwordLayout.setError("Enter same password please");
+            passwordLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+            passwordLayout.setErrorEnabled(true);
+            retypePasswordLayout.setError("Enter same password please");
+            retypePasswordLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+            retypePasswordLayout.setErrorEnabled(true);
+            return false;
+        } else if (addressEditText.getText().toString().trim().equals("")) {
             addressLayout.setError("Required Field");
             addressLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             addressLayout.setErrorEnabled(true);
+            return false;
+        } else if (signUpType == "Owner" && isValidAadharNumber() == false) {
+            adharNumberLayout.setError("Required Field");
+            adharNumberLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+            adharNumberLayout.setErrorEnabled(true);
+            return false;
+        } else if (signUpType == "Owner" && isValidGSTNumber() == false) {
+            GSTLayout.setError("Not valid");
+            GSTLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+            GSTLayout.setErrorEnabled(true);
+            return false;
+        } else if (signUpType == "Owner" && (hotelNameEditText.getText().toString().trim().equals(""))) {
+            hotelNameLayout.setError("Required Field");
+            hotelNameLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+            hotelNameLayout.setErrorEnabled(true);
             return false;
         } else return true;
     }

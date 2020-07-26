@@ -25,5 +25,4 @@ public class OTPDialog extends DialogFragment {
         verify = rootView.findViewById(R.id.verify);
         return rootView;
     }
-
 }
