@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:elevation="3dp"
+        app:cardBackgroundColor="#A1D2FD"
+        app:cardCornerRadius="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="5dp">
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:padding="5dp">
+              <LinearLayout
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:orientation="vertical">
+                  <TextView
+                      android:id="@+id/addEmployeeName"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/comicrelief"
+                      android:textColor="@color/colorPrimaryDark"
+                      android:textSize="16sp"
+                      android:text="Chaitrali Mahendrea Sapre"/>
+                  <TextView
+                      android:id="@+id/addEmployeeNumber"
+                      android:layout_marginTop="2dp"
+                      android:textColor="@color/colorPrimaryDark"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/comicrelief"
+                      android:textSize="16sp"
+                      android:text="9999999999"/>
+              </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_gravity="center">
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/statusCardView"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        app:cardCornerRadius="10dp"
+                        app:cardBackgroundColor="@color/colorGreen"
+                        />
+                </LinearLayout>
+          </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editEmployee"
+                    android:onClick="editEmployee"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_baseline_edit_24_blue" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/deleteEmployee"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/ic_baseline_delete_24" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

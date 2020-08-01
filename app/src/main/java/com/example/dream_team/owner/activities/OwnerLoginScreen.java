@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.dream_team.R;
 import com.example.dream_team.common_activities.LoginScreen;
+import com.example.dream_team.common_activities.ProfileScreenActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -52,6 +53,8 @@ public class OwnerLoginScreen extends AppCompatActivity implements View.OnClickL
         Toast.makeText(this, "Selected Item: " + item.getTitle(), Toast.LENGTH_SHORT).show();
         switch (item.getItemId()) {
             case R.id.profile:
+                Intent intent1 = new Intent(this, ProfileScreenActivity.class);
+                startActivity(intent1);
                 return true;
             case R.id.logout:
                 Intent intent = new Intent(this, LoginScreen.class);
@@ -77,7 +80,8 @@ public class OwnerLoginScreen extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
                 break;
             case R.id.addEmployee:
-                Toast.makeText(this, "add emp", Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(this, AddEmployeeScreen.class);
+                startActivity(intent2);
                 break;
         }
     }

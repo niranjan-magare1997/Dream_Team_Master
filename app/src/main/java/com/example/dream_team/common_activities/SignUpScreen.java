@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -37,11 +36,15 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
     private TextInputEditText userNameEditText, mobileEditText, passwordEditText, addressEditText, adharNumberEditText, GSTEditText, hotelNameEditText, retypePasswordEditTest;
     private RelativeLayout relativeLayout;
     private ProgressDialogFragment progressBar;
+    private CustomToast customToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_screen);
+        if (customToast == null) {
+            customToast = new CustomToast(this);
+        }
         initialization();
     }
 
@@ -99,51 +102,48 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    private void showOtp() {
-        OTPDialog otpdialog = new OTPDialog();
-        otpdialog.show(getSupportFragmentManager(), "OTP");
-        otpdialog.setCancelable(false);
-    }
-
     public void signUp(View view) {
         Log.d(TAG, "signUp | In sign up with type " + signUpType);
         final Map<String, Object> insertData = new HashMap<>();
         String mobile = mobileEditText.getText().toString();
+        if (!MainActivity.isNetworkAvailable(this)) {
+            customToast.toast("Please check your Internet Connection!");
+        } else {
+            if (validation()) {
+                insertData.put(constants.MOBILE(), mobileEditText.getText().toString());
+                insertData.put(constants.NAME(), userNameEditText.getText().toString());
+                insertData.put(constants.PASSWORD(), passwordEditText.getText().toString());
+                insertData.put(constants.ADDRESS(), addressEditText.getText().toString());
+                switch (signUpType) {
+                    case "Owner":
+                        insertData.put(constants.AADHAR(), adharNumberEditText.getText().toString());
+                        insertData.put(constants.GST_NO(), GSTEditText.getText().toString());
+                        insertData.put(constants.HOTEL_NAME(), hotelNameEditText.getText().toString());
 
-        if (validation()) {
-            insertData.put(constants.MOBILE(), mobileEditText.getText().toString());
-            insertData.put(constants.NAME(), userNameEditText.getText().toString());
-            insertData.put(constants.PASSWORD(), passwordEditText.getText().toString());
-            insertData.put(constants.ADDRESS(), addressEditText.getText().toString());
-            switch (signUpType) {
-                case "Owner":
-                    insertData.put(constants.AADHAR(), adharNumberEditText.getText().toString());
-                    insertData.put(constants.GST_NO(), GSTEditText.getText().toString());
-                    insertData.put(constants.HOTEL_NAME(), hotelNameEditText.getText().toString());
-
-                    progressBar.show(getSupportFragmentManager(), "Sign up");                    //Progress Bar Start
-                    database.checkNumberWithType(mobile, signUpType, insertData, new CALLBACK() {
-                        @Override
-                        public void callBackMethod(int result) {
-                            Log.d(TAG, "signUp | callBackMethod: " + result);
-                            progressBar.dismiss();   //Progress Bar End
-                        }
-                    });
-                    break;
-                case "Waiter":
-                case "Chef":
-                    database.checkNumberWithType(mobile, signUpType, insertData, new CALLBACK() {
-                        @Override
-                        public void callBackMethod(int result) {
-                            Log.d(TAG, "signUp | callBackMethod: " + result);
-                            progressBar.dismiss();   //Progress Bar End
-                        }
-                    });
-                    break;
-                default:
-                    Toast.makeText(this, "Please Choose the type", Toast.LENGTH_SHORT).show();
-                    progressBar.dismiss();   //Progress Bar End
-                    break;
+                        progressBar.show(getSupportFragmentManager(), "Sign up");                    //Progress Bar Start
+                        database.checkNumberWithType(mobile, signUpType, insertData, new CALLBACK() {
+                            @Override
+                            public void callBackMethod(int result) {
+                                Log.d(TAG, "signUp | callBackMethod: " + result);
+                                progressBar.dismiss();   //Progress Bar End
+                            }
+                        });
+                        break;
+                    case "Waiter":
+                    case "Chef":
+                        database.checkNumberWithType(mobile, signUpType, insertData, new CALLBACK() {
+                            @Override
+                            public void callBackMethod(int result) {
+                                Log.d(TAG, "signUp | callBackMethod: " + result);
+                                progressBar.dismiss();   //Progress Bar End
+                            }
+                        });
+                        break;
+                    default:
+                        Toast.makeText(this, "Please Choose the type", Toast.LENGTH_SHORT).show();
+                        progressBar.dismiss();   //Progress Bar End
+                        break;
+                }
             }
         }
     }
@@ -216,7 +216,7 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
             addressLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             addressLayout.setErrorEnabled(true);
             return false;
-        } else if (signUpType == "Owner" && isValidAadharNumber() == false) {
+        } else if (isValidAadharNumber() == false) {
             adharNumberLayout.setError("Required Field");
             adharNumberLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             adharNumberLayout.setErrorEnabled(true);
