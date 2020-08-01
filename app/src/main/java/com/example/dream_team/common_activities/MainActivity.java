@@ -1,6 +1,9 @@
 package com.example.dream_team.common_activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
@@ -48,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
         imageView.setAnimation(middle);
         welcome.setAnimation(up);
         dreamTeam.setAnimation(bottom);
+
+    }
+
+    //for network check
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
     }
 }

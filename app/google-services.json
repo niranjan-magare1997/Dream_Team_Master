@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "621907314838",
+    "firebase_url": "https://dream-test-d1926.firebaseio.com",
+    "project_id": "dream-test-d1926",
+    "storage_bucket": "dream-test-d1926.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621907314838:android:5c7ab7c8242aa999639ab7",
+        "android_client_info": {
+          "package_name": "com.example.dream_team"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "621907314838-meu1v3ev490ddbnkvpddccd54s9p0q7e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dream_team",
+            "certificate_hash": "1e57eec47bb587f55264c95c914dc83b4d8ce184"
+          }
+        },
+        {
+          "client_id": "621907314838-a5ir4vgngtfreiufj11rvm5a7l4ai4ij.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4Dr9_kABJKB50tPKuqcBDQicCezD4Blo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "621907314838-a5ir4vgngtfreiufj11rvm5a7l4ai4ij.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

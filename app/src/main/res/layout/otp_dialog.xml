@@ -1,49 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="300dp"
-    android:padding="10dp">
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/otp_bg"
+    tools:context=".common_activities.OTPDialogActivity">
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/otp"/>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="20dp">
-
+        android:gravity="center"
+        android:layout_marginTop="120dp"
+        android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:text="Enter the received code"
-            android:textColor="@color/colorMaroonLight"
-            android:textSize="16sp" />
-
-        <com.alimuzaffar.lib.pin.PinEntryEditText
-            android:id="@+id/pin_entry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:cursorVisible="false"
-            android:digits="1234567890"
-            android:inputType="number"
-            android:maxLength="6"
-            android:textColor="@color/colorMaroonLight"
-            android:textIsSelectable="false"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/verify"
+            android:text="@string/verification_code"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/colorDark"
+            android:fontFamily="@font/comicrelief"/>
+        <TextView
+            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="50dp"
-            android:background="#14CF14"
-            android:elevation="7dp"
-            android:text="Verify"
-            android:textColor="#ffffff"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:text="@string/please_type_the_verification_code_sent_to"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorDark"
+            android:fontFamily="@font/comicrelief"/>
+        <TextView
+            android:id="@+id/empMobileNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="999999999"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorDark"
+            android:fontFamily="@font/comicrelief"/>
 
-</LinearLayout>
+        <com.chaos.view.PinView
+            android:id="@+id/firstPinView"
+            style="@style/PinWidget.PinView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:cursorVisible="true"
+            android:hint="000000"
+            android:textColorHint="@color/cardview_shadow_start_color"
+            android:inputType="number"
+            android:itemBackground="@android:color/background_light"
+            android:padding="10dp"
+            android:textColor="@color/colorBlueDark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cursorColor="@color/colorGray"
+            app:cursorWidth="2dp"
+            app:hideLineWhenFilled="false"
+            app:itemCount="6"
+            app:itemHeight="48dp"
+            app:itemRadius="4dp"
+            app:itemSpacing="0dp"
+            app:itemWidth="48dp"
+            app:lineColor="@color/colorGreenAccent"
+            app:lineWidth="2dp"
+            app:viewType="rectangle" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+        <TextView
+            android:id="@+id/resendOTP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textColor="@color/colorDark"
+            android:fontFamily="@font/comicrelief"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginLeft="60dp"
+            android:text="Resend OTP"/>
+
+            <TextView
+                android:id="@+id/timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/comicrelief"
+                android:text="timer"
+                android:textColor="@color/colorDark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/verifyButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/bg_ui"
+            android:fontFamily="@font/comicrelief"
+            android:gravity="center_horizontal"
+            android:letterSpacing="0.2"
+            android:onClick="verifyOTP"
+            android:padding="13dp"
+            android:text="VERIFY"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</RelativeLayout>

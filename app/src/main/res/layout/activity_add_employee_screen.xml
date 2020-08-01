@@ -1,0 +1,51 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".owner.activities.AddEmployeeScreen">
+    <TextView
+        android:id="@+id/empList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="--- Employee List ---"
+        android:fontFamily="@font/comicrelief"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/colorPrimaryDark"/>
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="45dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        android:elevation="3dp"
+        android:padding="5dp"
+        app:cardBackgroundColor="#F3B3C7">
+
+    <androidx.appcompat.widget.SearchView
+       android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingLeft="10dp"
+        app:layout_constraintStart_toStartOf="@+id/empList"
+        app:layout_constraintTop_toTopOf="parent" />
+    </androidx.cardview.widget.CardView>
+    <include layout="@layout/employee_recycler_view"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@color/colorWhite"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+

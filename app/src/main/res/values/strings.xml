@@ -2,13 +2,16 @@
     <string name="app_name">DREAM_TEAM</string>
     <string name="choose">Choose the type</string>
 
+    <string name="singup">To register your hotel please click  on following dial action button and then fill the below form!</string>
+
+    <string name="phoneNumber">+91-999999999</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="please_type_the_verification_code_sent_to">Please type the verification code sent to</string>
+    <string name="forgot_password">Forgot Password ?</string>
     <string-array name="dropdownChoice">
         <item>Cheff</item>
         <item>Owner</item>
         <item>Waiter</item>
     </string-array>
-
-    <string name="singup">To register your hotel please click  on following dial action button and then fill the below form!</string>
-    <string name="phoneNumber">+91-999999999</string>
 
 </resources>

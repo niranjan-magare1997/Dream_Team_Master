@@ -1,12 +1,9 @@
 package com.example.dream_team.common_activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,12 +34,17 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     private String password = "";
     public static boolean rememberMeCheckedOrNot;
     private ProgressDialogFragment progressBar;
+    private static CustomToast customToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
         Log.d(TAG, "onCreate | Activity created ");
+        //creation of object of customtoast class
+        if (customToast == null) {
+            customToast = new CustomToast(this);
+        }
         initialization();
         checkAlreadyLogin();
     }
@@ -93,12 +95,9 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        ConnectivityManager cm = (ConnectivityManager) getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        if (!isConnected) {
-            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+        if (!MainActivity.isNetworkAvailable(this)) {
+            //toast called by our custom method toast() by passing simple string.
+            customToast.toast("Please check your Internet Connection!");
         } else {
             Log.d(TAG, "onClick | Checkbox Status => " + rememberMeCheckbox.isChecked());
             rememberMeCheckedOrNot = rememberMeCheckbox.isChecked();
@@ -127,6 +126,10 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
     public void forgotPassword() {
         Log.d(TAG, "forgotPassword | onCreate | In function forgotPassword ");
+        //check the validation for mobile number
+        //get that mobile number and send otp
+        // call otpDialog activity using intent
+        //get result from that activity and then call forgotPasswordDialog.show()
     }
 
     public void createAccount() {
@@ -155,8 +158,10 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
                         passwordEditText.setText("");
                         userMobileNumber.setErrorEnabled(false);
                         userPassword.setErrorEnabled(false);
+                        customToast.toast("LOGGED IN SUCCESSFULLY");
                         startActivity(intent);
                     } else if (result == 1) {
+                        customToast.toast("USER DOES NOT EXIST");
                         Log.d(TAG, "login | callBackMethod | User not exist ");
                     } else if (result == 2) {
                         Log.e(TAG, "login | callBackMethod | Exception while checking user ");
