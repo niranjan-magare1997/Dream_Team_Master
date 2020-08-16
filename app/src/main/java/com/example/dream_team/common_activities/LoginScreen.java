@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dream_team.R;
-import com.example.dream_team.interfaces.CALLBACK;
 import com.example.dream_team.interfaces.CheckingNewInterface;
 import com.example.dream_team.owner.activities.OwnerLoginScreen;
 import com.google.android.material.textfield.TextInputEditText;
@@ -231,8 +230,8 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         if(requestCode == Activity_Code){
             if(resultCode == Activity.RESULT_OK){
                 //Valid user so Sign up user
-                ForgotPasswordDialog forgotPasswordDialog = ForgotPasswordDialog.newInstance(mobile);
-                forgotPasswordDialog.show(getSupportFragmentManager(), "Forgot Password");
+                //ForgotPasswordDialog forgotPasswordDialog = ForgotPasswordDialog.newInstance(mobile);
+                //forgotPasswordDialog.show(getSupportFragmentManager(), "Forgot Password");
             }else {
                 //User not verified
                 Log.d(TAG, "onActivityResult | Sign up failed ");
