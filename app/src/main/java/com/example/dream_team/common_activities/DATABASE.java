@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.dream_team.interfaces.CALLBACK;
+import com.example.dream_team.interfaces.CheckingNewInterface;
 import com.example.dream_team.modal_class.CONSTANTS;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,9 +33,11 @@ public class DATABASE {
         constants = new CONSTANTS();
     }
 
-    public void checkUserExist(String id, String password, final CALLBACK callback) {
+    public void checkUserExist(String id, String password, final CheckingNewInterface callback) {
         try {
             Log.d(TAG, "checkUserExist | Checking user ");
+            final Map<String,Object> responseObject = new HashMap<>();
+
             db.collection(constants.HOTEL_CRED())
                     .whereEqualTo(constants.MOBILE(), id)
                     .whereEqualTo(constants.PASSWORD(), password)
@@ -46,32 +49,38 @@ public class DATABASE {
                                 Log.d(TAG, "checkUserExist | onComplete: " + task.getResult());
                                 if (task.getResult().isEmpty()) {
                                     Log.e(TAG, "checkUserExist | onComplete | No user found with this credentials ");
-                                    callback.callBackMethod(1);
+                                    responseObject.put("MESSAGE","User not registered ");
+                                    callback.callbackWithData(1,responseObject);
                                 } else {
                                     Log.d(TAG, "checkUserExist | onComplete | Valid User ");
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        final String docName = document.getString("DOCUMENT_NAME");
+                                        final String docName = document.getString(constants.DOCUMENT_NAME());
                                         final String token = document.getString(constants.TOKEN());
-                                        Log.d(TAG, "checkUserExist | onComplete | Data =>  " + docName + "_" + token);
+                                        final String type = document.getString(constants.TYPE());
+
+                                        Log.d(TAG, "checkUserExist | onComplete | Data =>  " + docName + "\n Token => " + token + "\nType => "+type);
 
                                         if (token.length() == 0) {
-                                            Log.d(TAG, "checkUserExist | onComplete | Token not present. First sign up please. ");
-                                            callback.callBackMethod(1);
+                                            Log.e(TAG, "checkUserExist | onComplete | Token not present. First sign up please. ");
+                                            responseObject.put("MESSAGE","User not signed up");
+                                            callback.callbackWithData(1,responseObject);
                                         } else {
                                             String dbToken = LoginScreen.getSharedData(constants.TOKEN()).trim();
                                             Log.d(TAG, "checkUserExist | onComplete | dbToken => " + dbToken);
                                             if (dbToken.length() > 0) {
                                                 if (!dbToken.equals(token)) {
-                                                    Log.d(TAG, "checkUserExist | onComplete | dbToken and firebase token are different ");
+                                                    Log.d(TAG, "checkUserExist | onComplete | dbToken and firebase token are different so updating db token.");
                                                     LoginScreen.setSharedData(constants.TOKEN(), token);
-                                                    LoginScreen.setSharedData("DOC_NAME", docName);
+                                                    LoginScreen.setSharedData(constants.DOCUMENT_NAME(), docName);
+                                                    LoginScreen.setSharedData(constants.TYPE(),type);
                                                 } else {
                                                     Log.d(TAG, "checkUserExist | onComplete | dbToken and firebase token are SAME ");
                                                 }
                                             } else {
                                                 Log.d(TAG, "checkUserExist | onComplete | dbToken not present so inserting ");
                                                 LoginScreen.setSharedData(constants.TOKEN(), token);
-                                                LoginScreen.setSharedData("DOC_NAME", docName);
+                                                LoginScreen.setSharedData(constants.DOCUMENT_NAME(), docName);
+                                                LoginScreen.setSharedData(constants.TYPE(),type);
                                             }
 
                                             if (LoginScreen.getSharedData("REMEMBER").equals("false") || LoginScreen.getSharedData("REMEMBER").equals("")) {
@@ -82,19 +91,20 @@ public class DATABASE {
                                                 }
                                             }
 
-                                            callback.callBackMethod(0);
+                                            responseObject.put(constants.TYPE(),type);
+                                            callback.callbackWithData(0,responseObject);
                                         }
                                     }
                                 }
                             } else {
                                 Log.e(TAG, "onComplete | No user found with this credentials ");
-                                callback.callBackMethod(1);
+                                callback.callbackWithData(1,null);
                             }
                         }
                     });
         } catch (Exception e) {
             Log.e(TAG, "checkUserExist: " + e.getMessage());
-            callback.callBackMethod(2);
+            callback.callbackWithData(2,null);
         }
     }
 
@@ -232,7 +242,7 @@ public class DATABASE {
         }
     }
 
-    public void insertOwnerInfo(Map<String, Object> data, String docId, final CALLBACK callback) {
+    private void insertOwnerInfo(Map<String, Object> data, String docId, final CALLBACK callback) {
         try {
             Log.d(TAG, "insertOwnerInfo | In function. ");
             Log.d(TAG, "insertOwnerInfo | Document Id => " + docId + "\nDATA " + data);
@@ -283,7 +293,7 @@ public class DATABASE {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.e(TAG, "insertOwnerInfo | onSuccess | Failed to insert data in hotel data ");
+                            Log.e(TAG, "insertOwnerInfo | onSuccess | Failed to insert data in hotel data "+e.getMessage());
                         }
                     });
 
@@ -308,6 +318,23 @@ public class DATABASE {
                     });
         } catch (Exception e) {
             Log.e(TAG, "insertOwnerInfo | Exception in insertOwnerInfo " + e.getMessage());
+            callback.callBackMethod(2);
+        }
+    }
+
+    public void checkOwnerNumberExist(final String mobille, final CALLBACK callback) {
+        try {
+            db.collection(constants.HOTEL_CRED())
+                    .whereEqualTo(constants.MOBILE(), mobille)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful() && !task.getResult().isEmpty()) callback.callBackMethod(0);
+                            else callback.callBackMethod(1);
+                        }
+                    });
+        } catch (Exception e) {
             callback.callBackMethod(2);
         }
     }
