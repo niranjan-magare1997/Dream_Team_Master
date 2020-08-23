@@ -131,12 +131,12 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
                         database.checkOwnerNumberExist(mobile, new CALLBACK() {
                             @Override
                             public void callBackMethod(int result) {
-                                Log.d(TAG, "signUp | callBackMethod | Result is => "+result);
-                                if(result == 0){
-                                    Intent i = new Intent(SignUpScreen.this,OTPDialogActivity.class);
-                                    i.putExtra("Mobile",mobile);
-                                    startActivityForResult(i,Activity_Code);
-                                }else {
+                                Log.d(TAG, "signUp | callBackMethod | Result is => " + result);
+                                if (result == 0) {
+                                    Intent i = new Intent(SignUpScreen.this, OTPDialogActivity.class);
+                                    i.putExtra("Mobile", mobile);
+                                    startActivityForResult(i, Activity_Code);
+                                } else {
                                     //Number Not found
                                 }
                             }
@@ -269,11 +269,11 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d(TAG, "onActivityResult | Request => "+requestCode);
-        Log.d(TAG, "onActivityResult | Result => "+resultCode);
+        Log.d(TAG, "onActivityResult | Request => " + requestCode);
+        Log.d(TAG, "onActivityResult | Result => " + resultCode);
 
-        if(requestCode == Activity_Code){
-            if(resultCode == Activity.RESULT_OK){
+        if (requestCode == Activity_Code) {
+            if (resultCode == Activity.RESULT_OK) {
                 //Valid user so Sign up user
                 Log.d(TAG, "onActivityResult | Sign up success ");
                 progressBar.show(getSupportFragmentManager(), "Sign up");                    //Progress Bar Start
@@ -282,13 +282,13 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
                     public void callBackMethod(int result) {
                         Log.d(TAG, "signUp | callBackMethod: " + result);
                         progressBar.dismiss();   //Progress Bar End
-                        if(result == 0){
-                            Intent i = new Intent(SignUpScreen.this,OwnerLoginScreen.class);
+                        if (result == 0) {
+                            Intent i = new Intent(SignUpScreen.this, OwnerLoginScreen.class);
                             startActivity(i);
                         }
                     }
                 });
-            }else {
+            } else {
                 //User not verified
                 Log.d(TAG, "onActivityResult | Sign up failed ");
             }

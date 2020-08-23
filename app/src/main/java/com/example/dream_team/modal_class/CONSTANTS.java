@@ -17,6 +17,18 @@ public class CONSTANTS {
         return "HOTEL_DATA";
     }
 
+    public String ADD_MENU() {
+        return "ADD_MENU";
+    }
+
+    /**
+     * DOCUMENT NAMES
+     */
+
+    public String CATEGORIES(){
+        return "CATEGORIES";
+    }
+
     /**
      * DATABASE KEYS
      */
@@ -63,6 +75,10 @@ public class CONSTANTS {
 
     public String IS_WORKING() {
         return "IS_WORKING";
+    }
+
+    public String REMEMBER(){
+        return "REMEMBER_ME";
     }
 
 }

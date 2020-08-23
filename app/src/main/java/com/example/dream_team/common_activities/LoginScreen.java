@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.dream_team.R;
 import com.example.dream_team.interfaces.CheckingNewInterface;
+import com.example.dream_team.modal_class.CONSTANTS;
 import com.example.dream_team.owner.activities.OwnerLoginScreen;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -32,7 +33,6 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     public TextView forgotPassword, createAccount;
     public CheckBox rememberMeCheckbox;
     private DATABASE database;
-    public static final String ALPHANUMERIC_KEY = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor myEdit;
     private String mobile = "";
@@ -41,12 +41,15 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     private ProgressDialogFragment progressBar;
     private static CustomToast customToast;
     private int Activity_Code = 102;
+    private CONSTANTS constants;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
         Log.d(TAG, "onCreate | Activity created ");
+
+        constants = new CONSTANTS();
 
         //creation of object of customtoast class
         if (customToast == null) {
@@ -57,12 +60,12 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     }
 
     private void checkAlreadyLogin() {
-        String userToken = LoginScreen.getSharedData("TOKEN");
-        String docName = LoginScreen.getSharedData("DOC_NAME");
-        String remember = LoginScreen.getSharedData("REMEMBER");
-        String userType = LoginScreen.getSharedData("TYPE");
+        String userToken = LoginScreen.getSharedData(constants.TOKEN());
+        String docName = LoginScreen.getSharedData(constants.DOCUMENT_NAME());
+        String remember = LoginScreen.getSharedData(constants.REMEMBER());
+        String userType = LoginScreen.getSharedData(constants.TYPE());
 
-        Log.d(TAG, "checkAlreadyLogin | Token: " + userToken + " Doc Name: " + docName + " Remember: " + remember + " Type: " + userType);
+        Log.d(TAG, "checkAlreadyLogin | Token: " + userToken + " Document Name: " + docName + " Remember: " + remember + " Type: " + userType);
 
         if (remember.equals("true") && userToken.length() > 0) {
             Log.d(TAG, "checkAlreadyLogin | Token exist. Move to next screen ");
@@ -71,8 +74,8 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
                 startActivity(i);
             } else if (userType.equals("CHEFF") || userType.equals("WAITER")) {
                 Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
-                intent.putExtra("DOC_NAME", docName);
-                intent.putExtra("TOKEN", userToken);
+                intent.putExtra(constants.DOCUMENT_NAME(), docName);
+                intent.putExtra(constants.TOKEN(), userToken);
                 startActivity(intent);
             }
         }
@@ -81,7 +84,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     public void initialization() {
         userMobileNumber = findViewById(R.id.userName);
         userPassword = findViewById(R.id.userPassword);
-        database = new DATABASE();
+
         sharedPreferences = getSharedPreferences("DREAM_TEAM_DATA", MODE_PRIVATE);
         myEdit = sharedPreferences.edit();
 
@@ -106,6 +109,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        database = new DATABASE();
         if (!MainActivity.isNetworkAvailable(this)) {
             //toast called by our custom method toast() by passing simple string.
             customToast.toast("Please check your Internet Connection!");
@@ -145,7 +149,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         }else {
             userMobileNumber.setErrorEnabled(false);
             Log.d(TAG, "forgotPassword | onCreate | In function forgotPassword ");
-            //
+
             Intent i = new Intent(LoginScreen.this,OTPDialogActivity.class);
             i.putExtra("Mobile",mobile);
             startActivityForResult(i,Activity_Code);
