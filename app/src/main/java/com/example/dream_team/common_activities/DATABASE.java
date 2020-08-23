@@ -1,6 +1,8 @@
 package com.example.dream_team.common_activities;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -12,12 +14,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,16 +34,20 @@ public class DATABASE {
     private String TAG = "Dream_Team | DATABASE ";
     private FirebaseFirestore db;
     private CONSTANTS constants;
+    private DocumentReference menuReference;
+    private String userDocument = null;
+    private Object arr[];
+    private List<String> arr2 = new ArrayList<String>(); // to cast an array into List
 
-    DATABASE() {
-        db = FirebaseFirestore.getInstance();
+    public DATABASE() {
         constants = new CONSTANTS();
+        db = FirebaseFirestore.getInstance();
     }
 
     public void checkUserExist(String id, String password, final CheckingNewInterface callback) {
         try {
             Log.d(TAG, "checkUserExist | Checking user ");
-            final Map<String,Object> responseObject = new HashMap<>();
+            final Map<String, Object> responseObject = new HashMap<>();
 
             db.collection(constants.HOTEL_CRED())
                     .whereEqualTo(constants.MOBILE(), id)
@@ -49,8 +60,8 @@ public class DATABASE {
                                 Log.d(TAG, "checkUserExist | onComplete: " + task.getResult());
                                 if (task.getResult().isEmpty()) {
                                     Log.e(TAG, "checkUserExist | onComplete | No user found with this credentials ");
-                                    responseObject.put("MESSAGE","User not registered ");
-                                    callback.callbackWithData(1,responseObject);
+                                    responseObject.put("MESSAGE", "User not registered ");
+                                    callback.callbackWithData(1, responseObject);
                                 } else {
                                     Log.d(TAG, "checkUserExist | onComplete | Valid User ");
                                     for (QueryDocumentSnapshot document : task.getResult()) {
@@ -58,29 +69,29 @@ public class DATABASE {
                                         final String token = document.getString(constants.TOKEN());
                                         final String type = document.getString(constants.TYPE());
 
-                                        Log.d(TAG, "checkUserExist | onComplete | Data =>  " + docName + "\n Token => " + token + "\nType => "+type);
+                                        Log.d(TAG, "checkUserExist | onComplete | Data =>  " + docName + "\n Token => " + token + "\nType => " + type);
 
                                         if (token.length() == 0) {
                                             Log.e(TAG, "checkUserExist | onComplete | Token not present. First sign up please. ");
-                                            responseObject.put("MESSAGE","User not signed up");
-                                            callback.callbackWithData(1,responseObject);
+                                            responseObject.put("MESSAGE", "User not signed up");
+                                            callback.callbackWithData(1, responseObject);
                                         } else {
                                             String dbToken = LoginScreen.getSharedData(constants.TOKEN()).trim();
                                             Log.d(TAG, "checkUserExist | onComplete | dbToken => " + dbToken);
                                             if (dbToken.length() > 0) {
-                                                if (!dbToken.equals(token)) {
-                                                    Log.d(TAG, "checkUserExist | onComplete | dbToken and firebase token are different so updating db token.");
-                                                    LoginScreen.setSharedData(constants.TOKEN(), token);
-                                                    LoginScreen.setSharedData(constants.DOCUMENT_NAME(), docName);
-                                                    LoginScreen.setSharedData(constants.TYPE(),type);
-                                                } else {
-                                                    Log.d(TAG, "checkUserExist | onComplete | dbToken and firebase token are SAME ");
-                                                }
+                                                //if (!dbToken.equals(token)) {
+                                                Log.d(TAG, "checkUserExist | onComplete | dbToken and firebase token are different so updating db token.");
+                                                LoginScreen.setSharedData(constants.TOKEN(), token);
+                                                LoginScreen.setSharedData(constants.DOCUMENT_NAME(), docName);
+                                                LoginScreen.setSharedData(constants.TYPE(), type);
+                                                //} else {
+                                                //    Log.d(TAG, "checkUserExist | onComplete | dbToken and firebase token are SAME ");
+                                                //}
                                             } else {
                                                 Log.d(TAG, "checkUserExist | onComplete | dbToken not present so inserting ");
                                                 LoginScreen.setSharedData(constants.TOKEN(), token);
                                                 LoginScreen.setSharedData(constants.DOCUMENT_NAME(), docName);
-                                                LoginScreen.setSharedData(constants.TYPE(),type);
+                                                LoginScreen.setSharedData(constants.TYPE(), type);
                                             }
 
                                             if (LoginScreen.getSharedData("REMEMBER").equals("false") || LoginScreen.getSharedData("REMEMBER").equals("")) {
@@ -91,20 +102,20 @@ public class DATABASE {
                                                 }
                                             }
 
-                                            responseObject.put(constants.TYPE(),type);
-                                            callback.callbackWithData(0,responseObject);
+                                            responseObject.put(constants.TYPE(), type);
+                                            callback.callbackWithData(0, responseObject);
                                         }
                                     }
                                 }
                             } else {
                                 Log.e(TAG, "onComplete | No user found with this credentials ");
-                                callback.callbackWithData(1,null);
+                                callback.callbackWithData(1, null);
                             }
                         }
                     });
         } catch (Exception e) {
             Log.e(TAG, "checkUserExist: " + e.getMessage());
-            callback.callbackWithData(2,null);
+            callback.callbackWithData(2, null);
         }
     }
 
@@ -293,7 +304,7 @@ public class DATABASE {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.e(TAG, "insertOwnerInfo | onSuccess | Failed to insert data in hotel data "+e.getMessage());
+                            Log.e(TAG, "insertOwnerInfo | onSuccess | Failed to insert data in hotel data " + e.getMessage());
                         }
                     });
 
@@ -335,7 +346,158 @@ public class DATABASE {
                         }
                     });
         } catch (Exception e) {
+            Log.e(TAG, "checkOwnerNumberExist | Exception in checkOwnerNumberExist " + e.toString());
             callback.callBackMethod(2);
+        }
+    }
+
+    public void addMenuCategory(final String category, final CALLBACK callback) {
+        try {
+            userDocument = LoginScreen.getSharedData("DOCUMENT_NAME");
+            menuReference = db.collection(constants.WHOLE_DB()).document(userDocument).collection(constants.ADD_MENU()).document(constants.CATEGORIES());
+
+            final Object[][] arr = {null};
+            final List<String>[] arr2 = new List[]{new ArrayList<String>()};
+
+            menuReference.get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists() && !documentSnapshot.getData().isEmpty()) {
+                                Map<String, Object> obj = documentSnapshot.getData();
+                                arr[0] = obj.values().toArray();
+                                arr2[0] = (List<String>) arr[0][0];
+
+                                if (arr2[0].isEmpty()) add_category(category, callback);
+                                else update_category(category, callback);
+
+                            } else add_category(category, callback);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e(TAG, "addMenuCategory |  onFailure | Unable to add category in database ");
+                    callback.callBackMethod(1);
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "addMenuCategory | Exception " + e.getMessage());
+            callback.callBackMethod(2);
+        }
+    }
+
+
+    public void add_category(String category, final CALLBACK callback) {
+        try {
+            String[] arr = category.split("\\s*,\\s*");
+            final List<String> tags = Arrays.asList(arr);
+            final Map<String, Object> add = new HashMap<>();
+
+            add.put("Category", tags);
+
+            menuReference.set(add)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            callback.callBackMethod(0);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            callback.callBackMethod(1);
+                        }
+                    });
+        } catch (Exception e) {
+            callback.callBackMethod(2);
+        }
+    }
+
+
+    public void update_category(String category, final CALLBACK callback) {
+        try {
+            menuReference.update("Category", FieldValue.arrayUnion(category))
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            callback.callBackMethod(0);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            callback.callBackMethod(1);
+                        }
+                    });
+        } catch (Exception e) {
+            callback.callBackMethod(2);
+        }
+    }
+
+    public void addDish(final CheckingNewInterface checkingNewInterface) {
+        try {
+            final Map<String, Object> responseObj = new HashMap<>();
+            final List<String> categories = new ArrayList<>();
+
+            userDocument = LoginScreen.getSharedData("DOCUMENT_NAME");
+            menuReference = db.collection(constants.WHOLE_DB()).document(userDocument).collection(constants.ADD_MENU()).document(constants.CATEGORIES());
+
+            menuReference.get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists() && !documentSnapshot.getData().isEmpty()) {
+                                Map<String, Object> obj = documentSnapshot.getData();
+                                arr = obj.values().toArray();
+                                arr2 = (List<String>) arr[0];
+                                for (int j = 0; j < arr2.size(); j++) {
+                                    categories.add(arr2.get(j));
+                                }
+                                responseObj.put("Data", categories);
+                                checkingNewInterface.callbackWithData(0, responseObj);
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    responseObj.put("Data", null);
+                    checkingNewInterface.callbackWithData(1, responseObj);
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "addDish | Exception => " + e.getMessage());
+            checkingNewInterface.callbackWithData(2, null);
+        }
+    }
+
+    public void add_dish(String dish_name, String dish_rate, String selected_category, final CheckingNewInterface checkingNewInterface) {
+        try {
+            final Map<String, Object> responseObj = new HashMap<>();
+            CollectionReference menuReference = db.collection(constants.WHOLE_DB()).document(userDocument).collection(constants.ADD_MENU());
+
+            Map<String, Object> dish = new HashMap<>();
+            dish.put("Category", selected_category);
+            dish.put("Dish-Name", dish_name);
+            dish.put("Dish-Rate", dish_rate);
+
+            menuReference.add(dish)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            responseObj.put("Data", "Success");
+                            checkingNewInterface.callbackWithData(0, responseObj);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            responseObj.put("Data", "Failed");
+                            checkingNewInterface.callbackWithData(1, responseObj);
+                        }
+                    });
+        } catch (Exception e) {
+            Log.d(TAG, "add_dish: | Exception in add_dish => " + e.getMessage());
+            checkingNewInterface.callbackWithData(2, null);
         }
     }
 }

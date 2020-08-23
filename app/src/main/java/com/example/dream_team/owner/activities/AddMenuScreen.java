@@ -44,7 +44,7 @@ public class AddMenuScreen extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.addSubCategory:
                 AddSubMenuDialog addsubDialog = AddSubMenuDialog.newInstance(Constant.AddSubCategory);
-                addsubDialog.show(getSupportFragmentManager(), "Add Menu");
+                addsubDialog.show(getSupportFragmentManager(), "Add Sub Menu");
                 break;
         }
     }
