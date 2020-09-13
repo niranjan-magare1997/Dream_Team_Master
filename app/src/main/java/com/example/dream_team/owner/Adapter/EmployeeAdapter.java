@@ -25,20 +25,21 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.EmployeeHolder>implements Filterable {
+public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.EmployeeHolder> implements Filterable {
     private Context activity;
-    private ArrayList<String> mList = new ArrayList<>();
-    private ArrayList<String> mListFull = new ArrayList<>();
+    private ArrayList<String> mList;
+    private ArrayList<String> mListFull;
+
     public EmployeeAdapter(Context activity, ArrayList<String> list) {
         this.activity = activity;
         this.mList = list;
-        this.mListFull = list;
+        this.mListFull = new ArrayList<>(list);
     }
 
     @NonNull
     @Override
     public EmployeeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(activity).inflate(R.layout.row_employee,parent,false);
+        View view = LayoutInflater.from(activity).inflate(R.layout.row_employee, parent, false);
         return new EmployeeHolder(view);
     }
 
@@ -53,13 +54,13 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
                 AddUpdateEmployeeDialog addUpdateEmployeeDialog = AddUpdateEmployeeDialog.newInstance(mList, Constant.UPDATE);
                 FragmentManager fragmentManager = ((FragmentActivity) view.getContext()).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                addUpdateEmployeeDialog.show(fragmentTransaction,"update");
+                addUpdateEmployeeDialog.show(fragmentTransaction, "update");
             }
         });
         holder.deleteEmp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(activity,"at delte",Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "at delte", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -74,46 +75,52 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     public Filter getFilter() {
         return filter;
     }
+
     private Filter filter = new Filter() {
         @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<String> filteredList = new ArrayList<>();
-            if (constraint == null || constraint.length() == 0) {
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<String> filteredList=new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0) {
                 filteredList.addAll(mListFull);
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-                for (String item : mListFull) {
+            }
+            else {
+                String filterPattern=charSequence.toString().toLowerCase().trim();
+
+                for(String item:mListFull){
                     if (item.toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
             }
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
+            FilterResults results=new FilterResults();
+            results.values=filteredList;
             return results;
         }
+
         @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            mListFull.clear();
-            mListFull.addAll((List) results.values);
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            mList.clear();
+            mList.addAll((List) filterResults.values);
             notifyDataSetChanged();
         }
     };
 
 
 
-    public class EmployeeHolder extends RecyclerView.ViewHolder {
-        TextView employeeName,employeeNumber;
-        CardView status;
-        ImageView editEmp,deleteEmp;
-        public EmployeeHolder(@NonNull View itemView) {
-            super(itemView);
-            employeeName = itemView.findViewById(R.id.addEmployeeName);
-            employeeNumber = itemView.findViewById(R.id.addEmployeeNumber);
-            status = itemView.findViewById(R.id.statusCardView);
-            editEmp = itemView.findViewById(R.id.editEmployee);
-            deleteEmp = itemView.findViewById(R.id.deleteEmployee);
+public class EmployeeHolder extends RecyclerView.ViewHolder {
+    TextView employeeName, employeeNumber;
+    CardView status;
+    ImageView editEmp, deleteEmp;
 
-        }
+    public EmployeeHolder(@NonNull View itemView) {
+        super(itemView);
+        employeeName = itemView.findViewById(R.id.addEmployeeName);
+        employeeNumber = itemView.findViewById(R.id.addEmployeeNumber);
+        status = itemView.findViewById(R.id.statusCardView);
+        editEmp = itemView.findViewById(R.id.editEmployee);
+        deleteEmp = itemView.findViewById(R.id.deleteEmployee);
+
     }
+}
 }

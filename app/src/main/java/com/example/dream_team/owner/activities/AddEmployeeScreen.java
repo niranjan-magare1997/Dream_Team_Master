@@ -35,8 +35,9 @@ public class AddEmployeeScreen extends AppCompatActivity implements View.OnClick
 
     private void initialization() {
 
-        list.add("something one ");
-        list.add("something two ");
+        list.add("Joy");
+        list.add("Flash");
+        list.add("Happy");
         employee_rv = findViewById(R.id.employee_rv);
         addEmpFab = findViewById(R.id.fab);
        // edit = findViewById(R.id.editEmployee);
@@ -58,7 +59,6 @@ public class AddEmployeeScreen extends AppCompatActivity implements View.OnClick
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-
                 return false;
             }
 
