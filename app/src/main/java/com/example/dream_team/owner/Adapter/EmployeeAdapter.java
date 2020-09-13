@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +16,7 @@ import com.example.dream_team.constants.Constant;
 import com.example.dream_team.owner.dialog_fragments.AddUpdateEmployeeDialog;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -22,18 +25,20 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.EmployeeHolder> {
+public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.EmployeeHolder>implements Filterable {
     private Context activity;
     private ArrayList<String> mList = new ArrayList<>();
+    private ArrayList<String> mListFull = new ArrayList<>();
     public EmployeeAdapter(Context activity, ArrayList<String> list) {
         this.activity = activity;
         this.mList = list;
+        this.mListFull = list;
     }
 
     @NonNull
     @Override
     public EmployeeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(activity).inflate(R.layout.employee_row,parent,false);
+        View view = LayoutInflater.from(activity).inflate(R.layout.row_employee,parent,false);
         return new EmployeeHolder(view);
     }
 
@@ -64,6 +69,38 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     public int getItemCount() {
         return mList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+    private Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<String> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(mListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (String item : mListFull) {
+                    if (item.toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mListFull.clear();
+            mListFull.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+
 
     public class EmployeeHolder extends RecyclerView.ViewHolder {
         TextView employeeName,employeeNumber;

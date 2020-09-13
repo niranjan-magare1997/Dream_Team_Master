@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp">
     <LinearLayout
         android:layout_width="330dp"
-        android:layout_height="150dp"
+        android:layout_height="153dp"
         android:padding="10dp"
+        android:gravity="center"
         android:orientation="vertical">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:text="Enter Main category :"
+        android:layout_gravity="center"
+        android:text="Enter Category "
         android:fontFamily="@font/comicrelief"
         android:textColor="@color/colorBlueDark"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="18dp"
+        android:layout_height="match_parent">
     <EditText
         android:id="@+id/mainMenuEditText"
         android:layout_width="170dp"
-        android:layout_marginTop="7dp"
+
         android:textStyle="normal"
-        android:textSize="16sp"
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:textColor="@color/colorBlueDark"
         android:fontFamily="@font/comicrelief"
         android:layout_height="wrap_content"/>
         <Button
@@ -39,10 +41,10 @@
             android:textColor="@color/colorWhite"
             android:textSize="16sp"
             android:text="Add"
+            android:layout_gravity="center"
             android:layout_marginLeft="17dp"
             android:fontFamily="@font/comicrelief"
-        android:background="@drawable/bg_ui"
-            android:layout_marginTop="15dp"/>
+        android:background="@drawable/bg_ui" />
     </LinearLayout>
     </LinearLayout>
     </LinearLayout>

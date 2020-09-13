@@ -16,11 +16,12 @@ import com.example.dream_team.common_activities.DATABASE;
 import com.example.dream_team.constants.Constant;
 import com.example.dream_team.interfaces.CheckingNewInterface;
 
+import java.util.List;
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import java.util.List;
-import java.util.Map;
 
 public class AddSubMenuDialog extends DialogFragment implements View.OnClickListener {
 
@@ -62,8 +63,8 @@ public class AddSubMenuDialog extends DialogFragment implements View.OnClickList
                 Log.d(TAG, "callbackWithData | Result ==> " + result);
                 if (result == 0 && data.containsKey("Data")) {
                     List<String> categories = (List<String>) data.get("Data");
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categories);
-                    arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),R.layout.spinner_text_color , categories);
+                    arrayAdapter.setDropDownViewResource(R.layout.spinner_choose_color);
                     spinner.setAdapter(arrayAdapter);
                     arrayAdapter.notifyDataSetChanged();
                 } else {
@@ -84,6 +85,7 @@ public class AddSubMenuDialog extends DialogFragment implements View.OnClickList
             public void callbackWithData(int result, Map<String, Object> data) {
                 if (result == 0) {
                     Toast.makeText(getContext(), "Dish added successfully", Toast.LENGTH_SHORT).show();
+                    dismiss();
                 } else {
                     Toast.makeText(getContext(), "Failed to add dish", Toast.LENGTH_SHORT).show();
                 }

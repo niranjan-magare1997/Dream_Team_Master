@@ -43,8 +43,6 @@ public class AddEmployeeScreen extends AppCompatActivity implements View.OnClick
 
        // edit.setOnClickListener(this);
         addEmpFab.setOnClickListener(this);
-
-
         searchBar = findViewById(R.id.search_view);
         //seachbar
         searchBar.setQueryHint("Search...");
@@ -56,7 +54,23 @@ public class AddEmployeeScreen extends AppCompatActivity implements View.OnClick
         employeeAdapter = new EmployeeAdapter(this, list);
         employee_rv.setAdapter(employeeAdapter);
 
+
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                employeeAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
     }
+
+
 
     @Override
     public void onClick(View view) {
@@ -68,4 +82,6 @@ public class AddEmployeeScreen extends AppCompatActivity implements View.OnClick
         }
 
     }
+
+
 }

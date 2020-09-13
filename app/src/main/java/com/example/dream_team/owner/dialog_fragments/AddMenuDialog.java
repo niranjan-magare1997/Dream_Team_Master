@@ -13,6 +13,7 @@ import com.example.dream_team.R;
 import com.example.dream_team.common_activities.DATABASE;
 import com.example.dream_team.constants.Constant;
 import com.example.dream_team.interfaces.CALLBACK;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -54,6 +55,7 @@ public class AddMenuDialog extends DialogFragment implements View.OnClickListene
                 Log.d(TAG, "callBackMethod: | Result is :" + result);
                 if (result == 0) {
                     Toast.makeText(getContext(), "Category added successfully", Toast.LENGTH_SHORT).show();
+                    dismiss();
                 }else {
                     Log.d(TAG, "onClick | callBackMethod | Failed to Add Category");
                 }
