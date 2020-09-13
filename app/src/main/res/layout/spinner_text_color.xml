@@ -4,7 +4,8 @@
     android:text="Choose"
     android:textColor="@color/colorBlueDark"
     android:fontFamily="@font/comicrelief"
-    android:textSize="14sp"
+    android:textSize="17sp"
+    android:textStyle="bold"
     android:padding="12dp"
     android:layout_height="wrap_content">
 

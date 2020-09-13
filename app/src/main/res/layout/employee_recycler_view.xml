@@ -8,5 +8,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="100dp"
-    tools:listitem="@layout/employee_row"/>
+    tools:listitem="@layout/row_employee"/>
 </LinearLayout>
