@@ -65,7 +65,7 @@ public class AddUpdateEmployeeDialog extends DialogFragment implements View.OnCl
                 if (Constant.ADD == addUpdateStauts)
                     Toast.makeText(getContext(),"At add",Toast.LENGTH_SHORT).show();
                 else if (Constant.UPDATE == addUpdateStauts)
-                    Toast.makeText(getContext(),"At add",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"At update",Toast.LENGTH_SHORT).show();
                 break;
         }
     }
