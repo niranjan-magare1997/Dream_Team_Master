@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.chaos.view.PinView;
 import com.example.dream_team.R;
+import com.example.dream_team.interfaces.CheckingNewInterface;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -20,17 +23,19 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class OTPDialogActivity extends AppCompatActivity {
     private PinView pinView;
-    private Button verify;
-    private String TAG = "Dream_Team";
-    private TextView resendOTP, timer;
+    private String TAG = "Dream_Team | OTPDialogActivity";
+    private TextView resendOTP, timer, setNumber;
     private String mobileNumber;
     private FirebaseAuth mAuth;
     private PhoneAuthProvider phoneAuthProvider;
     private String verificationID;
+    private CustomToast customToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,23 +46,40 @@ public class OTPDialogActivity extends AppCompatActivity {
         timer = findViewById(R.id.timer);
         phoneAuthProvider = PhoneAuthProvider.getInstance();
         mAuth = FirebaseAuth.getInstance();
-
+        customToast = new CustomToast(getParent());
+        setNumber = findViewById(R.id.empMobileNumber);
         Intent in = getIntent();
         mobileNumber = (in.getStringExtra("Mobile"));
         Log.d(TAG, "onCreate | Mobile "+mobileNumber);
         sendOTP(mobileNumber);
+        setNumber.setText(mobileNumber);
     }
 
     public void verifyOTP(View view) {
         String OTP = pinView.getText().toString();
-        if (OTP.equals("123456")) {
-            pinView.setLineColor(Color.GREEN);
-            resendOTP.setText("OTP Verified");
-            resendOTP.setTextColor(Color.GREEN);
-        } else {
+        if(OTP.length() != 6){
             pinView.setLineColor(Color.RED);
-            resendOTP.setText("Incorrect OTP");
             resendOTP.setTextColor(Color.RED);
+            resendOTP.setText("Incorrect OTP");
+        }else {
+            verifyOTPManually(OTP, new CheckingNewInterface() {
+                @Override
+                public void callbackWithData(int result, Map<String, Object> data) {
+                    if(result == 0){
+                        pinView.setLineColor(Color.GREEN);
+                        resendOTP.setText("OTP Verified");
+                        resendOTP.setTextColor(Color.GREEN);
+                        Intent intent = new Intent();
+                        intent.putExtra("Result", true);
+                        setResult(Activity.RESULT_OK,intent);
+                        finish();
+                    }else {
+                        pinView.setLineColor(Color.RED);
+                        resendOTP.setTextColor(Color.RED);
+                        resendOTP.setText("Incorrect OTP");
+                    }
+                }
+            });
         }
     }
 
@@ -82,6 +104,7 @@ public class OTPDialogActivity extends AppCompatActivity {
             public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
                 super.onCodeAutoRetrievalTimeOut(s);
                 Log.d(TAG, "Verification code autoRetrieval Timeout. ");
+                finish();
             }
 
             @Override
@@ -101,10 +124,32 @@ public class OTPDialogActivity extends AppCompatActivity {
         });
     }
 
-    private void senDataBack() {
-        Intent intent = new Intent();
-        intent.putExtra("Result", true);
-        setResult(Activity.RESULT_OK,intent);
+    private void verifyOTPManually(String userOTP, final CheckingNewInterface newInterface) {
+        try {
+            final Map<String, Object> responseObj = new HashMap<>();
+            Log.d(TAG, "verifyOTPManually | Verifying OTP... " + userOTP);
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationID, userOTP);
+            mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "verifyOTPManually | onComplete | Verification done");
+                        newInterface.callbackWithData(0,responseObj);
+                    } else {
+                        Log.e(TAG, "verifyOTPManually | onComplete | Verification Failed");
+                        newInterface.callbackWithData(1,responseObj);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "verifyOTPManually | Exception in verifyOTPManually " + e.getMessage());
+            newInterface.callbackWithData(2,null);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
         finish();
     }
 }

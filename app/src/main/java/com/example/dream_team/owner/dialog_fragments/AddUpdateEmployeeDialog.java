@@ -37,7 +37,7 @@ public class AddUpdateEmployeeDialog extends DialogFragment implements View.OnCl
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.add_update_employee,container);
+        View view = inflater.inflate(R.layout.add_update_employee, container);
 
         nameEditText = view.findViewById(R.id.emp_name);
         numberEditText = view.findViewById(R.id.emp_number);
@@ -63,9 +63,9 @@ public class AddUpdateEmployeeDialog extends DialogFragment implements View.OnCl
         switch (view.getId()) {
             case R.id.btn_save:
                 if (Constant.ADD == addUpdateStauts)
-                    Toast.makeText(getContext(),"At add",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "At add", Toast.LENGTH_SHORT).show();
                 else if (Constant.UPDATE == addUpdateStauts)
-                    Toast.makeText(getContext(),"At add",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "At add", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
