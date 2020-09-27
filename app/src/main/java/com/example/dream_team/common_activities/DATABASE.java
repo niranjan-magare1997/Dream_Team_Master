@@ -1,8 +1,6 @@
 package com.example.dream_team.common_activities;
 
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -44,7 +42,7 @@ public class DATABASE {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void checkUserExist(String id, String password, final CheckingNewInterface callback) {
+    public void checkMobilePassword(String id, String password, final CheckingNewInterface callback) {
         try {
             Log.d(TAG, "checkUserExist | Checking user ");
             final Map<String, Object> responseObject = new HashMap<>();
@@ -333,15 +331,16 @@ public class DATABASE {
         }
     }
 
-    public void checkOwnerNumberExist(final String mobille, final CALLBACK callback) {
+    public void checkNumberExist(final String mobile, final CALLBACK callback) {
         try {
             db.collection(constants.HOTEL_CRED())
-                    .whereEqualTo(constants.MOBILE(), mobille)
+                    .whereEqualTo(constants.MOBILE(), mobile)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful() && !task.getResult().isEmpty()) callback.callBackMethod(0);
+                            if (task.isSuccessful() && !task.getResult().isEmpty())
+                                callback.callBackMethod(0);
                             else callback.callBackMethod(1);
                         }
                     });
@@ -497,6 +496,122 @@ public class DATABASE {
                     });
         } catch (Exception e) {
             Log.d(TAG, "add_dish: | Exception in add_dish => " + e.getMessage());
+            checkingNewInterface.callbackWithData(2, null);
+        }
+    }
+
+    private void updatePasswordInDatabase(final String wholeDID, final String credDID, String mobile, String password, final CheckingNewInterface checkingNewInterface) {
+        try {
+            Log.d(TAG, "updatePasswordInDatabase | documentName => " + wholeDID);
+            Log.d(TAG, "updatePasswordInDatabase | documentName => " + credDID);
+            Log.d(TAG, "updatePasswordInDatabase | mobile => " + mobile);
+            Log.d(TAG, "updatePasswordInDatabase | password => " + password);
+
+            final Map<String, Object> responseObj = new HashMap<>();
+            final Map<String, Object> updateData = new HashMap<>();
+            updateData.put(constants.PASSWORD(), password);
+
+            Task first = db.collection(constants.WHOLE_DB()).document(wholeDID).collection(constants.EMP_CRED())
+                    .whereEqualTo(constants.MOBILE(), mobile)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String docId = document.getId();
+                                    Log.d(TAG, "updatePasswordInDatabase | onComplete | docId " + docId);
+
+                                    db.collection(constants.WHOLE_DB()).document(wholeDID).collection(constants.EMP_CRED()).document(docId)
+                                            .update(updateData)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    responseObj.put("WHOLE_DATA", "Success");
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            responseObj.put("WHOLE_DATA", "Failed");
+                                        }
+                                    });
+                                }
+                            } else {
+                                responseObj.put("WHOLE_DATA", "Failed");
+                            }
+                        }
+                    });
+
+            Task second = db.collection(constants.HOTEL_CRED()).document(credDID)
+                    .update(updateData)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            Log.d(TAG, "onComplete | task.isSuccessful() ==> " + task.isSuccessful());
+                            Log.d(TAG, "onComplete | task.isComplete() ==> " + task.isComplete());
+
+                            if (task.isSuccessful()) {
+                                responseObj.put("CRED_DATA", "Success");
+                            } else {
+                                responseObj.put("CRED_DATA", "Failed");
+                            }
+                        }
+                    });
+
+            Task done = Tasks.whenAllComplete(first, second)
+                    .addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+                        @Override
+                        public void onSuccess(List<Task<?>> tasks) {
+                            Log.d(TAG, "onSuccess | tasks " + tasks);
+                            responseObj.put("ALL_DATA", "Success");
+                            checkingNewInterface.callbackWithData(0, responseObj);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "onFailure | Exception while updating data. " + e.getMessage());
+                            responseObj.put("ALL_DATA", "Failed");
+                            checkingNewInterface.callbackWithData(1, responseObj);
+                        }
+                    });
+        } catch (Exception e) {
+            Log.e(TAG, "updatePasswordInDatabase | Exception in updatePasswordInDatabase " + e.getMessage());
+            checkingNewInterface.callbackWithData(2, null);
+        }
+    }
+
+    public void updatePassword(final String mobile, final String password, final CheckingNewInterface checkingNewInterface) {
+        try {
+            final Map<String, Object> responseObj = new HashMap<>();
+
+            db.collection(constants.HOTEL_CRED())
+                    .whereEqualTo(constants.MOBILE(), mobile)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    if (document.contains(constants.TOKEN())) {
+                                        String wholeDID = document.getString(constants.DOCUMENT_NAME());
+                                        String credDID = document.getId();
+
+                                        Log.d(TAG, "onComplete | Document Name => " + wholeDID);
+                                        updatePasswordInDatabase(wholeDID, credDID, mobile, password, checkingNewInterface);
+                                    } else {
+                                        responseObj.put("Data", "User not registered");
+                                        checkingNewInterface.callbackWithData(1, responseObj);
+                                    }
+                                }
+                            } else {
+                                responseObj.put("Data", "Number not found");
+                                checkingNewInterface.callbackWithData(1, responseObj);
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            Log.e(TAG, "updatePassword | Exception in updatePassword. " + e.getMessage());
             checkingNewInterface.callbackWithData(2, null);
         }
     }

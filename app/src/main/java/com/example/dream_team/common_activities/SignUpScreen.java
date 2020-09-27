@@ -128,7 +128,7 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
                         insertData.put(constants.HOTEL_NAME(), hotelNameEditText.getText().toString());
 
                         //Call to check if number exist in our database or not.
-                        database.checkOwnerNumberExist(mobile, new CALLBACK() {
+                        database.checkNumberExist(mobile, new CALLBACK() {
                             @Override
                             public void callBackMethod(int result) {
                                 Log.d(TAG, "signUp | callBackMethod | Result is => " + result);
