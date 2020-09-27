@@ -40,15 +40,15 @@ public class OwnerLoginScreen extends AppCompatActivity {
 
     private void Initialization() {
         models = new ArrayList<>();
-        models.add(new OwnerScreenConstant(R.drawable.place_order_img,"Place Order"));
-        models.add(new OwnerScreenConstant(R.drawable.add_emp_img,"Add  Employee"));
-        models.add(new OwnerScreenConstant(R.drawable.add_menu_img,"Add  Category And Dish"));
-        models.add(new OwnerScreenConstant(R.drawable.add_table_img,"Add Table"));
+        models.add(new OwnerScreenConstant(R.drawable.place_order_img, "Place Order"));
+        models.add(new OwnerScreenConstant(R.drawable.add_emp_img, "Add  Employee"));
+        models.add(new OwnerScreenConstant(R.drawable.add_menu_img, "Add  Category And Dish"));
+        models.add(new OwnerScreenConstant(R.drawable.add_table_img, "Add Table"));
 
-        adapter = new OwnerAdapter(models,this);
-        viewPager =findViewById(R.id.viewPager);
+        adapter = new OwnerAdapter(models, this);
+        viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
-        viewPager.setPadding(105,0,105,0);
+        viewPager.setPadding(105, 0, 105, 0);
         viewPager.setPageMargin(50);
         Integer[] clr = {
                 getResources().getColor(R.color.colorAccent),

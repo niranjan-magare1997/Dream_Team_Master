@@ -142,18 +142,23 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     public void forgotPassword() {
         mobile = mobileNumberEditText.getText().toString().trim();
 
-        if (mobileNumberEditText.getText().toString().trim().length() != 10) {
+        if (mobile.length() != 10) {
             userMobileNumber.setError("Required Field");
             userMobileNumber.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             userMobileNumber.setErrorEnabled(true);
-        }else {
+        } else {
             userMobileNumber.setErrorEnabled(false);
             Log.d(TAG, "forgotPassword | onCreate | In function forgotPassword ");
 
-            Intent i = new Intent(LoginScreen.this,OTPDialogActivity.class);
-            i.putExtra("Mobile",mobile);
-            startActivityForResult(i,Activity_Code);
+            Intent i = new Intent(LoginScreen.this, OTPDialogActivity.class);
+            i.putExtra("Mobile", mobile);
+            startActivityForResult(i, Activity_Code);
+
+            //For testing
+//            ForgotPasswordDialog forgotPasswordDialog = ForgotPasswordDialog.newInstance(mobile);
+//            forgotPasswordDialog.show(getSupportFragmentManager(), "Forgot Password");
         }
+
 
 //        Intent fpIntent = new Intent(LoginScreen.this, ForgotPasswordDialog.class);
 //        startActivity(fpIntent);
@@ -201,7 +206,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 //                }
 //            });
 
-            database.checkUserExist(mobile, password, new CheckingNewInterface() {
+            database.checkMobilePassword(mobile, password, new CheckingNewInterface() {
                 @Override
                 public void callbackWithData(int result, final Map<String, Object> data) {
                     Log.d(TAG, "callbackWithData | Data => " + data);
@@ -228,20 +233,21 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d(TAG, "onActivityResult | Request => "+requestCode);
-        Log.d(TAG, "onActivityResult | Result => "+resultCode);
+        Log.d(TAG, "onActivityResult | Request => " + requestCode);
+        Log.d(TAG, "onActivityResult | Result => " + resultCode);
 
-        if(requestCode == Activity_Code){
-            if(resultCode == Activity.RESULT_OK){
+        if (requestCode == Activity_Code) {
+            if (resultCode == Activity.RESULT_OK) {
                 //Valid user so Sign up user
-                //ForgotPasswordDialog forgotPasswordDialog = ForgotPasswordDialog.newInstance(mobile);
-                //forgotPasswordDialog.show(getSupportFragmentManager(), "Forgot Password");
-            }else {
+                ForgotPasswordDialog forgotPasswordDialog = ForgotPasswordDialog.newInstance(mobile);
+                forgotPasswordDialog.show(getSupportFragmentManager(), "Forgot Password");
+            } else {
                 //User not verified
-                Log.d(TAG, "onActivityResult | Sign up failed ");
+                Log.d(TAG, "onActivityResult | Otp verification failed ");
             }
         }
     }
+
 
     //validation for mob num and password
     public boolean validation() {
