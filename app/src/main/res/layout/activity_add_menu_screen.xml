@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearMenuParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/menu"
@@ -31,7 +32,7 @@
                 app:cardBackgroundColor="#d2bd98"
                 app:cardCornerRadius="10dp">
             <TextView
-                android:id="@+id/addMainCategory"
+                android:id="@+id/addCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_outline_add_circle_outline_24"
@@ -51,7 +52,7 @@
                 app:cardBackgroundColor="#d2bd98"
                 app:cardCornerRadius="10dp">
             <TextView
-                android:id="@+id/addSubCategory"
+                android:id="@+id/addDish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/comicrelief"
@@ -71,7 +72,7 @@
                 android:layout_marginTop="30dp"
                 app:cardCornerRadius="10dp">
             <TextView
-                android:id="@+id/editMainCategory"
+                android:id="@+id/editCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -91,7 +92,7 @@
                 app:cardBackgroundColor="#d2bd98"
                 app:cardCornerRadius="10dp">
             <TextView
-                android:id="@+id/editSubCategory"
+                android:id="@+id/editDish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

@@ -20,9 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class AddEmployeeScreen extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView employee_rv;
     FloatingActionButton addEmpFab;
-    LinearLayoutManager linearLayoutManager;
     SearchView searchBar;
     ImageView edit;
+    LinearLayoutManager linearLayoutManager;
     EmployeeAdapter employeeAdapter;
     ArrayList<String> list = new ArrayList<>();
     @Override

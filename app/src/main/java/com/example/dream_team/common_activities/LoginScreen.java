@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,13 +18,14 @@ import com.example.dream_team.R;
 import com.example.dream_team.interfaces.CheckingNewInterface;
 import com.example.dream_team.modal_class.CONSTANTS;
 import com.example.dream_team.owner.activities.OwnerLoginScreen;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Map;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.Map;
 
 public class LoginScreen extends AppCompatActivity implements View.OnClickListener {
     public String TAG = "Dream_Team | LoginScreen";
@@ -39,9 +41,9 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     private String password = "";
     public static boolean rememberMeCheckedOrNot;
     private ProgressDialogFragment progressBar;
-    private static CustomToast customToast;
     private int Activity_Code = 102;
     private CONSTANTS constants;
+    private RelativeLayout rlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +53,6 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
         constants = new CONSTANTS();
 
-        //creation of object of customtoast class
-        if (customToast == null) {
-            customToast = new CustomToast(this);
-        }
         initialization();
         checkAlreadyLogin();
     }
@@ -97,6 +95,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         createAccount = findViewById(R.id.createAccountLabel);
 
         login_Button = findViewById(R.id.login_Button);
+        rlay = findViewById(R.id.parentLayoutRelative);
 
         progressBar = new ProgressDialogFragment();
 
@@ -112,7 +111,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         database = new DATABASE();
         if (!MainActivity.isNetworkAvailable(this)) {
             //toast called by our custom method toast() by passing simple string.
-            customToast.toast("Please check your Internet Connection!");
+            Toast.makeText(this,"Please Check your internet conection!",Toast.LENGTH_SHORT);
         } else {
             Log.d(TAG, "onClick | Checkbox Status => " + rememberMeCheckbox.isChecked());
             rememberMeCheckedOrNot = rememberMeCheckbox.isChecked();
@@ -220,7 +219,12 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
                             startActivity(i);
                         } else {
                             Log.d(TAG, "callbackWithData | Not owner. ");
+
                         }
+                    }else{
+                        Snackbar snackbar = Snackbar
+                                .make(rlay, "User Not found", Snackbar.LENGTH_LONG);
+                        snackbar.show();
                     }
                     progressBar.dismiss();   //Progress Bar End
                 }
