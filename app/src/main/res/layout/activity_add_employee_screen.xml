@@ -34,6 +34,7 @@
         app:layout_constraintStart_toStartOf="@+id/empList"
         app:layout_constraintTop_toTopOf="parent" />
     </androidx.cardview.widget.CardView>
+
     <include layout="@layout/employee_recycler_view"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

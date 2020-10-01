@@ -25,7 +25,7 @@
         android:layout_marginTop="18dp"
         android:layout_height="match_parent">
     <EditText
-        android:id="@+id/mainMenuEditText"
+        android:id="@+id/categoryEditText"
         android:layout_width="170dp"
 
         android:textStyle="normal"
@@ -35,7 +35,7 @@
         android:fontFamily="@font/comicrelief"
         android:layout_height="wrap_content"/>
         <Button
-        android:id="@+id/addmainButton"
+        android:id="@+id/addCategoryButton"
         android:layout_width="120dp"
         android:layout_height="45dp"
             android:textColor="@color/colorWhite"

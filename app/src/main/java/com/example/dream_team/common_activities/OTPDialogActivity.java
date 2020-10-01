@@ -20,12 +20,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class OTPDialogActivity extends AppCompatActivity {
     private PinView pinView;
@@ -35,7 +35,6 @@ public class OTPDialogActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private PhoneAuthProvider phoneAuthProvider;
     private String verificationID;
-    private CustomToast customToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,6 @@ public class OTPDialogActivity extends AppCompatActivity {
         timer = findViewById(R.id.timer);
         phoneAuthProvider = PhoneAuthProvider.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        customToast = new CustomToast(getParent());
         setNumber = findViewById(R.id.empMobileNumber);
         Intent in = getIntent();
         mobileNumber = (in.getStringExtra("Mobile"));

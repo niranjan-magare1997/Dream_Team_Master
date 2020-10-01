@@ -39,7 +39,6 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
     private TextInputEditText userNameEditText, mobileEditText, passwordEditText, addressEditText, adharNumberEditText, GSTEditText, hotelNameEditText, retypePasswordEditTest;
     private RelativeLayout relativeLayout;
     private ProgressDialogFragment progressBar;
-    private CustomToast customToast;
     private int Activity_Code = 101;
     private final Map<String, Object> insertData = new HashMap<>();
     private String mobile;
@@ -48,9 +47,6 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_screen);
-        if (customToast == null) {
-            customToast = new CustomToast(this);
-        }
         initialization();
     }
 
@@ -112,7 +108,7 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
         Log.d(TAG, "signUp | In sign up with type " + signUpType);
 
         if (!MainActivity.isNetworkAvailable(this)) {
-            customToast.toast("Please check your Internet Connection!");
+            Toast.makeText(this,"Please Check Your Internet Connection!",Toast.LENGTH_SHORT);
         } else {
             if (validation()) {
                 mobile = mobileEditText.getText().toString();

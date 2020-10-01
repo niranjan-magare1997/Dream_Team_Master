@@ -9,17 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dream_team.R;
 import com.example.dream_team.interfaces.CheckingNewInterface;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
-import java.util.Map;
 
 public class ForgotPasswordDialog extends DialogFragment implements View.OnClickListener {
 
@@ -28,7 +29,6 @@ public class ForgotPasswordDialog extends DialogFragment implements View.OnClick
     private TextInputLayout newPasswordLayout, confirmPasswordLayout;
     private TextInputEditText newPaswordEditText, confirmPasswordEditText;
     private Button setPwd;
-    private CustomToast customToast;
     private TextView forgotPasswordTextView;
     private DATABASE database;
     //  String mobileNumber;
@@ -52,14 +52,11 @@ public class ForgotPasswordDialog extends DialogFragment implements View.OnClick
         setPwd = view.findViewById(R.id.forgotPasswordButton);
         setPwd.setOnClickListener(this);
         database = new DATABASE();
-        if (customToast == null) {
-            customToast = new CustomToast(getActivity());
-        }
         return view;
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(final View view) {
         Log.d(TAG, "onClick | Mobile Number => " + mobileNumber);
         newPasswordLayout.setErrorEnabled(false);
         confirmPasswordLayout.setErrorEnabled(false);
@@ -93,10 +90,10 @@ public class ForgotPasswordDialog extends DialogFragment implements View.OnClick
 
                     if (result == 0) {
                         //All good
-                        customToast.toast("Password updated successfully");
+                        Toast.makeText(view.getContext(), "Password updated successfully", Toast.LENGTH_SHORT);
                     } else {
                         //Gadbad zaali re baba
-                        customToast.toast("Unable to update password");
+                        Toast.makeText(view.getContext(), "Unable to update password", Toast.LENGTH_SHORT);
                     }
 
                 }
