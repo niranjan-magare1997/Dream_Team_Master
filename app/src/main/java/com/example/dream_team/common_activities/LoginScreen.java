@@ -1,8 +1,8 @@
 package com.example.dream_team.common_activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,50 +17,46 @@ import com.example.dream_team.R;
 import com.example.dream_team.interfaces.CheckingNewInterface;
 import com.example.dream_team.modal_class.CONSTANTS;
 import com.example.dream_team.owner.activities.OwnerLoginScreen;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Map;
+import java.util.Objects;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginScreen extends AppCompatActivity implements View.OnClickListener {
+    private static View loginView;
     public String TAG = "Dream_Team | LoginScreen";
     private TextInputLayout userMobileNumber, userPassword;
     private TextInputEditText mobileNumberEditText, passwordEditText;
+    private String mobile = "";
+    private String password = "";
+    private int Activity_Code = 102;
     public Button login_Button;
     public TextView forgotPassword, createAccount;
     public CheckBox rememberMeCheckbox;
     private DATABASE database;
-    public static SharedPreferences sharedPreferences;
-    public static SharedPreferences.Editor myEdit;
-    private String mobile = "";
-    private String password = "";
-    public static boolean rememberMeCheckedOrNot;
     private ProgressDialogFragment progressBar;
-    private int Activity_Code = 102;
     private CONSTANTS constants;
-    private RelativeLayout rlay;
+    public static boolean rememberMeCheckedOrNot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
         Log.d(TAG, "onCreate | Activity created ");
-
         constants = new CONSTANTS();
-
         initialization();
         checkAlreadyLogin();
     }
 
     private void checkAlreadyLogin() {
-        String userToken = LoginScreen.getSharedData(constants.TOKEN());
-        String docName = LoginScreen.getSharedData(constants.DOCUMENT_NAME());
-        String remember = LoginScreen.getSharedData(constants.REMEMBER());
-        String userType = LoginScreen.getSharedData(constants.TYPE());
+        String userToken = COMMON.getSharedData(constants.TOKEN());
+        String docName = COMMON.getSharedData(constants.DOCUMENT_NAME());
+        String remember = COMMON.getSharedData(constants.REMEMBER());
+        String userType = COMMON.getSharedData(constants.TYPE());
 
         Log.d(TAG, "checkAlreadyLogin | Token: " + userToken + " Document Name: " + docName + " Remember: " + remember + " Type: " + userType);
 
@@ -79,12 +74,10 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+    @SuppressLint("CommitPrefEdits")
     public void initialization() {
         userMobileNumber = findViewById(R.id.userName);
         userPassword = findViewById(R.id.userPassword);
-
-        sharedPreferences = getSharedPreferences("DREAM_TEAM_DATA", MODE_PRIVATE);
-        myEdit = sharedPreferences.edit();
 
         mobileNumberEditText = findViewById(R.id.name);
         passwordEditText = findViewById(R.id.password);
@@ -95,7 +88,6 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         createAccount = findViewById(R.id.createAccountLabel);
 
         login_Button = findViewById(R.id.login_Button);
-        rlay = findViewById(R.id.parentLayoutRelative);
 
         progressBar = new ProgressDialogFragment();
 
@@ -108,11 +100,11 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        Log.d(TAG, "onClick | In onclick event");
+        loginView = v;
         database = new DATABASE();
-        if (!MainActivity.isNetworkAvailable(this)) {
-            //toast called by our custom method toast() by passing simple string.
-            Toast.makeText(this,"Please Check your internet conection!",Toast.LENGTH_SHORT);
-        } else {
+
+        if (COMMON.checkConnectivity(LoginScreen.this)){
             Log.d(TAG, "onClick | Checkbox Status => " + rememberMeCheckbox.isChecked());
             rememberMeCheckedOrNot = rememberMeCheckbox.isChecked();
             switch (v.getId()) {
@@ -123,19 +115,13 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
                     forgotPassword();
                     break;
                 case R.id.createAccountLabel:
-                    createAccount();
+                    startSignUpActivity();
                     break;
             }
+        }else {
+            Log.d(TAG, "onClick | No connection");
+            COMMON.showSnackBar("Please Check your internet connection!",loginView);
         }
-    }
-
-    public static void setSharedData(String key, String data) {
-        myEdit.putString(key, data);
-        myEdit.apply();
-    }
-
-    public static String getSharedData(String key) {
-        return sharedPreferences.getString(key, "");
     }
 
     public void forgotPassword() {
@@ -157,17 +143,9 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 //            ForgotPasswordDialog forgotPasswordDialog = ForgotPasswordDialog.newInstance(mobile);
 //            forgotPasswordDialog.show(getSupportFragmentManager(), "Forgot Password");
         }
-
-
-//        Intent fpIntent = new Intent(LoginScreen.this, ForgotPasswordDialog.class);
-//        startActivity(fpIntent);
-        //check the validation for mobile number
-        //get that mobile number and send otp
-        // call otpDialog activity using intent
-        //get result from that activity and then call forgotPasswordDialog.show()
     }
 
-    public void createAccount() {
+    public void startSignUpActivity() {
         Log.d(TAG, "createAccount | onCreate | In function createAccount ");
         Intent intent = new Intent(getApplicationContext(), SignUpScreen.class);
         startActivity(intent);
@@ -177,33 +155,8 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         //Toast.makeText(this, "Clicked on Forgot Password", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "login | In function login ");
         if (validation()) {
-            mobile = mobileNumberEditText.getText().toString();
-            password = passwordEditText.getText().toString();
 
             progressBar.show(getSupportFragmentManager(), "Sign up");                    //Progress Bar Start
-//            database.checkUserExist(mobile, password, new CALLBACK() {
-//                @Override
-//                public void callBackMethod(int result) {
-//                    Log.d(TAG, "login | callBackMethod | Result => " + result);
-//                    if (result == 0) {
-//                        Intent intent = new Intent(getApplicationContext(), OwnerLoginScreen.class);
-//                        intent.putExtra("DOC_NAME", getSharedData("DOC_NAME"));
-//                        intent.putExtra("TOKEN", getSharedData("TOKEN"));
-//                        mobileNumberEditText.setText("");
-//                        passwordEditText.setText("");
-//                        userMobileNumber.setErrorEnabled(false);
-//                        userPassword.setErrorEnabled(false);
-//                        customToast.toast("LOGGED IN SUCCESSFULLY");
-//                        startActivity(intent);
-//                    } else if (result == 1) {
-//                        customToast.toast("USER DOES NOT EXIST");
-//                        Log.d(TAG, "login | callBackMethod | User not exist ");
-//                    } else if (result == 2) {
-//                        Log.e(TAG, "login | callBackMethod | Exception while checking user ");
-//                    }
-//                    progressBar.dismiss();   //Progress Bar End
-//                }
-//            });
 
             database.checkMobilePassword(mobile, password, new CheckingNewInterface() {
                 @Override
@@ -213,18 +166,16 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
                     Log.d(TAG, "callbackWithData | Type => " + data.get("TYPE"));
 
                     if (result == 0 && data.containsKey("TYPE")) {
-                        if (data.get("TYPE").equals("OWNER")) {
+                        if (Objects.equals(data.get("TYPE"), "OWNER")) {
                             Log.d(TAG, "callbackWithData | Owner is logged in.... ");
+//                            COMMON.showSnackBar("Owner Log in Successful", loginView);
                             Intent i = new Intent(LoginScreen.this, OwnerLoginScreen.class);
                             startActivity(i);
                         } else {
                             Log.d(TAG, "callbackWithData | Not owner. ");
-
                         }
                     }else{
-                        Snackbar snackbar = Snackbar
-                                .make(rlay, "User Not found", Snackbar.LENGTH_LONG);
-                        snackbar.show();
+                        COMMON.showSnackBar("User Not found", loginView);
                     }
                     progressBar.dismiss();   //Progress Bar End
                 }
@@ -252,21 +203,25 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-
-    //validation for mob num and password
+    //validation for mobile number and password
+    @SuppressLint("ShowToast")
     public boolean validation() {
-        if (mobileNumberEditText.getText().toString().equals("")) {
+
+        mobile = mobileNumberEditText.getText().toString();
+        password = passwordEditText.getText().toString();
+
+        if (mobile.equals("")) {
             userMobileNumber.setError("Required Field");
             userMobileNumber.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             userMobileNumber.setErrorEnabled(true);
             return false;
-        } else if (mobileNumberEditText.getText().length() != 10) {
+        } else if (mobile.length() != 10) {
             userMobileNumber.setError("Enter Valid Mobile Number");
             userMobileNumber.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             userMobileNumber.setErrorEnabled(true);
-            Toast.makeText(getApplicationContext(), "" + mobileNumberEditText.getText().length(), Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(), "" + mobile, Toast.LENGTH_SHORT);
             return false;
-        } else if (passwordEditText.getText().toString().equals("")) {
+        } else if (password.equals("")) {
             userPassword.setError("Required Field");
             userPassword.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             userPassword.setErrorEnabled(true);
@@ -276,5 +231,9 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
             userPassword.setErrorEnabled(false);
             return true;
         }
+    }
+
+    public static View getView() {
+        return loginView;
     }
 }

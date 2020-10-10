@@ -1,5 +1,6 @@
 package com.example.dream_team.common_activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -17,7 +18,6 @@ import android.widget.Toast;
 import com.example.dream_team.R;
 import com.example.dream_team.interfaces.CALLBACK;
 import com.example.dream_team.modal_class.CONSTANTS;
-import com.example.dream_team.owner.activities.OwnerLoginScreen;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -104,11 +104,13 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    public void signUp(View view) {
+    @SuppressLint("ShowToast")
+    public void signUp(final View view) {
         Log.d(TAG, "signUp | In sign up with type " + signUpType);
 
-        if (!MainActivity.isNetworkAvailable(this)) {
-            Toast.makeText(this,"Please Check Your Internet Connection!",Toast.LENGTH_SHORT);
+        if (!COMMON.checkConnectivity((Activity) getBaseContext())) {
+            COMMON.showSnackBar("Please Check Your Internet Connection!",view);
+//            Toast.makeText(this,"Please Check Your Internet Connection!",Toast.LENGTH_SHORT);
         } else {
             if (validation()) {
                 mobile = mobileEditText.getText().toString();
@@ -134,24 +136,25 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
                                     startActivityForResult(i, Activity_Code);
                                 } else {
                                     //Number Not found
+                                    COMMON.showSnackBar("Sign up Failed",view);
                                 }
                             }
                         });
-//                        database.checkNumberWithType(mobile, signUpType, insertData, new CALLBACK() {
-//                            @Override
-//                            public void callBackMethod(int result) {
-//                                Log.d(TAG, "signUp | callBackMethod: " + result);
-//                                  progressBar.dismiss();   //Progress Bar End
-//                            }
-//                        });
                         break;
                     case "Waiter":
                     case "Chef":
-                        database.checkNumberWithType(mobile, signUpType, insertData, new CALLBACK() {
+                        database.signUpUser(mobile, signUpType, insertData, new CALLBACK() {
                             @Override
                             public void callBackMethod(int result) {
                                 Log.d(TAG, "signUp | callBackMethod: " + result);
                                 //progressBar.dismiss();   //Progress Bar End
+                                if (result == 0){
+                                    Intent i = new Intent(SignUpScreen.this, OTPDialogActivity.class);
+                                    i.putExtra("Mobile", mobile);
+                                    startActivityForResult(i, Activity_Code);
+                                }else {
+                                    COMMON.showSnackBar("Sign up Failed",view);
+                                }
                             }
                         });
                         break;
@@ -168,7 +171,7 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
         String gst = GSTEditText.getText().toString().trim();
         Log.d(TAG, "isValidGSTNumber | Number " + gst + " Length => " + gst.length());
         if (gst.equals("")) return true;
-        String regex = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
+        String regex = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(gst);
         return m.matches();
@@ -178,13 +181,14 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
         String aadhar = adharNumberEditText.getText().toString().trim();
         Log.d(TAG, "isValidAadharNumber | Number " + aadhar + " Length => " + aadhar.length());
         if (aadhar.equals("")) return false;
-        String regex = "^[2-9]{1}[0-9]{11}$";
+        String regex = "^[2-9][0-9]{11}$";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(aadhar);
         return m.matches();
     }
 
     //validation for all data
+    @SuppressLint("ShowToast")
     public boolean validation() {
         usernameLayout.setErrorEnabled(false);
         mobileLayout.setErrorEnabled(false);
@@ -192,8 +196,7 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
         retypePasswordLayout.setErrorEnabled(false);
         addressLayout.setErrorEnabled(false);
 
-        Log.d(TAG, "validation | isValidAadharNumber() " + isValidAadharNumber());
-        if (signUpType == "Owner") {
+        if (signUpType.equals("Owner")) {
             adharNumberLayout.setErrorEnabled(false);
             GSTLayout.setErrorEnabled(false);
             hotelNameLayout.setErrorEnabled(false);
@@ -233,17 +236,17 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
             addressLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             addressLayout.setErrorEnabled(true);
             return false;
-        } else if (isValidAadharNumber() == false) {
+        } else if (!isValidAadharNumber()) {
             adharNumberLayout.setError("Required Field");
             adharNumberLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             adharNumberLayout.setErrorEnabled(true);
             return false;
-        } else if (signUpType == "Owner" && isValidGSTNumber() == false) {
+        } else if (signUpType.equals("Owner") && !isValidGSTNumber()) {
             GSTLayout.setError("Not valid");
             GSTLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             GSTLayout.setErrorEnabled(true);
             return false;
-        } else if (signUpType == "Owner" && (hotelNameEditText.getText().toString().trim().equals(""))) {
+        } else if (signUpType.equals("Owner") && (hotelNameEditText.getText().toString().trim().equals(""))) {
             hotelNameLayout.setError("Required Field");
             hotelNameLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             hotelNameLayout.setErrorEnabled(true);
@@ -273,14 +276,15 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
                 //Valid user so Sign up user
                 Log.d(TAG, "onActivityResult | Sign up success ");
                 progressBar.show(getSupportFragmentManager(), "Sign up");                    //Progress Bar Start
-                database.checkNumberWithType(mobile, signUpType, insertData, new CALLBACK() {
+                database.signUpUser(mobile, signUpType, insertData, new CALLBACK() {
                     @Override
                     public void callBackMethod(int result) {
                         Log.d(TAG, "signUp | callBackMethod: " + result);
                         progressBar.dismiss();   //Progress Bar End
                         if (result == 0) {
-                            Intent i = new Intent(SignUpScreen.this, OwnerLoginScreen.class);
+                            Intent i = new Intent(SignUpScreen.this, LoginScreen.class);
                             startActivity(i);
+                            finish();
                         }
                     }
                 });
