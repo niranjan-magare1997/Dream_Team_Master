@@ -1,5 +1,6 @@
 package com.example.dream_team.common_activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -53,6 +54,7 @@ public class OTPDialogActivity extends AppCompatActivity {
         setNumber.setText(mobileNumber);
     }
 
+    @SuppressLint("SetTextI18n")
     public void verifyOTP(View view) {
         String OTP = pinView.getText().toString();
         if (OTP.length() != 6) {
@@ -82,17 +84,19 @@ public class OTPDialogActivity extends AppCompatActivity {
     }
 
     private void sendOTP(String phNo) {
-        phoneAuthProvider.verifyPhoneNumber("+91" + phNo.trim(), 60L, TimeUnit.SECONDS, this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        phoneAuthProvider.verifyPhoneNumber("+91" + phNo.trim(), 120L, TimeUnit.SECONDS, this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(s, forceResendingToken);
                 Log.d(TAG, "Verification code sent. " + s);
                 verificationID = s;
-                new CountDownTimer(60000, 1000) {
+                new CountDownTimer(120000, 1000) {
+                    @SuppressLint("SetTextI18n")
                     public void onTick(long millisUntilFinished) {
                         timer.setText("Seconds remaining: " + millisUntilFinished / 1000);
                     }
 
+                    @SuppressLint("SetTextI18n")
                     public void onFinish() {
                         timer.setText("Done!");
                     }

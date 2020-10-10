@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initialization();
 
+        COMMON.setSharedPreference(getSharedPreferences("DREAM_TEAM_DATA", MODE_PRIVATE));
+
         //for splash screen
         new Handler().postDelayed(new Runnable() {
             @Override

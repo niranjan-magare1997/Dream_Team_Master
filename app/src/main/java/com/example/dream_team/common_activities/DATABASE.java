@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class DATABASE {
@@ -34,7 +35,7 @@ public class DATABASE {
     private CONSTANTS constants;
     private DocumentReference menuReference;
     private String userDocument = null;
-    private Object arr[];
+    private Object[] arr;
     private List<String> arr2 = new ArrayList<String>(); // to cast an array into List
 
     public DATABASE() {
@@ -44,7 +45,7 @@ public class DATABASE {
 
     public void checkMobilePassword(String id, String password, final CheckingNewInterface callback) {
         try {
-            Log.d(TAG, "checkUserExist | Checking user ");
+            Log.d(TAG, "checkMobilePassword | Checking user ");
             final Map<String, Object> responseObject = new HashMap<>();
 
             db.collection(constants.HOTEL_CRED())
@@ -55,48 +56,48 @@ public class DATABASE {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                Log.d(TAG, "checkUserExist | onComplete: " + task.getResult());
-                                if (task.getResult().isEmpty()) {
-                                    Log.e(TAG, "checkUserExist | onComplete | No user found with this credentials ");
+                                Log.d(TAG, "checkMobilePassword | onComplete: " + task.getResult());
+                                if (Objects.requireNonNull(task.getResult()).isEmpty()) {
+                                    Log.e(TAG, "checkMobilePassword | onComplete | No user found with this credentials ");
                                     responseObject.put("MESSAGE", "User not registered ");
                                     callback.callbackWithData(1, responseObject);
                                 } else {
-                                    Log.d(TAG, "checkUserExist | onComplete | Valid User ");
+                                    Log.d(TAG, "checkMobilePassword | onComplete | Valid User ");
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         final String docName = document.getString(constants.DOCUMENT_NAME());
                                         final String token = document.getString(constants.TOKEN());
                                         final String type = document.getString(constants.TYPE());
 
-                                        Log.d(TAG, "checkUserExist | onComplete | Data =>  " + docName + "\n Token => " + token + "\nType => " + type);
+                                        Log.d(TAG, "checkMobilePassword | onComplete | Data =>  " + docName + "\n Token => " + token + "\nType => " + type);
 
                                         if (token.length() == 0) {
-                                            Log.e(TAG, "checkUserExist | onComplete | Token not present. First sign up please. ");
+                                            Log.e(TAG, "checkMobilePassword | onComplete | Token not present. First sign up please. ");
                                             responseObject.put("MESSAGE", "User not signed up");
                                             callback.callbackWithData(1, responseObject);
                                         } else {
-                                            String dbToken = LoginScreen.getSharedData(constants.TOKEN()).trim();
-                                            Log.d(TAG, "checkUserExist | onComplete | dbToken => " + dbToken);
+                                            String dbToken = COMMON.getSharedData(constants.TOKEN()).trim();
+                                            Log.d(TAG, "checkMobilePassword | onComplete | dbToken => " + dbToken);
                                             if (dbToken.length() > 0) {
                                                 //if (!dbToken.equals(token)) {
-                                                Log.d(TAG, "checkUserExist | onComplete | dbToken and firebase token are different so updating db token.");
-                                                LoginScreen.setSharedData(constants.TOKEN(), token);
-                                                LoginScreen.setSharedData(constants.DOCUMENT_NAME(), docName);
-                                                LoginScreen.setSharedData(constants.TYPE(), type);
+                                                Log.d(TAG, "checkMobilePassword | onComplete | dbToken and firebase token are different so updating db token.");
+                                                COMMON.setSharedData(constants.TOKEN(), token);
+                                                COMMON.setSharedData(constants.DOCUMENT_NAME(), docName);
+                                                COMMON.setSharedData(constants.TYPE(), type);
                                                 //} else {
-                                                //    Log.d(TAG, "checkUserExist | onComplete | dbToken and firebase token are SAME ");
+                                                //    Log.d(TAG, "checkMobilePassword | onComplete | dbToken and firebase token are SAME ");
                                                 //}
                                             } else {
-                                                Log.d(TAG, "checkUserExist | onComplete | dbToken not present so inserting ");
-                                                LoginScreen.setSharedData(constants.TOKEN(), token);
-                                                LoginScreen.setSharedData(constants.DOCUMENT_NAME(), docName);
-                                                LoginScreen.setSharedData(constants.TYPE(), type);
+                                                Log.d(TAG, "checkMobilePassword | onComplete | dbToken not present so inserting ");
+                                                COMMON.setSharedData(constants.TOKEN(), token);
+                                                COMMON.setSharedData(constants.DOCUMENT_NAME(), docName);
+                                                COMMON.setSharedData(constants.TYPE(), type);
                                             }
 
-                                            if (LoginScreen.getSharedData("REMEMBER").equals("false") || LoginScreen.getSharedData("REMEMBER").equals("")) {
+                                            if (COMMON.getSharedData("REMEMBER").equals("false") || COMMON.getSharedData("REMEMBER").equals("")) {
                                                 if (LoginScreen.rememberMeCheckedOrNot) {
-                                                    LoginScreen.setSharedData("REMEMBER", "true");
+                                                    COMMON.setSharedData("REMEMBER", "true");
                                                 } else {
-                                                    LoginScreen.setSharedData("REMEMBER", "false");
+                                                    COMMON.setSharedData("REMEMBER", "false");
                                                 }
                                             }
 
@@ -112,12 +113,12 @@ public class DATABASE {
                         }
                     });
         } catch (Exception e) {
-            Log.e(TAG, "checkUserExist: " + e.getMessage());
+            Log.e(TAG, "checkMobilePassword: " + e.getMessage());
             callback.callbackWithData(2, null);
         }
     }
 
-    public void checkNumberWithType(String mobile, final String type, final Map<String, Object> data, final CALLBACK callback) {
+    public void signUpUser(String mobile, final String type, final Map<String, Object> data, final CALLBACK callback) {
         try {
             Log.d(TAG, "checkNumberWithType | In function checkNumberWithType Mobile => " + mobile + " Type => " + type);
             db.collection(constants.HOTEL_CRED())
@@ -139,7 +140,7 @@ public class DATABASE {
 
                                         if (document.contains(constants.TOKEN())) {
                                             if (document.getString(constants.TOKEN()).trim().length() == 0) {
-                                                if (type == "Owner") {
+                                                if (type.equals("Owner")) {
                                                     insertOwnerInfo(data, document.getId(), callback);
                                                 } else {
                                                     insertEmployeeInfo(data, type, document.getId(), document.get(constants.DOCUMENT_NAME()).toString(), callback);
@@ -149,7 +150,7 @@ public class DATABASE {
                                             }
                                         } else {
                                             Log.d(TAG, "checkNumberWithType | onComplete | No token found ");
-                                            if (type == "Owner") {
+                                            if (type.equals("Owner")) {
                                                 insertOwnerInfo(data, document.getId(), callback);
                                             } else {
                                                 insertEmployeeInfo(data, type, document.getId(), document.get(constants.DOCUMENT_NAME()).toString(), callback);
@@ -176,10 +177,10 @@ public class DATABASE {
             Log.d(TAG, "insertEmployeeInfo | Data " + data);
             Log.d(TAG, "insertEmployeeInfo | Type " + type);
             Log.d(TAG, "insertEmployeeInfo | docName " + docName);
-            Long timestamp = System.currentTimeMillis();
+            long timestamp = System.currentTimeMillis();
 
             final Map<String, Object> appCredData = new HashMap<>();
-            appCredData.put(constants.TOKEN(), UUID.randomUUID().toString() + "_-_" + timestamp.toString());
+            appCredData.put(constants.TOKEN(), UUID.randomUUID().toString() + "_-_" + timestamp);
             appCredData.put(constants.TYPE(), type.toUpperCase());
             appCredData.put(constants.PASSWORD(), data.get(constants.PASSWORD()));
 
@@ -228,8 +229,8 @@ public class DATABASE {
                     .addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
                         @Override
                         public void onSuccess(List<Task<?>> tasks) {
-                            LoginScreen.setSharedData(constants.TOKEN(), appCredData.get(constants.TOKEN()).toString());
-                            LoginScreen.setSharedData("DOC_NAME", credsDocName);
+                            COMMON.setSharedData(constants.TOKEN(), appCredData.get(constants.TOKEN()).toString());
+                            COMMON.setSharedData("DOC_NAME", credsDocName);
 
                             Log.d(TAG, "insertOwnerInfo | onSuccess | DOC_NAME => " + appCredData.get(constants.TOKEN()).toString());
                             Log.d(TAG, "insertOwnerInfo | onSuccess | TOKEN => " + appCredData.get(constants.DOCUMENT_NAME()).toString());
@@ -256,14 +257,14 @@ public class DATABASE {
             Log.d(TAG, "insertOwnerInfo | In function. ");
             Log.d(TAG, "insertOwnerInfo | Document Id => " + docId + "\nDATA " + data);
             Log.d(TAG, "insertOwnerInfo | PASSWORD => " + data.get(constants.PASSWORD()));
-            Long timestamp = System.currentTimeMillis();
+            long timestamp = System.currentTimeMillis();
 
             final Map<String, Object> appCredData = new HashMap<>();
             appCredData.put(constants.MOBILE(), data.get(constants.MOBILE()));
             appCredData.put(constants.PASSWORD(), data.get(constants.PASSWORD()));
             appCredData.put(constants.TYPE(), "OWNER");
-            appCredData.put(constants.DOCUMENT_NAME(), data.get(constants.HOTEL_NAME()) + "_-_" + timestamp.toString());
-            appCredData.put(constants.TOKEN(), UUID.randomUUID().toString() + "_-_" + timestamp.toString());
+            appCredData.put(constants.DOCUMENT_NAME(), data.get(constants.HOTEL_NAME()) + "_-_" + timestamp);
+            appCredData.put(constants.TOKEN(), UUID.randomUUID().toString() + "_-_" + timestamp);
 
             Log.d(TAG, "insertOwnerInfo | appCredData " + appCredData);
 
@@ -310,8 +311,6 @@ public class DATABASE {
                     .addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
                         @Override
                         public void onSuccess(List<Task<?>> tasks) {
-                            LoginScreen.setSharedData(constants.TOKEN(), appCredData.get(constants.TOKEN()).toString());
-                            LoginScreen.setSharedData("DOC_NAME", appCredData.get(constants.DOCUMENT_NAME()).toString());
                             Log.d(TAG, "insertOwnerInfo | onSuccess | TOKEN => " + appCredData.get(constants.TOKEN()).toString());
                             Log.d(TAG, "insertOwnerInfo | onSuccess | DOC_NAME => " + appCredData.get(constants.DOCUMENT_NAME()).toString());
                             Log.d(TAG, "insertOwnerInfo | onSuccess | REMEMBER => " + LoginScreen.rememberMeCheckedOrNot);
@@ -352,7 +351,7 @@ public class DATABASE {
 
     public void addMenuCategory(final String category, final CALLBACK callback) {
         try {
-            userDocument = LoginScreen.getSharedData("DOCUMENT_NAME");
+            userDocument = COMMON.getSharedData("DOCUMENT_NAME");
             menuReference = db.collection(constants.WHOLE_DB()).document(userDocument).collection(constants.ADD_MENU()).document(constants.CATEGORIES());
 
             final Object[][] arr = {null};
@@ -438,7 +437,8 @@ public class DATABASE {
             final Map<String, Object> responseObj = new HashMap<>();
             final List<String> categories = new ArrayList<>();
 
-            userDocument = LoginScreen.getSharedData("DOCUMENT_NAME");
+            userDocument = COMMON.getSharedData("DOCUMENT_NAME");
+            Log.d(TAG, "addDish | userDocument => " + userDocument);
             menuReference = db.collection(constants.WHOLE_DB()).document(userDocument).collection(constants.ADD_MENU()).document(constants.CATEGORIES());
 
             menuReference.get()

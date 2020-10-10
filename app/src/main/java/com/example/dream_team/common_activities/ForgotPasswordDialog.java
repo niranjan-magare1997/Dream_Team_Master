@@ -90,12 +90,14 @@ public class ForgotPasswordDialog extends DialogFragment implements View.OnClick
 
                     if (result == 0) {
                         //All good
-                        Toast.makeText(view.getContext(), "Password updated successfully", Toast.LENGTH_SHORT);
+                        COMMON.showSnackBar("Password updated successfully",LoginScreen.getView());
+//                        Toast.makeText(view.getContext(), "Password updated successfully", Toast.LENGTH_SHORT);
                     } else {
                         //Gadbad zaali re baba
-                        Toast.makeText(view.getContext(), "Unable to update password", Toast.LENGTH_SHORT);
+                        COMMON.showSnackBar("Unable to update password",LoginScreen.getView());
+//                        Toast.makeText(view.getContext(), "Unable to update password", Toast.LENGTH_SHORT);
                     }
-
+                    dismiss();
                 }
             });
         }
