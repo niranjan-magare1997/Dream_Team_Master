@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginScreen extends AppCompatActivity implements View.OnClickListener {
+    @SuppressLint("StaticFieldLeak")
     private static View loginView;
     public String TAG = "Dream_Team | LoginScreen";
     private TextInputLayout userMobileNumber, userPassword;
@@ -104,7 +105,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         loginView = v;
         database = new DATABASE();
 
-        if (COMMON.checkConnectivity(LoginScreen.this)){
+        if (COMMON.checkConnectivity(LoginScreen.this)) {
             Log.d(TAG, "onClick | Checkbox Status => " + rememberMeCheckbox.isChecked());
             rememberMeCheckedOrNot = rememberMeCheckbox.isChecked();
             switch (v.getId()) {
@@ -118,9 +119,9 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
                     startSignUpActivity();
                     break;
             }
-        }else {
+        } else {
             Log.d(TAG, "onClick | No connection");
-            COMMON.showSnackBar("Please Check your internet connection!",loginView);
+            COMMON.showSnackBar("No internet connection!", loginView);
         }
     }
 
@@ -158,24 +159,32 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
             progressBar.show(getSupportFragmentManager(), "Sign up");                    //Progress Bar Start
 
-            database.checkMobilePassword(mobile, password, new CheckingNewInterface() {
+            database.logInUser(mobile, password, new CheckingNewInterface() {
                 @Override
                 public void callbackWithData(int result, final Map<String, Object> data) {
                     Log.d(TAG, "callbackWithData | Data => " + data);
-                    Log.d(TAG, "callbackWithData| Contains key => " + data.containsKey("TYPE"));
-                    Log.d(TAG, "callbackWithData | Type => " + data.get("TYPE"));
 
                     if (result == 0 && data.containsKey("TYPE")) {
                         if (Objects.equals(data.get("TYPE"), "OWNER")) {
                             Log.d(TAG, "callbackWithData | Owner is logged in.... ");
-//                            COMMON.showSnackBar("Owner Log in Successful", loginView);
+                            Toast.makeText(LoginScreen.this, "Owner is logged in....", Toast.LENGTH_SHORT).show();
                             Intent i = new Intent(LoginScreen.this, OwnerLoginScreen.class);
                             startActivity(i);
                         } else {
                             Log.d(TAG, "callbackWithData | Not owner. ");
                         }
-                    }else{
-                        COMMON.showSnackBar("User Not found", loginView);
+                    } else {
+                        if (data.containsKey("MESSAGE")) {
+                            String message = Objects.requireNonNull(data.get("MESSAGE")).toString();
+                            if (Objects.equals(message, "Wrong password")) {
+                                userPassword.setError(message);
+                                userPassword.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+                                userMobileNumber.setErrorEnabled(true);
+                            }
+                            COMMON.showSnackBar(message, loginView);
+                        } else {
+                            COMMON.showSnackBar("User Not registered", loginView);
+                        }
                     }
                     progressBar.dismiss();   //Progress Bar End
                 }
