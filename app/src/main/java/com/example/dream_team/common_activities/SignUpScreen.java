@@ -17,12 +17,14 @@ import android.widget.Toast;
 
 import com.example.dream_team.R;
 import com.example.dream_team.interfaces.CALLBACK;
+import com.example.dream_team.interfaces.CheckingNewInterface;
 import com.example.dream_team.modal_class.CONSTANTS;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,6 +44,8 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
     private int Activity_Code = 101;
     private final Map<String, Object> insertData = new HashMap<>();
     private String mobile;
+    @SuppressLint("StaticFieldLeak")
+    private static View signUpView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,9 +111,9 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
     @SuppressLint("ShowToast")
     public void signUp(final View view) {
         Log.d(TAG, "signUp | In sign up with type " + signUpType);
-
-        if (!COMMON.checkConnectivity((Activity) getBaseContext())) {
-            COMMON.showSnackBar("Please Check Your Internet Connection!",view);
+        signUpView = view;
+        if (!COMMON.checkConnectivity(SignUpScreen.this)) {
+            COMMON.showSnackBar("No Internet Connection!", signUpView);
 //            Toast.makeText(this,"Please Check Your Internet Connection!",Toast.LENGTH_SHORT);
         } else {
             if (validation()) {
@@ -125,6 +129,7 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
                         insertData.put(constants.GST_NO(), GSTEditText.getText().toString());
                         insertData.put(constants.HOTEL_NAME(), hotelNameEditText.getText().toString());
 
+                        progressBar.show(getSupportFragmentManager(), "Sign Up");
                         //Call to check if number exist in our database or not.
                         database.checkNumberExist(mobile, new CALLBACK() {
                             @Override
@@ -136,24 +141,27 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
                                     startActivityForResult(i, Activity_Code);
                                 } else {
                                     //Number Not found
-                                    COMMON.showSnackBar("Sign up Failed",view);
+                                    COMMON.showSnackBar("Please register your number first", signUpView);
                                 }
+                                progressBar.dismiss();
                             }
                         });
                         break;
                     case "Waiter":
                     case "Chef":
-                        database.signUpUser(mobile, signUpType, insertData, new CALLBACK() {
+                        database.signUpUser(mobile, signUpType, insertData, new CheckingNewInterface() {
                             @Override
-                            public void callBackMethod(int result) {
-                                Log.d(TAG, "signUp | callBackMethod: " + result);
+                            public void callbackWithData(int result, Map<String, Object> data) {
+                                Log.d(TAG, "signUp | callBackMethod: Result => " + result);
+                                Log.d(TAG, "signUp | callBackMethod: Data => " + data);
+
                                 //progressBar.dismiss();   //Progress Bar End
-                                if (result == 0){
+                                if (result == 0) {
                                     Intent i = new Intent(SignUpScreen.this, OTPDialogActivity.class);
                                     i.putExtra("Mobile", mobile);
                                     startActivityForResult(i, Activity_Code);
-                                }else {
-                                    COMMON.showSnackBar("Sign up Failed",view);
+                                } else {
+                                    COMMON.showSnackBar("Sign up Failed", signUpView);
                                 }
                             }
                         });
@@ -168,7 +176,7 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private boolean isValidGSTNumber() {
-        String gst = GSTEditText.getText().toString().trim();
+        String gst = Objects.requireNonNull(GSTEditText.getText()).toString().trim();
         Log.d(TAG, "isValidGSTNumber | Number " + gst + " Length => " + gst.length());
         if (gst.equals("")) return true;
         String regex = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$";
@@ -237,7 +245,7 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
             addressLayout.setErrorEnabled(true);
             return false;
         } else if (!isValidAadharNumber()) {
-            adharNumberLayout.setError("Required Field");
+            adharNumberLayout.setError("Not valid");
             adharNumberLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             adharNumberLayout.setErrorEnabled(true);
             return false;
@@ -259,7 +267,7 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void actionDialDirect(View view) {
-        String phoneNumber = "9999999999";
+        String phoneNumber = "01223334444";
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
         startActivity(intent);
     }
@@ -276,21 +284,26 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
                 //Valid user so Sign up user
                 Log.d(TAG, "onActivityResult | Sign up success ");
                 progressBar.show(getSupportFragmentManager(), "Sign up");                    //Progress Bar Start
-                database.signUpUser(mobile, signUpType, insertData, new CALLBACK() {
+                database.signUpUser(mobile, signUpType, insertData, new CheckingNewInterface() {
                     @Override
-                    public void callBackMethod(int result) {
-                        Log.d(TAG, "signUp | callBackMethod: " + result);
+                    public void callbackWithData(int result, Map<String, Object> data) {
+                        Log.d(TAG, "signUp | callBackMethod: Result => " + result);
+                        Log.d(TAG, "signUp | callBackMethod: Data => " + data);
+
                         progressBar.dismiss();   //Progress Bar End
                         if (result == 0) {
                             Intent i = new Intent(SignUpScreen.this, LoginScreen.class);
                             startActivity(i);
                             finish();
+                        } else {
+                            COMMON.showSnackBar(Objects.requireNonNull(data.get("MESSAGE")).toString(), signUpView);
                         }
                     }
                 });
             } else {
                 //User not verified
                 Log.d(TAG, "onActivityResult | Sign up failed ");
+                COMMON.showSnackBar("OTP verification failed", signUpView);
             }
         }
     }
