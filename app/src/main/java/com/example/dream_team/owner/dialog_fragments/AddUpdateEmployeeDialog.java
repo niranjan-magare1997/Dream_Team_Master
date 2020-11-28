@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ public class AddUpdateEmployeeDialog extends DialogFragment implements View.OnCl
     private TextInputLayout nameLayout, numberLayout;
     private Switch statusSwitch;
     private Button saveEmployee;
+    private Spinner spinner;
     private byte addUpdateStauts;
     private ArrayList list;
 
@@ -37,7 +41,7 @@ public class AddUpdateEmployeeDialog extends DialogFragment implements View.OnCl
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.add_update_employee,container);
+        View view = inflater.inflate(R.layout.add_update_employee, container);
 
         nameEditText = view.findViewById(R.id.emp_name);
         numberEditText = view.findViewById(R.id.emp_number);
@@ -46,6 +50,19 @@ public class AddUpdateEmployeeDialog extends DialogFragment implements View.OnCl
         statusSwitch = view.findViewById(R.id.statusSwitch);
         saveEmployee = view.findViewById(R.id.btn_save);
         saveEmployee.setOnClickListener(this);
+        spinner = view.findViewById(R.id.typeChoice);
+        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(getContext(), R.array.typeChoice, R.layout.spinner_choose_color);
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_text_color);
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener((new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                //get String here
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        }));
+
 
         //for update button
         if (Constant.UPDATE == addUpdateStauts) {
@@ -63,9 +80,9 @@ public class AddUpdateEmployeeDialog extends DialogFragment implements View.OnCl
         switch (view.getId()) {
             case R.id.btn_save:
                 if (Constant.ADD == addUpdateStauts)
-                    Toast.makeText(getContext(),"At add",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "At add", Toast.LENGTH_SHORT).show();
                 else if (Constant.UPDATE == addUpdateStauts)
-                    Toast.makeText(getContext(),"At update",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "At update", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

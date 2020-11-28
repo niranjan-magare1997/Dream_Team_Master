@@ -45,6 +45,15 @@
                       android:fontFamily="@font/comicrelief"
                       android:textSize="16sp"
                       android:text="9999999999"/>
+                  <TextView
+                      android:id="@+id/addEmployeeType"
+                      android:layout_marginTop="2dp"
+                      android:textColor="@color/colorPrimaryDark"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/comicrelief"
+                      android:textSize="16sp"
+                      android:text="Cheff"/>
               </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
