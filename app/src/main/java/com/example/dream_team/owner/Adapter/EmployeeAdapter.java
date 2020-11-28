@@ -47,6 +47,7 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     public void onBindViewHolder(@NonNull EmployeeHolder holder, int position) {
         holder.employeeName.setText(mList.get(position));
         holder.employeeNumber.setText(mList.get(position));
+        holder.employeeType.setText(mList.get(position));
         holder.status.setCardBackgroundColor(Color.RED);
         holder.editEmp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +110,7 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
 
 
 public class EmployeeHolder extends RecyclerView.ViewHolder {
-    TextView employeeName, employeeNumber;
+    TextView employeeName, employeeNumber,employeeType;
     CardView status;
     ImageView editEmp, deleteEmp;
 
@@ -117,6 +118,7 @@ public class EmployeeHolder extends RecyclerView.ViewHolder {
         super(itemView);
         employeeName = itemView.findViewById(R.id.addEmployeeName);
         employeeNumber = itemView.findViewById(R.id.addEmployeeNumber);
+        employeeType = itemView.findViewById(R.id.addEmployeeType);
         status = itemView.findViewById(R.id.statusCardView);
         editEmp = itemView.findViewById(R.id.editEmployee);
         deleteEmp = itemView.findViewById(R.id.deleteEmployee);

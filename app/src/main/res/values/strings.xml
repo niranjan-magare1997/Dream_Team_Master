@@ -14,5 +14,9 @@
         <item>Owner</item>
         <item>Waiter</item>
     </string-array>
+    <string-array name="typeChoice">
+        <item>Cheff</item>
+        <item>Waiter</item>
+    </string-array>
 
 </resources>
