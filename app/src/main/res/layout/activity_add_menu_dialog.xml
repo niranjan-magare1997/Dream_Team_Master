@@ -1,50 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp">
-    <LinearLayout
-        android:layout_width="330dp"
-        android:layout_height="153dp"
-        android:padding="10dp"
-        android:gravity="center"
-        android:orientation="vertical">
     <TextView
+        android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_gravity="center"
+       android:layout_centerHorizontal="true"
         android:text="Enter Category "
         android:fontFamily="@font/comicrelief"
         android:textColor="@color/colorBlueDark"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_marginTop="18dp"
-        android:layout_height="match_parent">
     <EditText
         android:id="@+id/categoryEditText"
-        android:layout_width="170dp"
-
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:padding="5dp"
+        android:layout_marginTop="20dp"
         android:textStyle="normal"
         android:textSize="18sp"
-        android:layout_gravity="center"
         android:textColor="@color/colorBlueDark"
         android:fontFamily="@font/comicrelief"
-        android:layout_height="wrap_content"/>
+        />
         <Button
-        android:id="@+id/addCategoryButton"
-        android:layout_width="120dp"
-        android:layout_height="45dp"
+            android:id="@+id/addCategoryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/categoryEditText"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/colorWhite"
             android:textSize="16sp"
             android:text="Add"
-            android:layout_gravity="center"
-            android:layout_marginLeft="17dp"
             android:fontFamily="@font/comicrelief"
-        android:background="@drawable/bg_ui" />
-    </LinearLayout>
-    </LinearLayout>
-    </LinearLayout>
+            android:background="@drawable/bg_ui" />
+</RelativeLayout>
+

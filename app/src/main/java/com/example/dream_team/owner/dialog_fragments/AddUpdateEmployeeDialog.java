@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dream_team.R;
@@ -23,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 public class AddUpdateEmployeeDialog extends DialogFragment implements View.OnClickListener {
+    private TextView text;
     private EditText nameEditText, numberEditText;
     private TextInputLayout nameLayout, numberLayout;
     private Switch statusSwitch;
@@ -42,7 +44,7 @@ public class AddUpdateEmployeeDialog extends DialogFragment implements View.OnCl
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_update_employee, container);
-
+        text = view.findViewById(R.id.text);
         nameEditText = view.findViewById(R.id.emp_name);
         numberEditText = view.findViewById(R.id.emp_number);
         nameLayout = view.findViewById(R.id.input_layout_name);
@@ -67,6 +69,7 @@ public class AddUpdateEmployeeDialog extends DialogFragment implements View.OnCl
         //for update button
         if (Constant.UPDATE == addUpdateStauts) {
             saveEmployee.setText("Update");
+            text.setText("Update Details");
             saveEmployee.setOnClickListener(this);
             nameEditText.setText(list.toString());
             numberEditText.setText(list.toString());

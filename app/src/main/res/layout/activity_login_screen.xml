@@ -6,11 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_header"
-    android:gravity="center"
-    android:paddingLeft="20dp"
-    android:paddingTop="20dp"
-    android:paddingRight="20dp"
-    android:paddingBottom="20dp"
+    android:padding="20dp"
     tools:context=".common_activities.LoginScreen">
     <TextView
         android:layout_width="wrap_content"
@@ -24,21 +20,13 @@
         android:id="@+id/parentScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/parentLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:padding="15dp"
-            android:layout_marginTop="70dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:padding="22dp"
-                android:layout_height="wrap_content">
+            android:layout_marginTop="35dp"
+            android:padding="25dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/userName"
@@ -71,6 +59,7 @@
                     android:layout_height="wrap_content"
                     android:textColorHint="@color/colorBlueDark"
                     android:hint="Password"
+                    android:layout_below="@+id/userName"
                     app:passwordToggleEnabled="true"
                     app:passwordToggleTint="@color/colorBlueDark"
                     android:layout_marginTop="7dp">
@@ -85,16 +74,10 @@
                         android:maxLines="1"
                         android:inputType="textPassword"/>
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="7dp"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
-
-                    <CheckBox
+                 <CheckBox
                         android:id="@+id/rememberMeCheckbox"
                         android:layout_width="wrap_content"
+                        android:layout_below="@+id/userPassword"
                         android:layout_weight="1"
                         android:text="Remember Me!"
                         android:textSize="14sp"
@@ -102,71 +85,63 @@
                         android:textColor="@color/colorGreenAccent"
                         android:buttonTint="@color/colorGreenAccent"
                         android:layout_height="wrap_content" />
-                    <TextView
-                        android:id="@+id/forgotPasswordLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/comicrelief"
-                        android:textColor="@color/colorGreenAccent"
-                        android:text="Forgot Password?"
-                        android:layout_weight="0"
-                        android:textSize="14sp"/>
-                </LinearLayout>
 
-                <Button
+            <Button
                     android:id="@+id/login_Button"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="70dp"
-                    android:layout_marginBottom="8dp"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:layout_below="@+id/rememberMeCheckbox"
+                    android:layout_centerHorizontal="true"
                     android:background="@drawable/bg_ui"
                     android:fontFamily="@font/comicrelief"
-                    android:gravity="center_horizontal"
                     android:letterSpacing="0.2"
                     android:padding="13dp"
                     android:text="LOGIN"
                     android:textColor="@color/colorWhite"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/forgotPasswordLabel"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="80dp"
-                android:padding="15dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-                    <!--                    <TextView-->
-                    <!--                        android:layout_width="0dp"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_weight="0.7"-->
-                    <!--                        android:textSize="14sp"-->
-                    <!--                        android:textStyle="bold"-->
-                    <!--                        android:text="Don't have an account ?"-->
-                    <!--                        android:fontFamily="@font/comicrelief"-->
-                    <!--                        android:textColor="#9E9D9D"/>-->
-
-                    <TextView
-                        android:id="@+id/createAccountLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/comicrelief"
-                        android:gravity="center"
-                        android:text="Don't have an account ? Create an account!"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/login_Button"
+                android:fontFamily="@font/comicrelief"
+                android:textColor="@color/colorGreenAccent"
+                android:text="Forgot Password?"
+                android:layout_weight="0"
+                android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/accountLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/forgotPasswordLabel"
+                android:layout_marginTop="45dp"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/comicrelief"
+                android:text="Don't have an account ?"
+                android:padding="5dp"
+                android:letterSpacing="0.05"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                android:textStyle="normal" />
+            <TextView
+                android:id="@+id/createAccountLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/accountLabel"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:padding="2dp"
+                android:fontFamily="@font/comicrelief"
+                android:letterSpacing="0.1"
+                android:text="Create an account!"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

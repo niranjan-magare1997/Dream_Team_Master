@@ -9,9 +9,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.dream_team.R;
+import com.example.dream_team.common_activities.DeleteDialogFragment;
 import com.example.dream_team.constants.Constant;
 import com.example.dream_team.owner.dialog_fragments.AddUpdateEmployeeDialog;
 
@@ -29,6 +29,34 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     private Context activity;
     private ArrayList<String> mList;
     private ArrayList<String> mListFull;
+    private Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<String> filteredList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0) {
+                filteredList.addAll(mListFull);
+            } else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                for (String item : mListFull) {
+                    if (item.toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            mList.clear();
+            mList.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public EmployeeAdapter(Context activity, ArrayList<String> list) {
         this.activity = activity;
@@ -61,7 +89,10 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
         holder.deleteEmp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(activity, "at delte", Toast.LENGTH_SHORT).show();
+                DeleteDialogFragment deleteDialogFragment = new DeleteDialogFragment();
+                FragmentManager fragmentManager = ((FragmentActivity) view.getContext()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                deleteDialogFragment.show(fragmentTransaction, "delete");
             }
         });
 
@@ -77,52 +108,20 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
         return filter;
     }
 
-    private Filter filter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-            ArrayList<String> filteredList=new ArrayList<>();
+    public class EmployeeHolder extends RecyclerView.ViewHolder {
+        TextView employeeName, employeeNumber, employeeType;
+        CardView status;
+        ImageView editEmp, deleteEmp;
 
-            if (charSequence == null || charSequence.length() == 0) {
-                filteredList.addAll(mListFull);
-            }
-            else {
-                String filterPattern=charSequence.toString().toLowerCase().trim();
+        public EmployeeHolder(@NonNull View itemView) {
+            super(itemView);
+            employeeName = itemView.findViewById(R.id.addEmployeeName);
+            employeeNumber = itemView.findViewById(R.id.addEmployeeNumber);
+            employeeType = itemView.findViewById(R.id.addEmployeeType);
+            status = itemView.findViewById(R.id.statusCardView);
+            editEmp = itemView.findViewById(R.id.editEmployee);
+            deleteEmp = itemView.findViewById(R.id.deleteEmployee);
 
-                for(String item:mListFull){
-                    if (item.toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }
-            }
-            FilterResults results=new FilterResults();
-            results.values=filteredList;
-            return results;
         }
-
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            mList.clear();
-            mList.addAll((List) filterResults.values);
-            notifyDataSetChanged();
-        }
-    };
-
-
-
-public class EmployeeHolder extends RecyclerView.ViewHolder {
-    TextView employeeName, employeeNumber,employeeType;
-    CardView status;
-    ImageView editEmp, deleteEmp;
-
-    public EmployeeHolder(@NonNull View itemView) {
-        super(itemView);
-        employeeName = itemView.findViewById(R.id.addEmployeeName);
-        employeeNumber = itemView.findViewById(R.id.addEmployeeNumber);
-        employeeType = itemView.findViewById(R.id.addEmployeeType);
-        status = itemView.findViewById(R.id.statusCardView);
-        editEmp = itemView.findViewById(R.id.editEmployee);
-        deleteEmp = itemView.findViewById(R.id.deleteEmployee);
-
     }
-}
 }
