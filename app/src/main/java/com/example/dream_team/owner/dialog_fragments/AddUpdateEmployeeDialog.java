@@ -43,7 +43,7 @@ public class AddUpdateEmployeeDialog extends DialogFragment implements View.OnCl
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.add_update_employee, container);
+        View view = inflater.inflate(R.layout.add_update_employee_dialog, container);
         text = view.findViewById(R.id.text);
         nameEditText = view.findViewById(R.id.emp_name);
         numberEditText = view.findViewById(R.id.emp_number);

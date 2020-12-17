@@ -10,9 +10,9 @@ import android.widget.TextView;
 import com.example.dream_team.R;
 import com.example.dream_team.common_activities.DeleteDialogFragment;
 import com.example.dream_team.constants.Constant;
-import com.example.dream_team.owner.dialog_fragments.AddUpdateCategoryDialog;
+import com.example.dream_team.owner.dialog_fragments.AddUpdateTableDialog;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -20,35 +20,35 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryHolder> {
+public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableHolder> {
     private Context activity;
-    private List<String> mList;
+    private ArrayList<String> mList;
 
-    public CategoryAdapter(Context activity, List<String> mList) {
+    public TableAdapter(Context activity, ArrayList<String> list) {
         this.activity = activity;
-        this.mList = mList;
+        this.mList = list;
     }
 
     @NonNull
     @Override
-    public CategoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(activity).inflate(R.layout.row_category, parent, false);
-        return new CategoryHolder(view);
+    public TableHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(activity).inflate(R.layout.row_table, parent, false);
+        return new TableHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryHolder holder, final int position) {
-        holder.categoryName.setText(mList.get(position));
-        holder.editCat.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(@NonNull TableHolder holder, int position) {
+        holder.tableNumber.setText("Table Number : "+mList.get(position)+"   Capacity : "+mList.get(position));
+        holder.editTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddUpdateCategoryDialog addUpdateEmployeeDialog = AddUpdateCategoryDialog.newInstance(Constant.UPDATE, mList.get(position));
+                AddUpdateTableDialog addUpdateTableDialog = AddUpdateTableDialog.newInstance(mList, Constant.UPDATE);
                 FragmentManager fragmentManager = ((FragmentActivity) view.getContext()).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                addUpdateEmployeeDialog.show(fragmentTransaction, "update");
+                addUpdateTableDialog.show(fragmentTransaction, "update");
             }
         });
-        holder.deleteCat.setOnClickListener(new View.OnClickListener() {
+        holder.deleteTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DeleteDialogFragment deleteDialogFragment = new DeleteDialogFragment();
@@ -65,15 +65,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return mList.size();
     }
 
-    public class CategoryHolder extends RecyclerView.ViewHolder {
-        TextView categoryName;
-        ImageView editCat, deleteCat;
+    public class TableHolder extends RecyclerView.ViewHolder {
+        TextView tableNumber;
+        ImageView editTable, deleteTable;
 
-        public CategoryHolder(@NonNull View itemView) {
+        public TableHolder(@NonNull View itemView) {
             super(itemView);
-            categoryName = itemView.findViewById(R.id.categoryName);
-            editCat = itemView.findViewById(R.id.editCategory);
-            deleteCat = itemView.findViewById(R.id.deleteCategory);
+            tableNumber = itemView.findViewById(R.id.tableNumber);
+            editTable = itemView.findViewById(R.id.editTable);
+            deleteTable = itemView.findViewById(R.id.deleteTable);
+
         }
     }
 }
+

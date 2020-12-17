@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="25dp">
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:text="Enter Details  "
+        android:fontFamily="@font/comicrelief"
+        android:textColor="@color/colorBlueDark"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_name"
+        android:layout_below="@+id/text"
+        android:layout_marginTop="10dp"
+        app:boxBackgroundMode="none"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeColor="@color/colorBlueDark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintTextAppearance="@color/colorBlueDark"
+        android:textColorHint="@color/colorBlueDark"
+        app:hintAnimationEnabled="true"
+        android:hint="Enter Table Number">
+
+        <EditText
+            android:id="@+id/tableNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:fontFamily="@font/comicrelief"
+            android:maxLength="10"
+            android:textColor="@color/colorBlueDark"
+            android:textColorHint="@color/colorBlueDark" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_name"
+        app:boxBackgroundMode="none"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeColor="@color/colorBlueDark"
+        app:hintTextAppearance="@color/colorBlueDark"
+        android:textColorHint="@color/colorBlueDark"
+        app:hintAnimationEnabled="true"
+        android:hint="Enter Table Capacity">
+        <EditText
+            android:id="@+id/capacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:fontFamily="@font/comicrelief"
+            android:maxLength="10"
+            android:textColor="@color/colorBlueDark"
+            android:textColorHint="@color/colorBlueDark" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_below="@id/input_layout_number"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/bg_ui"
+        android:fontFamily="@font/comicrelief"
+        android:letterSpacing="0.2"
+        android:padding="13dp"
+        android:text="SAVE"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+</RelativeLayout>

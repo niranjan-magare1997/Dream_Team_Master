@@ -34,7 +34,6 @@ public class OwnerLoginScreen extends AppCompatActivity {
         setContentView(R.layout.activity_owner_login_screen);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //setTitle("Owner DashBoard");
         Initialization();
     }
 
