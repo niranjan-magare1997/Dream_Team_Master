@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".owner.activities.AddTableScreen"></activity>
         <activity android:name=".owner.activities.EditDishScreen" />
         <activity android:name=".owner.activities.AddEmployeeScreen" />
         <activity android:name=".common_activities.ProfileScreenActivity" />

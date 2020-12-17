@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.dream_team.R;
+import com.example.dream_team.common_activities.DeleteDialogFragment;
 import com.example.dream_team.constants.Constant;
 import com.example.dream_team.constants.DishConstant;
 import com.example.dream_team.owner.dialog_fragments.AddUpdateDishDialog;
@@ -41,7 +42,9 @@ public class DishVH extends ChildViewHolder implements View.OnClickListener {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 addUpdateDishDialog.show(fragmentTransaction, "updatedish");
                 break;
-            case R.id.deleteDishIV:break;
+            case R.id.deleteDishIV: DeleteDialogFragment deleteDialogFragment = new DeleteDialogFragment();
+                FragmentManager fragmentManagerr = ((FragmentActivity) view.getContext()).getSupportFragmentManager();
+                deleteDialogFragment.show(fragmentManagerr, "delete");
         }
 
     }

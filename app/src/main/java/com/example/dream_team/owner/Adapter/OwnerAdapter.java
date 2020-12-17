@@ -14,6 +14,7 @@ import com.example.dream_team.R;
 import com.example.dream_team.constants.OwnerScreenConstant;
 import com.example.dream_team.owner.activities.AddEmployeeScreen;
 import com.example.dream_team.owner.activities.AddMenuScreen;
+import com.example.dream_team.owner.activities.AddTableScreen;
 
 import java.util.List;
 
@@ -21,9 +22,9 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 public class OwnerAdapter extends PagerAdapter {
+    Context context;
     private List<OwnerScreenConstant> models;
     private LayoutInflater layoutInflater;
-    Context context;
 
     public OwnerAdapter(List<OwnerScreenConstant> models, Context context) {
         this.models = models;
@@ -66,8 +67,10 @@ public class OwnerAdapter extends PagerAdapter {
                 } else if (position == 2) {
                     Intent intent = new Intent(context, AddMenuScreen.class);
                     context.startActivity(intent);
-                } else if (position == 3)
-                    Toast.makeText(context, "add", Toast.LENGTH_SHORT).show();
+                } else if (position == 3) {
+                    Intent intent = new Intent(context, AddTableScreen.class);
+                    context.startActivity(intent);
+                }
 
             }
         });
