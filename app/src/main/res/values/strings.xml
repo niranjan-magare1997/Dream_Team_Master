@@ -10,12 +10,12 @@
     <string name="forgot_password">Forgot Password ?</string>
     <string name="category">Choose Category</string>
     <string-array name="dropdownChoice">
-        <item>Cheff</item>
+        <item>Chef</item>
         <item>Owner</item>
         <item>Waiter</item>
     </string-array>
     <string-array name="typeChoice">
-        <item>Cheff</item>
+        <item>Chef</item>
         <item>Waiter</item>
     </string-array>
 
