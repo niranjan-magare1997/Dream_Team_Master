@@ -54,22 +54,20 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     }
 
     private void checkAlreadyLogin() {
-        String userToken = COMMON.getSharedData(constants.TOKEN());
-        String docName = COMMON.getSharedData(constants.DOCUMENT_NAME());
-        String remember = COMMON.getSharedData(constants.REMEMBER());
-        String userType = COMMON.getSharedData(constants.TYPE());
+        COMMON.setSharedPreference(getSharedPreferences("DREAM_TEAM_DATA", MODE_PRIVATE));
+        String docName = COMMON.getSharedData(constants.document_name());
+        String remember = COMMON.getSharedData(constants.remember_me());
+        String userType = COMMON.getSharedData(constants.type());
 
-        Log.d(TAG, "checkAlreadyLogin | Token: " + userToken + " Document Name: " + docName + " Remember: " + remember + " Type: " + userType);
+        Log.d(TAG, "checkAlreadyLogin | Document Name: " + docName + " Remember: " + remember + " Type: " + userType);
 
-        if (remember.equals("true") && userToken.length() > 0) {
-            Log.d(TAG, "checkAlreadyLogin | Token exist. Move to next screen ");
+        if (remember.equals("true") && docName.length() > 0) {
+            Log.d(TAG, "checkAlreadyLogin | Document name exist. Move to next screen ");
             if (userType.equals("OWNER")) {
                 Intent i = new Intent(LoginScreen.this, OwnerLoginScreen.class);
                 startActivity(i);
-            } else if (userType.equals("CHEFF") || userType.equals("WAITER")) {
+            } else if (userType.equals("CHEF") || userType.equals("WAITER")) {
                 Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
-                intent.putExtra(constants.DOCUMENT_NAME(), docName);
-                intent.putExtra(constants.TOKEN(), userToken);
                 startActivity(intent);
             }
         }
@@ -208,6 +206,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
             } else {
                 //User not verified
                 Log.d(TAG, "onActivityResult | Otp verification failed ");
+                Toast.makeText(this, "Otp verification failed...", Toast.LENGTH_SHORT).show();
             }
         }
     }

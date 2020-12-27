@@ -1,133 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/add_update_rmp_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="25dp">
+
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:text="Enter Details  "
         android:fontFamily="@font/comicrelief"
-        android:textColor="@color/colorBlueDark"/>
+        android:text="Enter Details  "
+        android:textColor="@color/colorBlueDark"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             android:layout_below="@+id/text"
-        app:boxBackgroundMode="none"
+        android:id="@+id/input_layout_name"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxStrokeColor="@color/colorBlueDark"
-        app:hintTextAppearance="@color/colorBlueDark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:hint="Employee Name"
         android:textColorHint="@color/colorBlueDark"
+        app:boxBackgroundMode="none"
+        app:boxStrokeColor="@color/colorBlueDark"
         app:hintAnimationEnabled="true"
-            android:hint="Person Name">
+        app:hintTextAppearance="@color/colorBlueDark">
 
-            <EditText
-                android:id="@+id/emp_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:inputType="text"
-                android:fontFamily="@font/comicrelief"
-                android:textColor="@color/colorBlueDark"
-                android:textColorHint="@color/colorBlueDark" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_number"
+        <EditText
+            android:id="@+id/emp_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_below="@+id/input_layout_name"
-            app:boxBackgroundMode="none"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxStrokeColor="@color/colorBlueDark"
-            app:hintTextAppearance="@color/colorBlueDark"
-            android:textColorHint="@color/colorBlueDark"
-            app:hintAnimationEnabled="true"
-            android:hint="Mobile Number">
-            <EditText
-                android:id="@+id/emp_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:fontFamily="@font/comicrelief"
-                android:maxLength="10"
-                android:textColor="@color/colorBlueDark"
-                android:textColorHint="@color/colorBlueDark" />
+            android:fontFamily="@font/comicrelief"
+            android:inputType="text"
+            android:textColor="@color/colorBlueDark"
+            android:textColorHint="@color/colorBlueDark" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
-        <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_number"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_name"
+        android:layout_marginTop="10dp"
+        android:hint="Mobile Number"
+        android:textColorHint="@color/colorBlueDark"
+        app:boxBackgroundMode="none"
+        app:boxStrokeColor="@color/colorBlueDark"
+        app:hintAnimationEnabled="true"
+        app:hintTextAppearance="@color/colorBlueDark">
+
+        <EditText
+            android:id="@+id/emp_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/ll"
-            android:layout_below="@+id/input_layout_number"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorBlueDark"
-                android:padding="5dp"
-                android:fontFamily="@font/comicrelief"
-                android:text="Choose type  : "
-                android:textStyle="bold"
-                android:textSize="18sp"/>
-            <Spinner
-                android:id="@+id/typeChoice"
-                style="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:dropDownWidth="wrap_content"
-                android:layout_marginLeft="-5dp"
-                android:layout_marginTop="10dp"
-                android:entries="@array/typeChoice"
-                android:spinnerMode="dialog"
-                android:prompt="@string/choose" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ll1"
+            android:fontFamily="@font/comicrelief"
+            android:inputType="number"
+            android:maxLength="10"
+            android:textColor="@color/colorBlueDark"
+            android:textColorHint="@color/colorBlueDark" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_number"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ll"
-            android:layout_marginTop="10dp"
+            android:fontFamily="@font/comicrelief"
             android:padding="5dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:textSize="18sp"
-                android:textColor="@color/colorBlueDark"
-                android:textStyle="bold"
-                android:fontFamily="@font/comicrelief"
-                android:text="Status : "/>
+            android:text="Choose type  : "
+            android:textColor="@color/colorBlueDark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/typeChoice"
+            style="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-5dp"
+            android:layout_marginTop="10dp"
+            android:dropDownWidth="wrap_content"
+            android:entries="@array/typeChoice"
+            android:prompt="@string/choose"
+            android:spinnerMode="dialog" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/comicrelief"
+            android:padding="5dp"
+            android:text="Status : "
+            android:textColor="@color/colorBlueDark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
         <Switch
             android:id="@+id/statusSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"/>
-        </LinearLayout>
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_below="@id/ll1"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/bg_ui"
-            android:fontFamily="@font/comicrelief"
-            android:letterSpacing="0.2"
-            android:padding="13dp"
-            android:text="SAVE"
-            android:textColor="@color/colorWhite"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_marginLeft="40dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/bg_ui"
+        android:fontFamily="@font/comicrelief"
+        android:letterSpacing="0.2"
+        android:padding="13dp"
+        android:text="SAVE"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 </RelativeLayout>

@@ -88,18 +88,23 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if (adapterView.getSelectedItem().toString().equals("Owner")) {
-            findViewById(R.id.linearLayout).setVisibility(View.VISIBLE);
-            signUpType = "Owner";
-        } else if (adapterView.getSelectedItem().toString().equals("Waiter")) {
-            signUpType = "Waiter";
-            findViewById(R.id.linearLayout).setVisibility(View.INVISIBLE);
-        } else if (adapterView.getSelectedItem().toString().equals("Cheff")) {
-            signUpType = "Chef";
-            findViewById(R.id.linearLayout).setVisibility(View.INVISIBLE);
-        } else {
-            signUpType = "";
-            findViewById(R.id.linearLayout).setVisibility(View.INVISIBLE);
+        switch (adapterView.getSelectedItem().toString()) {
+            case "Owner":
+                findViewById(R.id.linearLayout).setVisibility(View.VISIBLE);
+                signUpType = "Owner";
+                break;
+            case "Waiter":
+                signUpType = "Waiter";
+                findViewById(R.id.linearLayout).setVisibility(View.INVISIBLE);
+                break;
+            case "Chef":
+                signUpType = "Chef";
+                findViewById(R.id.linearLayout).setVisibility(View.INVISIBLE);
+                break;
+            default:
+                signUpType = "";
+                findViewById(R.id.linearLayout).setVisibility(View.INVISIBLE);
+                break;
         }
     }
 
@@ -118,16 +123,16 @@ public class SignUpScreen extends AppCompatActivity implements AdapterView.OnIte
         } else {
             if (validation()) {
                 mobile = mobileEditText.getText().toString();
-                insertData.put(constants.MOBILE(), mobileEditText.getText().toString());
-                insertData.put(constants.NAME(), userNameEditText.getText().toString());
-                insertData.put(constants.PASSWORD(), passwordEditText.getText().toString());
-                insertData.put(constants.ADDRESS(), addressEditText.getText().toString());
+                insertData.put(constants.mobile(), mobileEditText.getText().toString());
+                insertData.put(constants.name(), userNameEditText.getText().toString());
+                insertData.put(constants.password(), passwordEditText.getText().toString());
+                insertData.put(constants.address(), addressEditText.getText().toString());
 
                 switch (signUpType) {
                     case "Owner":
-                        insertData.put(constants.AADHAR(), adharNumberEditText.getText().toString());
-                        insertData.put(constants.GST_NO(), GSTEditText.getText().toString());
-                        insertData.put(constants.HOTEL_NAME(), hotelNameEditText.getText().toString());
+                        insertData.put(constants.aadhar(), adharNumberEditText.getText().toString());
+                        insertData.put(constants.gst_number(), GSTEditText.getText().toString());
+                        insertData.put(constants.hotel_name(), hotelNameEditText.getText().toString());
 
                         progressBar.show(getSupportFragmentManager(), "Sign Up");
                         //Call to check if number exist in our database or not.

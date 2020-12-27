@@ -27,19 +27,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 public class DATABASE {
-    private String TAG = "Dream_Team | DATABASE ";
-    private FirebaseFirestore db;
-    private CONSTANTS constants;
+    private static final String TAG = "Dream_Team | DATABASE ";
+    private static FirebaseFirestore db;
     private DocumentReference menuReference;
     private String userDocument = null;
     private Object[] arr;
     private List<String> arr2 = new ArrayList<String>(); // to cast an array into List
 
     public DATABASE() {
-        constants = new CONSTANTS();
         db = FirebaseFirestore.getInstance();
     }
 
@@ -48,8 +45,8 @@ public class DATABASE {
             Log.d(TAG, "checkUserExist | Checking user exist or not ");
             final Map<String, Object> responseObject = new HashMap<>();
 
-            db.collection(constants.HOTEL_CRED())
-                    .whereEqualTo(constants.MOBILE(), id)
+            db.collection(CONSTANTS.hotel_cred())
+                    .whereEqualTo(CONSTANTS.mobile(), id)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -58,30 +55,30 @@ public class DATABASE {
                             if (task.isSuccessful() && !Objects.requireNonNull(task.getResult()).isEmpty()) {
                                 Log.d(TAG, "checkUserExist | onComplete | User exist ");
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    final String docName = document.getString(constants.DOCUMENT_NAME());
-//                                    final String token = document.getString(constants.TOKEN());
-                                    final String type = document.getString(constants.TYPE());
-                                    final String dbPassword = document.getString(constants.PASSWORD());
+                                    final String docName = document.getString(CONSTANTS.document_name());
+//                                    final String token = document.getString(CONSTANTS.TOKEN());
+                                    final String type = document.getString(CONSTANTS.type());
+                                    final String dbPassword = document.getString(CONSTANTS.password());
 
                                     if (password.equals(dbPassword)) {
-//                                        COMMON.setSharedData(constants.TOKEN(), token);
-                                        COMMON.setSharedData(constants.DOCUMENT_NAME(), docName);
-                                        COMMON.setSharedData(constants.TYPE(), type);
+//                                        COMMON.setSharedData(CONSTANTS.TOKEN(), token);
+                                        COMMON.setSharedData(CONSTANTS.document_name(), docName);
+                                        COMMON.setSharedData(CONSTANTS.type(), type);
                                         if (LoginScreen.rememberMeCheckedOrNot) {
-                                            COMMON.setSharedData("REMEMBER", "true");
+                                            COMMON.setSharedData(CONSTANTS.remember_me(), "true");
                                         } else {
-                                            COMMON.setSharedData("REMEMBER", "false");
+                                            COMMON.setSharedData(CONSTANTS.remember_me(), "false");
                                         }
-                                        responseObject.put("MESSAGE", "Log In Successfully");
-                                        responseObject.put(constants.TYPE(), type);
+                                        responseObject.put(CONSTANTS.message(), "Log In Successfully");
+                                        responseObject.put(CONSTANTS.type(), type);
                                         callback.callbackWithData(0, responseObject);
                                     } else {
-                                        responseObject.put("MESSAGE", "Wrong password");
+                                        responseObject.put(CONSTANTS.message(), "Wrong password");
                                         callback.callbackWithData(1, responseObject);
                                     }
                                 }
                             } else {
-                                responseObject.put("MESSAGE", "User not exist");
+                                responseObject.put(CONSTANTS.message(), "User not exist");
                                 callback.callbackWithData(1, responseObject);
                             }
                         }
@@ -98,8 +95,8 @@ public class DATABASE {
 
             final Map<String, Object> responseObject = new HashMap<>();
 
-            db.collection(constants.HOTEL_CRED())
-                    .whereEqualTo(constants.MOBILE(), mobile.trim())
+            db.collection(CONSTANTS.hotel_cred())
+                    .whereEqualTo(CONSTANTS.mobile(), mobile.trim())
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -109,8 +106,8 @@ public class DATABASE {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Log.d(TAG, "checkNumberWithType | onComplete | Found match ");
                                     String documentId = document.getId();
-                                    String userDocument = document.getString(constants.DOCUMENT_NAME());
-                                    String dbType = Objects.requireNonNull(document.getString(constants.TYPE())).trim();
+                                    String userDocument = document.getString(CONSTANTS.document_name());
+                                    String dbType = Objects.requireNonNull(document.getString(CONSTANTS.type())).trim();
 
                                     if (dbType.equals("OWNER")) {
                                         insertOwnerInfo(data, documentId, callback);
@@ -146,23 +143,23 @@ public class DATABASE {
             long timestamp = System.currentTimeMillis();
 
             final Map<String, Object> appCredData = new HashMap<>();
-//            appCredData.put(constants.TOKEN(), UUID.randomUUID().toString() + "_-_" + timestamp);
-            appCredData.put(constants.TYPE(), type.toUpperCase());
-            appCredData.put(constants.PASSWORD(), data.get(constants.PASSWORD()));
+//            appCredData.put(CONSTANTS.TOKEN(), UUID.randomUUID().toString() + "_-_" + timestamp);
+            appCredData.put(CONSTANTS.type(), type.toUpperCase());
+            appCredData.put(CONSTANTS.password(), data.get(CONSTANTS.password()));
 
             Log.d(TAG, "insertEmployeeInfo | Credentials Data " + appCredData);
 
             Map<String, Object> empCredData = new HashMap<>();
-            empCredData.put(constants.NAME(), data.get(constants.NAME()));
-            empCredData.put(constants.PASSWORD(), data.get(constants.PASSWORD()));
-            empCredData.put(constants.ADDRESS(), data.get(constants.ADDRESS()));
-            empCredData.put(constants.MOBILE(), data.get(constants.MOBILE()));
-            empCredData.put(constants.TYPE(), type.toUpperCase());
-            empCredData.put(constants.IS_WORKING(), true);
+            empCredData.put(CONSTANTS.name(), data.get(CONSTANTS.name()));
+            empCredData.put(CONSTANTS.password(), data.get(CONSTANTS.password()));
+            empCredData.put(CONSTANTS.address(), data.get(CONSTANTS.address()));
+            empCredData.put(CONSTANTS.mobile(), data.get(CONSTANTS.mobile()));
+            empCredData.put(CONSTANTS.type(), type.toUpperCase());
+            empCredData.put(CONSTANTS.is_working(), true);
 
             Log.d(TAG, "insertEmployeeInfo | Employee Data " + empCredData);
 
-            Task credData = db.collection(constants.HOTEL_CRED()).document(dbDocName)
+            Task credData = db.collection(CONSTANTS.hotel_cred()).document(dbDocName)
                     .set(appCredData, SetOptions.merge())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -177,7 +174,7 @@ public class DATABASE {
                         }
                     });
 
-            Task empData = db.collection(constants.WHOLE_DB()).document(docName).collection(constants.EMP_CRED())
+            Task empData = db.collection(CONSTANTS.whole_db()).document(docName).collection(CONSTANTS.emp_cred())
                     .add(empCredData)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
@@ -196,8 +193,8 @@ public class DATABASE {
                         @Override
                         public void onSuccess(List<Task<?>> tasks) {
 
-//                            Log.d(TAG, "insertOwnerInfo | onSuccess | TOKEN => " + appCredData.get(constants.TOKEN()).toString());
-                            Log.d(TAG, "insertOwnerInfo | onSuccess | DOC_NAME => " + appCredData.get(constants.DOCUMENT_NAME()).toString());
+//                            Log.d(TAG, "insertOwnerInfo | onSuccess | TOKEN => " + appCredData.get(CONSTANTS.TOKEN()).toString());
+                            Log.d(TAG, "insertOwnerInfo | onSuccess | DOC_NAME => " + appCredData.get(CONSTANTS.document_name()).toString());
                             Log.d(TAG, "insertOwnerInfo | onSuccess | REMEMBER => " + LoginScreen.rememberMeCheckedOrNot);
 
                             Log.d(TAG, "insertEmployeeInfo | onSuccess | Done with all updates ");
@@ -223,33 +220,33 @@ public class DATABASE {
         try {
             Log.d(TAG, "insertOwnerInfo | In function. ");
             Log.d(TAG, "insertOwnerInfo | Document Id => " + docId + "\nDATA " + data);
-            Log.d(TAG, "insertOwnerInfo | PASSWORD => " + data.get(constants.PASSWORD()));
+            Log.d(TAG, "insertOwnerInfo | PASSWORD => " + data.get(CONSTANTS.password()));
 
             final Map<String, Object> responseObject = new HashMap<>();
 
             long timestamp = System.currentTimeMillis();
 
             final Map<String, Object> appCredData = new HashMap<>();
-            appCredData.put(constants.MOBILE(), data.get(constants.MOBILE()));
-            appCredData.put(constants.PASSWORD(), data.get(constants.PASSWORD()));
-            appCredData.put(constants.TYPE(), "OWNER");
-            appCredData.put(constants.DOCUMENT_NAME(), data.get(constants.HOTEL_NAME()) + "_-_" + timestamp);
-//            appCredData.put(constants.TOKEN(), UUID.randomUUID().toString() + "_-_" + timestamp);
+            appCredData.put(CONSTANTS.mobile(), data.get(CONSTANTS.mobile()));
+            appCredData.put(CONSTANTS.password(), data.get(CONSTANTS.password()));
+            appCredData.put(CONSTANTS.type(), "OWNER");
+            appCredData.put(CONSTANTS.document_name(), data.get(CONSTANTS.hotel_name()) + "_-_" + timestamp);
+//            appCredData.put(CONSTANTS.TOKEN(), UUID.randomUUID().toString() + "_-_" + timestamp);
 
             Log.d(TAG, "insertOwnerInfo | appCredData " + appCredData);
 
             Map<String, Object> empCredData = new HashMap<>();
-            empCredData.put(constants.MOBILE(), data.get(constants.MOBILE()));
-            empCredData.put(constants.TYPE(), "OWNER");
-            empCredData.put(constants.AADHAR(), data.get(constants.AADHAR()));
-            empCredData.put(constants.GST_NO(), data.get(constants.GST_NO()));
-            empCredData.put(constants.NAME(), data.get(constants.NAME()));
-            empCredData.put(constants.PASSWORD(), data.get(constants.PASSWORD()));
-            empCredData.put(constants.ADDRESS(), data.get(constants.ADDRESS()));
+            empCredData.put(CONSTANTS.mobile(), data.get(CONSTANTS.mobile()));
+            empCredData.put(CONSTANTS.type(), "OWNER");
+            empCredData.put(CONSTANTS.aadhar(), data.get(CONSTANTS.aadhar()));
+            empCredData.put(CONSTANTS.gst_number(), data.get(CONSTANTS.gst_number()));
+            empCredData.put(CONSTANTS.name(), data.get(CONSTANTS.name()));
+            empCredData.put(CONSTANTS.password(), data.get(CONSTANTS.password()));
+            empCredData.put(CONSTANTS.address(), data.get(CONSTANTS.address()));
 
             Log.d(TAG, "insertOwnerInfo | empCredData " + empCredData);
 
-            Task updateCreds = db.collection(constants.HOTEL_CRED()).document(docId)
+            Task updateCreds = db.collection(CONSTANTS.hotel_cred()).document(docId)
                     .set(appCredData, SetOptions.merge())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -263,7 +260,7 @@ public class DATABASE {
                         }
                     });
 
-            Task updateDetails = db.collection(constants.WHOLE_DB()).document(appCredData.get(constants.DOCUMENT_NAME()).toString()).collection(constants.EMP_CRED())
+            Task updateDetails = db.collection(CONSTANTS.whole_db()).document(appCredData.get(CONSTANTS.document_name()).toString()).collection(CONSTANTS.emp_cred())
                     .add(empCredData)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
@@ -281,8 +278,8 @@ public class DATABASE {
                     .addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
                         @Override
                         public void onSuccess(List<Task<?>> tasks) {
-//                            Log.d(TAG, "insertOwnerInfo | onSuccess | TOKEN => " + appCredData.get(constants.TOKEN()).toString());
-                            Log.d(TAG, "insertOwnerInfo | onSuccess | DOC_NAME => " + appCredData.get(constants.DOCUMENT_NAME()).toString());
+//                            Log.d(TAG, "insertOwnerInfo | onSuccess | TOKEN => " + appCredData.get(CONSTANTS.TOKEN()).toString());
+                            Log.d(TAG, "insertOwnerInfo | onSuccess | DOC_NAME => " + appCredData.get(CONSTANTS.document_name()).toString());
                             Log.d(TAG, "insertOwnerInfo | onSuccess | REMEMBER => " + LoginScreen.rememberMeCheckedOrNot);
                             Log.d(TAG, "insertOwnerInfo | onSuccess| All tasks done successfully...");
                             responseObject.put("MESSAGE", "Sign up success");
@@ -304,8 +301,8 @@ public class DATABASE {
 
     public void checkNumberExist(final String mobile, final CALLBACK callback) {
         try {
-            db.collection(constants.HOTEL_CRED())
-                    .whereEqualTo(constants.MOBILE(), mobile)
+            db.collection(CONSTANTS.hotel_cred())
+                    .whereEqualTo(CONSTANTS.mobile(), mobile)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -324,7 +321,7 @@ public class DATABASE {
     public void addMenuCategory(final String category, final CALLBACK callback) {
         try {
             userDocument = COMMON.getSharedData("DOCUMENT_NAME");
-            menuReference = db.collection(constants.WHOLE_DB()).document(userDocument).collection(constants.ADD_MENU()).document(constants.CATEGORIES());
+            menuReference = db.collection(CONSTANTS.whole_db()).document(userDocument).collection(CONSTANTS.add_menu()).document(CONSTANTS.categories());
 
             final Object[][] arr = {null};
             final List<String>[] arr2 = new List[]{new ArrayList<String>()};
@@ -411,7 +408,7 @@ public class DATABASE {
 
             userDocument = COMMON.getSharedData("DOCUMENT_NAME");
             Log.d(TAG, "addDish | userDocument => " + userDocument);
-            menuReference = db.collection(constants.WHOLE_DB()).document(userDocument).collection(constants.ADD_MENU()).document(constants.CATEGORIES());
+            menuReference = db.collection(CONSTANTS.whole_db()).document(userDocument).collection(CONSTANTS.add_menu()).document(CONSTANTS.categories());
 
             menuReference.get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -444,7 +441,7 @@ public class DATABASE {
     public void add_dish(String dish_name, String dish_rate, String selected_category, final CheckingNewInterface checkingNewInterface) {
         try {
             final Map<String, Object> responseObj = new HashMap<>();
-            CollectionReference menuReference = db.collection(constants.WHOLE_DB()).document(userDocument).collection(constants.ADD_MENU());
+            CollectionReference menuReference = db.collection(CONSTANTS.whole_db()).document(userDocument).collection(CONSTANTS.add_menu());
 
             Map<String, Object> dish = new HashMap<>();
             dish.put("Category", selected_category);
@@ -481,10 +478,10 @@ public class DATABASE {
 
             final Map<String, Object> responseObj = new HashMap<>();
             final Map<String, Object> updateData = new HashMap<>();
-            updateData.put(constants.PASSWORD(), password);
+            updateData.put(CONSTANTS.password(), password);
 
-            Task first = db.collection(constants.WHOLE_DB()).document(wholeDID).collection(constants.EMP_CRED())
-                    .whereEqualTo(constants.MOBILE(), mobile)
+            Task first = db.collection(CONSTANTS.whole_db()).document(wholeDID).collection(CONSTANTS.emp_cred())
+                    .whereEqualTo(CONSTANTS.mobile(), mobile)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -494,7 +491,7 @@ public class DATABASE {
                                     String docId = document.getId();
                                     Log.d(TAG, "updatePasswordInDatabase | onComplete | docId " + docId);
 
-                                    db.collection(constants.WHOLE_DB()).document(wholeDID).collection(constants.EMP_CRED()).document(docId)
+                                    db.collection(CONSTANTS.whole_db()).document(wholeDID).collection(CONSTANTS.emp_cred()).document(docId)
                                             .update(updateData)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
@@ -514,7 +511,7 @@ public class DATABASE {
                         }
                     });
 
-            Task second = db.collection(constants.HOTEL_CRED()).document(credDID)
+            Task second = db.collection(CONSTANTS.hotel_cred()).document(credDID)
                     .update(updateData)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -557,15 +554,15 @@ public class DATABASE {
         try {
             final Map<String, Object> responseObj = new HashMap<>();
 
-            db.collection(constants.HOTEL_CRED())
-                    .whereEqualTo(constants.MOBILE(), mobile)
+            db.collection(CONSTANTS.hotel_cred())
+                    .whereEqualTo(CONSTANTS.mobile(), mobile)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful() && !Objects.requireNonNull(task.getResult()).isEmpty()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    String wholeDID = document.getString(constants.DOCUMENT_NAME());
+                                    String wholeDID = document.getString(CONSTANTS.document_name());
                                     String credDID = document.getId();
 
                                     Log.d(TAG, "onComplete | Document Name => " + wholeDID);
@@ -577,6 +574,84 @@ public class DATABASE {
                             }
                         }
                     });
+        } catch (Exception e) {
+            Log.e(TAG, "updatePassword | Exception in updatePassword. " + e.getMessage());
+            checkingNewInterface.callbackWithData(2, null);
+        }
+    }
+
+    public void addEmployee(final Map<String, Object> empInfo, final CheckingNewInterface checkingNewInterface) {
+        try {
+            final Map<String, Object> responseObj = new HashMap<>();
+            final String documentName = COMMON.getSharedData(CONSTANTS.document_name());
+
+            Log.d(TAG, "addEmployee: Document Name => " + documentName);
+
+            if (documentName.equals("")) {
+                responseObj.put(CONSTANTS.message(), "Document name not found in shared preference");
+                checkingNewInterface.callbackWithData(1, responseObj);
+            } else {
+                checkNumberExist(empInfo.get(CONSTANTS.mobile()).toString(), new CALLBACK() {
+                    @Override
+                    public void callBackMethod(int result) {
+                        if (result == 0) {
+                            Log.d(TAG, "callBackMethod: Number already exist...");
+                            responseObj.put(CONSTANTS.message(), "Number already Registered");
+                            checkingNewInterface.callbackWithData(1, responseObj);
+                        } else {
+                            final Map<String, Object> credInfo = new HashMap<>();
+                            credInfo.put(CONSTANTS.mobile(), empInfo.get(CONSTANTS.mobile()));
+                            credInfo.put(CONSTANTS.type(), empInfo.get(CONSTANTS.type()).toString().toUpperCase());
+                            credInfo.put(CONSTANTS.document_name(), documentName);
+
+                            Log.d(TAG, "addEmployee: credInfo => " + credInfo);
+
+                            final Map<String, Object> dataInfo = new HashMap<>();
+                            dataInfo.put(CONSTANTS.mobile(), empInfo.get(CONSTANTS.mobile()));
+                            dataInfo.put(CONSTANTS.type(), empInfo.get(CONSTANTS.type()).toString().toUpperCase());
+                            dataInfo.put(CONSTANTS.name(), empInfo.get(CONSTANTS.name()));
+                            dataInfo.put(CONSTANTS.status(), empInfo.get(CONSTANTS.status()));
+
+                            Log.d(TAG, "addEmployee: dataInfo => " + dataInfo);
+
+                            Task wholeDb = db.collection(CONSTANTS.whole_db()).document(documentName).collection(CONSTANTS.emp_cred())
+                                    .add(dataInfo)
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.e(TAG, "onFailure: Failed to update whole database... ");
+                                        }
+                                    });
+
+                            Task credentialsDb = db.collection(CONSTANTS.hotel_cred())
+                                    .add(credInfo)
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.e(TAG, "onFailure: Failed to update credentials database... ");
+                                        }
+                                    });
+
+                            Task bothDbUpdation = Tasks.whenAllComplete(wholeDb, credentialsDb)
+                                    .addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+                                        @Override
+                                        public void onSuccess(List<Task<?>> tasks) {
+                                            responseObj.put(CONSTANTS.message(), "Employee added successfully");
+                                            responseObj.put("ALL_DATA", "Success");
+                                            checkingNewInterface.callbackWithData(0, responseObj);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            responseObj.put(CONSTANTS.message(), "Failed to add employee");
+                                            responseObj.put("ALL_DATA", "Failed");
+                                            checkingNewInterface.callbackWithData(1, responseObj);
+                                        }
+                                    });
+                        }
+                    }
+                });
+            }
         } catch (Exception e) {
             Log.e(TAG, "updatePassword | Exception in updatePassword. " + e.getMessage());
             checkingNewInterface.callbackWithData(2, null);

@@ -27,8 +27,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.EmployeeHolder> implements Filterable {
     private Context activity;
-    private ArrayList<String> mList;
+    private ArrayList<Object> mList;
     private ArrayList<String> mListFull;
+    private employeeObject employeeObject;
+
     private Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
@@ -58,10 +60,9 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
         }
     };
 
-    public EmployeeAdapter(Context activity, ArrayList<String> list) {
+    public EmployeeAdapter(Context activity, ArrayList<Object> list) {
         this.activity = activity;
         this.mList = list;
-        this.mListFull = new ArrayList<>(list);
     }
 
     @NonNull
@@ -73,10 +74,16 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
 
     @Override
     public void onBindViewHolder(@NonNull EmployeeHolder holder, int position) {
-        holder.employeeName.setText(mList.get(position));
-        holder.employeeNumber.setText(mList.get(position));
-        holder.employeeType.setText(mList.get(position));
-        holder.status.setCardBackgroundColor(Color.RED);
+        employeeObject = (com.example.dream_team.owner.Adapter.employeeObject) mList.get(position);
+
+        holder.employeeName.setText(employeeObject.Name);
+        holder.employeeNumber.setText(employeeObject.Number);
+        holder.employeeType.setText(employeeObject.Type);
+        if(employeeObject.Status.equals("true"))
+            holder.status.setCardBackgroundColor(Color.GREEN);
+        else
+            holder.status.setCardBackgroundColor(Color.RED);
+
         holder.editEmp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,7 +128,6 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
             status = itemView.findViewById(R.id.statusCardView);
             editEmp = itemView.findViewById(R.id.editEmployee);
             deleteEmp = itemView.findViewById(R.id.deleteEmployee);
-
         }
     }
 }

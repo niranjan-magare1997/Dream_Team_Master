@@ -90,11 +90,11 @@ public class ForgotPasswordDialog extends DialogFragment implements View.OnClick
 
                     if (result == 0) {
                         //All good
-                        COMMON.showSnackBar("Password updated successfully",LoginScreen.getView());
+                        COMMON.showSnackBar("Password updated successfully", LoginScreen.getView());
 //                        Toast.makeText(view.getContext(), "Password updated successfully", Toast.LENGTH_SHORT);
                     } else {
                         //Gadbad zaali re baba
-                        COMMON.showSnackBar("Unable to update password",LoginScreen.getView());
+                        COMMON.showSnackBar("Unable to update password", LoginScreen.getView());
 //                        Toast.makeText(view.getContext(), "Unable to update password", Toast.LENGTH_SHORT);
                     }
                     dismiss();
